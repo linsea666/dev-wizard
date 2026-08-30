@@ -1,0 +1,6 @@
+{
+    "label": "新建 STC51 工程",
+    "description": "SDCC + EIDE，STC15 库与空白入口已配好，F7 直接编译",
+    "icon": "chip",
+    "open": "workspace"
+}

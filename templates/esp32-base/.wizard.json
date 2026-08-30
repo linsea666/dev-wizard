@@ -1,0 +1,9 @@
+{
+    "label": "新建 ESP32 工程",
+    "description": "ESP-IDF 工程骨架（用 ESP-IDF 插件构建）",
+    "icon": "radio-tower",
+    "open": "folder",
+    "replace": [
+        { "files": ["CMakeLists.txt", "main/CMakeLists.txt"], "find": "esp32-base" }
+    ]
+}

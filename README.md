@@ -18,6 +18,42 @@ opens the new workspace for you — **it stays on screen until you make a choice
 
 <p align="center"><i>(screenshot placeholder — run the wizard and press PrintScreen 🙂)</i></p>
 
+## Quick start / 快速开始（Windows 10/11，推荐）
+
+clone 之后跑一个脚本，脚本会把 **STC51(SDCC)、STM32(ARM GCC)、OpenOCD、Python**
+全部装好、模板生成好、扩展装好、VSCode 配置写好——然后你就可以直接用了：
+
+```powershell
+git clone https://github.com/linsea666/dev-wizard
+cd dev-wizard
+powershell -ExecutionPolicy Bypass -File scripts/setup.ps1
+```
+
+跑完重启 VSCode，向导弹出，**六种工程全部 F7 直接编译**。全程约 10-20 分钟
+（取决于网速，下载约 300 MB）。
+
+<details>
+<summary><b>setup.ps1 到底做了什么？（点开看明细）</b></summary>
+
+| 步骤 | 内容 | 下载源 | 大小 |
+|---|---|---|---|
+| 1 | 询问安装位置（默认 `C:\dev`，检测到已有安装可复用） | — | — |
+| 2 | SDCC 4.x（8051 编译器） | 清华 TUNA / MSYS2 源 | ~10 MB |
+| 3 | Arm GNU Toolchain 13.2（STM32 编译器） | GitHub Release（ghfast.top 加速） | ~250 MB |
+| 4 | OpenOCD 0.12（STM32 烧录调试） | GitHub Release（ghfast.top 加速） | ~30 MB |
+| 5 | Python 3.12 + 清华 pip 源 | npmmirror 镜像 | ~26 MB |
+| 6 | 生成模板库（自动替换路径占位符） | 本仓库 | — |
+| 7 | 安装扩展：EIDE / Python / Cortex-Debug / CMake Tools / 本扩展 | VSCode 市场 | — |
+| 8 | 合并写入 VSCode 用户设置（已有设置会先备份为 `settings.json.bak-setup`） | — | — |
+
+- **幂等**：随时可重跑，已安装的工具自动跳过；下载中断重跑即可续上
+- **不覆盖**：已有 VSCode 设置只会合并更新工具链路径，其他键原样保留
+- 工具链目录布局：`<安装位置>\sdcc`、`\xpack-arm-none-eabi-gcc-*`、`\xpack-openocd-*`、`\python312`、`\templates`、`\projects`
+</details>
+
+> **前置条件**：仅 Windows 10/11 + 已安装 VSCode（勾选"添加到 PATH"）。
+> 没装 VSCode？脚本会明确报错提醒。macOS/Linux 用户请参考下方手动安装。
+
 ## Features / 特性
 
 - **Startup wizard / 启动弹出** — optional, can be turned off in settings
@@ -29,9 +65,10 @@ opens the new workspace for you — **it stays on screen until you make a choice
 - Built-in experience tailored for embedded development (STC51 / STM32 / ESP32 /
   Python), but the templates are 100% yours — anything works
 
-## Install / 安装教程
+## Install / 安装教程（已有环境的用户）
 
-> 无需编译、无需 node_modules，一分钟装好。
+> 如果你像仓库作者一样已经配好了各工具链，可以跳过 setup.ps1，手动安装扩展 +
+> 指向自己的模板目录即可；无需编译、无需 node_modules，一分钟装好。
 
 ### 第 1 步：拿到 VSIX 安装包
 
@@ -142,11 +179,39 @@ my-templates/
 
 Automatic behaviour, no manifest needed:
 
-- `.eide/eide.json` → its `name` field is set to the project name
+- `.eide/eide.yml` (EIDE ≥ 3.27) or `.eide/eide.json` (older) → its `name`
+  field is set to the project name
   ([EIDE](https://marketplace.visualstudio.com/items?itemName=cl.eide) embedded projects)
 - a `*.code-workspace` in the template root is renamed to `<name>.code-workspace`
   and opened instead of the plain folder
 - the template's `build/` output folder is stripped from the copy
+
+### Toolchain path tokens / 工具链路径占位符
+
+Templates that reference tools installed by `setup.ps1` should use **path tokens**
+instead of absolute paths — `setup.ps1` replaces them with the real locations on
+each machine (so the same template works everywhere):
+
+| Token | Replaced with | Typical use |
+|---|---|---|
+| `__SDCC_ROOT__` | SDCC install root | EIDE `misc-controls` include/lib flags for 8051 |
+| `__ARM_GCC_ROOT__` | Arm GNU Toolchain root | custom linker paths |
+| `__OPENOCD_ROOT__` | OpenOCD root | debug scripts |
+
+Example (from the bundled STC51 template, `.eide/eide.yml`):
+
+```yaml
+misc-controls: >-
+  --iram-size 128 --xram-size 0 --code-size 4096
+  -I__SDCC_ROOT__/share/sdcc/include
+  -I__SDCC_ROOT__/share/sdcc/include/mcs51
+  -L__SDCC_ROOT__/share/sdcc/lib/small
+```
+
+> Tokens are resolved when `setup.ps1` materializes the template library.
+> On machines set up without the script, put the real paths in the template
+> yourself (or run setup.ps1 pointing at your existing tools folder — it
+> detects and reuses installed tools).
 
 ## Recommended companions / 推荐搭配
 

@@ -1,3 +1,5 @@
 .vscode/**
+scripts/**
+templates/**
 .gitignore
 *.vsix

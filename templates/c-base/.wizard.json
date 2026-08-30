@@ -1,0 +1,9 @@
+{
+    "label": "新建 C 语言工程",
+    "description": "CMake 控制台工程（需本机安装 MinGW 或 MSVC 编译器）",
+    "icon": "file-binary",
+    "open": "folder",
+    "replace": [
+        { "files": ["CMakeLists.txt"], "find": "c-base" }
+    ]
+}

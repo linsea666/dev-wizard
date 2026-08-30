@@ -1,0 +1,6 @@
+{
+    "label": "新建 STM32 工程",
+    "description": "ARM GCC + EIDE，F103C8 标准库模板，F5 可用 OpenOCD 烧录",
+    "icon": "circuit-board",
+    "open": "workspace"
+}

@@ -1,0 +1,6 @@
+{
+    "label": "新建 Python 工程",
+    "description": "Python 3.12 环境已就绪",
+    "icon": "file-code",
+    "open": "folder"
+}

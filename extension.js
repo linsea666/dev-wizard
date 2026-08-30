@@ -77,11 +77,19 @@ function copyTemplate(tplDir, dest) {
     }
 }
 
-function patchEideName(file, name) {
-    const obj = readJsonSafe(file);
+function patchEideName(dir, name) {
+    // EIDE >= 3.27 uses .eide/eide.yml; older versions use .eide/eide.json
+    const yml = path.join(dir, '.eide', 'eide.yml');
+    if (fs.existsSync(yml)) {
+        const txt = fs.readFileSync(yml, 'utf8');
+        fs.writeFileSync(yml, txt.replace(/^(\s*)name:.*$/m, `$1name: ${name}`), 'utf8');
+        return;
+    }
+    const json = path.join(dir, '.eide', 'eide.json');
+    const obj = readJsonSafe(json);
     if (obj && typeof obj.name === 'string') {
         obj.name = name;
-        fs.writeFileSync(file, JSON.stringify(obj, null, 2), 'utf8');
+        fs.writeFileSync(json, JSON.stringify(obj, null, 2), 'utf8');
     }
 }
 
@@ -131,10 +139,9 @@ async function createProject(tpl, ctx) {
         async () => {
             copyTemplate(tpl.dir, dest);
 
-            // EIDE project: keep eide.json name in sync
-            const eideJson = path.join(dest, '.eide', 'eide.json');
-            if (fs.existsSync(eideJson)) {
-                patchEideName(eideJson, name);
+            // EIDE project: keep project name in sync (yml or json)
+            if (fs.existsSync(path.join(dest, '.eide'))) {
+                patchEideName(dest, name);
             }
 
             // rename shipped .code-workspace to <name>.code-workspace
