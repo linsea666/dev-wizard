@@ -2,7 +2,7 @@
 # 用法: powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
 $ErrorActionPreference = "Stop"
 
-$meta  = Get-Content package.json -Raw | ConvertFrom-Json
+$meta  = Get-Content package.json -Raw -Encoding UTF8 | ConvertFrom-Json
 $ver   = $meta.version
 $out   = "dev-wizard-$ver.vsix"
 $tmp   = Join-Path $env:TEMP "devwizard-pack"
