@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased (docs)
+
+- README rewritten as a complete step-by-step tutorial: prerequisites,
+  setup walkthrough with real output, first-run wizard guide with
+  screenshots, per-project-type guides (build/flash/debug), FAQ,
+  expanded troubleshooting and an uninstall section.
+
 ## Unreleased (setup script)
 
 - **Fixed a critical fresh-machine bug**: the MSYS2 SDCC package needs runtime
