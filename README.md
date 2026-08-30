@@ -29,22 +29,65 @@ opens the new workspace for you — **it stays on screen until you make a choice
 - Built-in experience tailored for embedded development (STC51 / STM32 / ESP32 /
   Python), but the templates are 100% yours — anything works
 
-## Install / 安装
+## Install / 安装教程
 
-### From VSIX (easiest)
+> 无需编译、无需 node_modules，一分钟装好。
+
+### 第 1 步：拿到 VSIX 安装包
+
+**方式 A（推荐）**：打开仓库的 [**Releases 页面**](https://github.com/linsea666/dev-wizard/releases)，
+下载最新版本的 `dev-wizard-x.x.x.vsix`。
+
+**方式 B（从源码打包）**：
 
 ```powershell
-code --install-extension dev-wizard-1.1.0.vsix
-```
-
-### From source / 从源码
-
-```powershell
-git clone https://github.com/linsea666/dev-wizard
+git clone https://github.com/linsea666/dev-wizard.git
 cd dev-wizard
-# VSIX = zip; or use: npm i -g @vscode/vsce && vsce package
-code --install-extension dev-wizard-1.1.0.vsix
+powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
+# 生成 dev-wizard-1.1.0.vsix
 ```
+
+### 第 2 步：安装（二选一）
+
+**图形界面**（鼠标点两下）：
+
+1. 打开 VSCode → 左侧扩展面板（`Ctrl+Shift+X`）
+2. 点面板标题栏右上角的 `···`
+3. 选 **从 VSIX 安装...(Install from VSIX...)**
+4. 选中下载好的 `.vsix` 文件
+
+**命令行**：
+
+```powershell
+code --install-extension .\Downloads\dev-wizard-1.1.0.vsix
+```
+
+### 第 3 步：重启 VSCode
+
+`Ctrl+Shift+P` → 输入 **Reload Window（重新加载窗口）** → 回车。
+启动后向导自动弹出。
+
+### 第 4 步：告诉向导你的模板放在哪（首次使用必做）
+
+向导的工程类型来自 `devWizard.templatesRoot` 指向的目录——**每个子文件夹就是一个工程类型**：
+
+```jsonc
+// VSCode 设置 (Ctrl+, 打开 settings.json)
+{
+    "devWizard.templatesRoot": "D:/my-templates",   // 你的模板库
+    "devWizard.projectsRoot":  "D:/my-projects"     // 新工程的存放位置（可省略）
+}
+```
+
+还没有模板？随便建个文件夹，往里放一个能编译/运行的小工程，再放一个可选的
+`.wizard.json` 描述文件（详见下方 [Authoring templates](#authoring-templates--编写模板)），
+它就会出现在向导里。
+
+### 第 5 步：验证
+
+重启后向导自动弹出，选择一种工程类型 → 输入工程名 → 自动创建并打开。
+按 Esc 关掉向导？它会自动弹回来——**只有做出选择它才会消失**。
+想再次唤出：`Ctrl+Shift+P` → **Dev Wizard: what are we doing today?**
 
 ## Configuration / 配置
 
