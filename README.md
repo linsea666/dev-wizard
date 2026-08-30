@@ -92,13 +92,13 @@ powershell -ExecutionPolicy Bypass -File scripts/setup.ps1
 | 步骤 | 内容 | 下载源 | 大小 |
 |---|---|---|---|
 | 1 | 询问安装位置（默认 `C:\dev`，检测到已有安装可复用） | — | — |
-| 2 | SDCC 4.x（8051 编译器） | 清华 TUNA / MSYS2 源 | ~10 MB |
+| 2 | SDCC 4.x（8051 编译器）+ 自动补齐 MSYS2 运行库（否则裸机装完 sdcc 无法启动） | 清华 TUNA / MSYS2 源 | ~15 MB |
 | 3 | Arm GNU Toolchain 13.2（STM32 编译器） | GitHub Release（ghfast.top 加速） | ~250 MB |
 | 4 | OpenOCD 0.12（STM32 烧录调试） | GitHub Release（ghfast.top 加速） | ~30 MB |
-| 5 | Python 3.12 + 清华 pip 源 | npmmirror 镜像 | ~26 MB |
+| 5 | Python 3.12 + 清华 pip 源 + stcgal（STC51 烧录工具） | npmmirror 镜像 | ~28 MB |
 | 6 | 生成模板库（自动替换路径占位符） | 本仓库 | — |
 | 7 | 安装扩展：EIDE / Python / Cortex-Debug / CMake Tools / 本扩展 | VSCode 市场 | — |
-| 8 | 合并写入 VSCode 用户设置（已有设置会先备份为 `settings.json.bak-setup`） | — | — |
+| 8 | 合并写入 VSCode 用户设置（已有设置会先备份为 `settings.json.bak-setup`），并把 python / sdcc 加入用户 PATH | — | — |
 
 - **幂等**：随时可重跑，已安装的工具自动跳过；下载中断重跑即可续上
 - **不覆盖**：已有 VSCode 设置只会合并更新工具链路径，其他键原样保留

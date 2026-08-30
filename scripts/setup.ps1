@@ -70,6 +70,11 @@ New-Item -ItemType Directory -Force -Path $ToolsRoot, $ProjectsRoot, $TemplatesR
 Write-Host ("[1/8] Tools: {0}  Templates: {1}  Projects: {2}" -f $ToolsRoot, $TemplatesRoot, $ProjectsRoot)
 
 function Fetch($url, $out) {
+    # expected magic bytes per archive type - a 404/HTML page must not pass as success
+    $kind = $null
+    if ($out -match '\.zst$') { $kind = "zst" }
+    elseif ($out -match '\.zip$') { $kind = "zip" }
+    elseif ($out -match '\.gz$') { $kind = "gz" }
     for ($i = 1; $i -le 8; $i++) {
         Write-Host ("      download attempt {0}/8: {1}" -f $i, $url) -ForegroundColor DarkGray
         if ($i -eq 1) {
@@ -77,12 +82,50 @@ function Fetch($url, $out) {
         } else {
             & curl.exe -L --ssl-no-revoke --connect-timeout 20 -C - -o $out $url   # resume
         }
-        if ($LASTEXITCODE -eq 0 -and (Test-Path $out) -and ((Get-Item $out).Length -gt 0)) { return }
+        if ($LASTEXITCODE -eq 0 -and (Test-Path $out) -and ((Get-Item $out).Length -gt 0)) {
+            if (-not $kind) { return }
+            $fs = [System.IO.File]::OpenRead($out)
+            $b = New-Object byte[] 4
+            $n = $fs.Read($b, 0, 4)
+            $fs.Close()
+            $ok = switch ($kind) {
+                "zst" { ($n -ge 4) -and ($b[0] -eq 0x28) -and ($b[1] -eq 0xB5) -and ($b[2] -eq 0x2F) -and ($b[3] -eq 0xFD) }
+                "zip" { ($n -ge 2) -and ($b[0] -eq 0x50) -and ($b[1] -eq 0x4B) }
+                "gz"  { ($n -ge 2) -and ($b[0] -eq 0x1F) -and ($b[1] -eq 0x8B) }
+                default { $true }
+            }
+            if ($ok) { return }
+            Write-Host "      downloaded file is not a valid $kind archive (mirror error page?)" -ForegroundColor Yellow
+            Remove-Item $out -Force -ErrorAction SilentlyContinue
+        }
         if ($LASTEXITCODE -eq 33) { return }   # range satisfied = file already complete
         Write-Host "      retrying in 5s..." -ForegroundColor Yellow
         Start-Sleep 5
     }
     throw "download failed after retries: $url"
+}
+
+function Resolve-Msys2Pkg($IndexContent, $Pattern) {
+    return ([regex]::Matches($IndexContent, $Pattern) |
+            ForEach-Object { $_.Value } | Sort-Object | Select-Object -Last 1)
+}
+
+# probe: can the built-in bsdtar extract zstd? (older Win10 builds cannot)
+$TarExe = Join-Path $env:SystemRoot "System32\tar.exe"
+$ZstdOk = $false
+if (Test-Path $TarExe) {
+    $probe = Join-Path $env:TEMP "dw-zstd-probe.txt"
+    Set-Content -Path $probe -Value "probe" -Encoding Ascii
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    & $TarExe --zstd -cf "$probe.zst" -C $env:TEMP "dw-zstd-probe.txt" 2>$null
+    $ErrorActionPreference = $prevEap
+    $ZstdOk = ($LASTEXITCODE -eq 0) -and (Test-Path "$probe.zst")
+    Remove-Item $probe, "$probe.zst" -Force -ErrorAction SilentlyContinue
+}
+if (-not $ZstdOk) {
+    Write-Host "[WARN] built-in tar.exe cannot extract .zst archives (older Windows 10)." -ForegroundColor Yellow
+    Write-Host "       SDCC/Python steps will fail; see README troubleshooting (7-Zip manual install)." -ForegroundColor Yellow
 }
 
 # --- step 2: SDCC (TUNA msys2 mirror, includes 8051 support) ----------------
@@ -92,19 +135,36 @@ if (Test-Path (Join-Path $sdccPath "bin\sdcc.exe")) {
 } elseif ($NoDownload) {
     Write-Host "[2/8] SKIP download (-NoDownload): SDCC missing!" -ForegroundColor Yellow
 } else {
-    Write-Host "[2/8] Installing SDCC ..."
+    Write-Host "[2/8] Installing SDCC (+ runtime libraries) ..."
     try {
+        # the msys2 sdcc build needs runtime DLLs from these packages; without
+        # them sdcc.exe cannot even start on a machine that has no other
+        # mingw toolchain on PATH (libgcc/libstdc++/libwinpthread/libintl/zlib)
+        $deps = @(
+            'mingw-w64-x86_64-sdcc-[\d\.]+-\d+-any\.pkg\.tar\.zst',
+            'mingw-w64-x86_64-gcc-libs-[\d\.]+-\d+-any\.pkg\.tar\.zst',
+            'mingw-w64-x86_64-libwinpthread-git-[\w\.\-]+-\d+-any\.pkg\.tar\.zst',
+            'mingw-w64-x86_64-gettext-runtime-[\d\.]+-\d+-any\.pkg\.tar\.zst',
+            'mingw-w64-x86_64-libiconv-[\d\.]+-\d+-any\.pkg\.tar\.zst',
+            'mingw-w64-x86_64-zlib-[\d\.]+-\d+-any\.pkg\.tar\.zst'
+        )
         $idx = Invoke-WebRequest -UseBasicParsing "https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/"
-        $f = ([regex]::Matches($idx.Content, 'mingw-w64-x86_64-sdcc-[\d\.]+-\d+-any\.pkg\.tar\.zst') |
-              ForEach-Object { $_.Value } | Sort-Object | Select-Object -Last 1)
-        if (-not $f) { throw "could not find SDCC package on TUNA mirror" }
-        $pkg = Join-Path $env:TEMP $f
-        Fetch "https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/$f" $pkg
+        $pkgs = @()
+        foreach ($p in $deps) {
+            $f = Resolve-Msys2Pkg $idx.Content $p
+            if (-not $f) { throw "could not find package matching $p on TUNA mirror" }
+            $pkgs += $f
+        }
         $tar = Join-Path $env:SystemRoot "System32\tar.exe"
-        & $tar --zstd -xf $pkg -C $ToolsRoot
-        if ($LASTEXITCODE -ne 0) { throw "extraction failed" }
+        foreach ($f in $pkgs) {
+            Write-Host ("      fetching {0}" -f $f) -ForegroundColor DarkGray
+            $pkg = Join-Path $env:TEMP $f
+            Fetch "https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/$f" $pkg
+            & $tar --zstd -xf $pkg -C $ToolsRoot
+            if ($LASTEXITCODE -ne 0) { throw "extraction failed for $f" }
+            Remove-Item $pkg -Force
+        }
         Move-Item (Join-Path $ToolsRoot "mingw64") $sdccPath
-        Remove-Item $pkg -Force
     } catch {
         Write-Host ("      SDCC failed: " + $_.Exception.Message) -ForegroundColor Red
         Write-Host "      skipped - re-run setup later to retry" -ForegroundColor Yellow
@@ -177,7 +237,25 @@ if (Test-Path (Join-Path $pyDir "python.exe")) {
 }
 if (Test-Path (Join-Path $pyDir "python.exe")) {
     $script:PyExe = Join-Path $pyDir "python.exe"
+    # pip writes progress to stderr; with $ErrorActionPreference = "Stop" a
+    # redirected native stderr stream becomes a NativeCommandError in PS 5.1
+    # and aborts the script, so all pip calls run under "Continue"
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
     & $PyExe -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple 2>&1 | Out-Null
+    # STC51 uploader required by EIDE (it spawns bare "stcgal")
+    if (Test-Path (Join-Path $pyDir "Lib\site-packages\stcgal")) {
+        Write-Host "[5/8] stcgal already installed."
+    } else {
+        Write-Host "[5/8] Installing stcgal (STC51 flashing tool) ..."
+        & $PyExe -m pip install --quiet stcgal 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0 -and (Test-Path (Join-Path $pyDir "Lib\site-packages\stcgal"))) {
+            Write-Host "      stcgal installed."
+        } else {
+            Write-Host "      stcgal install failed - STC51 flashing will not work; re-run setup later" -ForegroundColor Yellow
+        }
+    }
+    $ErrorActionPreference = $prevEap
 }
 
 # --- step 6: materialize templates (patch path tokens) -------------------------
@@ -255,9 +333,38 @@ $jsonOut = $settings | ConvertTo-Json -Depth 10
 Set-Content -Path $settingsPath -Value $jsonOut -Encoding UTF8
 Write-Host "      settings written (backup: settings.json.bak-setup)"
 
+# --- step 8b: put python/sdcc on the user PATH -------------------------------
+# EIDE spawns bare "stcgal" (needs Scripts dir) and users expect python/sdcc
+# to work in any terminal. Idempotent; skipped when the user PATH uses
+# REG_EXPAND_SZ variables (we would rewrite it as plain REG_SZ).
+function Add-UserPath($dir) {
+    if (-not (Test-Path $dir)) { return }
+    try {
+        $raw = (Get-ItemProperty "HKCU:\Environment" -Name Path -ErrorAction SilentlyContinue).Path
+        if ($raw -and $raw.Contains('%')) {
+            Write-Host ("      user PATH contains %variables%, add manually: {0}" -f $dir) -ForegroundColor Yellow
+            return
+        }
+        $parts = @()
+        if ($raw) { $parts = @($raw -split ';' | Where-Object { $_ }) }
+        if ($parts -notcontains $dir) {
+            $new = if ($parts.Count) { ($parts + $dir) -join ';' } else { $dir }
+            [Environment]::SetEnvironmentVariable("Path", $new, "User")
+            Write-Host ("      PATH added: {0}" -f $dir)
+        }
+    } catch {
+        Write-Host ("      could not update user PATH: " + $_.Exception.Message) -ForegroundColor Yellow
+    }
+}
+Write-Host "[8/8] Updating user PATH (python / sdcc) ..."
+Add-UserPath $pyDir
+Add-UserPath (Join-Path $pyDir "Scripts")
+Add-UserPath (Join-Path $sdccPath "bin")
+
 Write-Host ""
 Write-Host "=== DONE ===" -ForegroundColor Green
-Write-Host "Restart VS Code, the wizard pops up, all project types compile with F7."
+Write-Host "Restart VS Code (so it picks up the new settings/PATH), the wizard pops up,"
+Write-Host "STC51/STM32 projects compile with F7, STC51 flashing uses stcgal."
 if (-not $script:ArmPath -or -not $script:OcdPath) {
     Write-Host "NOTE: some downloads were skipped (-NoDownload); STM32 debug config not written." -ForegroundColor Yellow
 }
