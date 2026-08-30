@@ -91,7 +91,8 @@ if (Test-Path (Join-Path $sdccPath "bin\sdcc.exe")) {
     if (-not $f) { throw "could not find SDCC package on TUNA mirror" }
     $pkg = Join-Path $env:TEMP $f
     Fetch "https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/$f" $pkg
-    & "$env:SystemRootSystem32	ar.exe" --zstd -xf $pkg -C $ToolsRoot
+    $tar = Join-Path $env:SystemRoot "System32\tar.exe"
+    & $tar --zstd -xf $pkg -C $ToolsRoot
     if ($LASTEXITCODE -ne 0) { throw "extraction failed (need Windows 10 1803+ built-in tar)" }
     Move-Item (Join-Path $ToolsRoot "mingw64") $sdccPath
     Remove-Item $pkg -Force
