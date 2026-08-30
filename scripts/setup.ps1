@@ -71,7 +71,7 @@ Write-Host ("[1/8] Tools: {0}  Templates: {1}  Projects: {2}" -f $ToolsRoot, $Te
 
 function Fetch($url, $out) {
     Write-Host ("      downloading {0}" -f $url) -ForegroundColor DarkGray
-    & curl.exe -L --ssl-no-revoke --retry 3 --silent --show-error -o $out $url
+    & curl.exe -L --ssl-no-revoke --retry 3 --show-error -o $out $url
     if ($LASTEXITCODE -ne 0 -or -not (Test-Path $out)) {
         throw "download failed: $url"
     }
@@ -91,7 +91,7 @@ if (Test-Path (Join-Path $sdccPath "bin\sdcc.exe")) {
     if (-not $f) { throw "could not find SDCC package on TUNA mirror" }
     $pkg = Join-Path $env:TEMP $f
     Fetch "https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/$f" $pkg
-    & tar.exe --zstd -xf $pkg -C $ToolsRoot
+    & "$env:SystemRootSystem32	ar.exe" --zstd -xf $pkg -C $ToolsRoot
     if ($LASTEXITCODE -ne 0) { throw "extraction failed (need Windows 10 1803+ built-in tar)" }
     Move-Item (Join-Path $ToolsRoot "mingw64") $sdccPath
     Remove-Item $pkg -Force

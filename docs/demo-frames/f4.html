@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1100px; height:700px; overflow:hidden; font-family:"Segoe UI","Microsoft YaHei",sans-serif; }
+#ide { width:1100px; height:700px; background:#1e1e1e; display:flex; flex-direction:column; }
+#main { flex:1; display:flex; }
+#activity { width:48px; background:#333333; display:flex; flex-direction:column; align-items:center; padding-top:8px; gap:18px; }
+.act { width:48px; height:40px; display:flex; align-items:center; justify-content:center; font-size:20px; color:#858585; }
+.act.on { color:#ffffff; border-left:2px solid #ffffff; }
+#sidebar { width:230px; background:#252526; color:#cccccc; font-size:13px; }
+.stitle { padding:8px 16px; color:#bbbbbb; font-size:11px; letter-spacing:0.5px; }
+.sitem { padding:3px 16px 3px 24px; white-space:nowrap; }
+.sitem.sel { background:#37373d; }
+.ssub { padding-left:38px; }
+.ssub2 { padding-left:52px; }
+#editorwrap { flex:1; display:flex; flex-direction:column; }
+#tabs { height:35px; background:#252526; display:flex; align-items:stretch; }
+.tab { padding:8px 12px; color:#969696; font-size:13px; background:#2d2d2d; border-right:1px solid #252526; }
+.tab.on { background:#1e1e1e; color:#ffffff; border-top:1px solid #0078d4; }
+#code { flex:1; font-family:Consolas,"Courier New",monospace; font-size:14px; line-height:19px; color:#d4d4d4; padding:8px 0; }
+.cl { white-space:pre; }
+.cl .ln { display:inline-block; width:42px; color:#858585; text-align:right; padding-right:18px; }
+.kw { color:#569cd6; } .str { color:#ce9178; } .cm { color:#6a9955; } .fn { color:#dcdcaa; } .num { color:#b5cea8; } .pp { color:#c586c0; }
+#status { height:22px; background:#007acc; color:#ffffff; font-size:12px; display:flex; align-items:center; padding:0 10px; gap:14px; }
+.st { display:flex; align-items:center; gap:4px; }
+#toast { position:absolute; right:16px; bottom:40px; background:#252526; border:1px solid #454545; border-left:3px solid #007acc; color:#cccccc; font-size:13px; padding:10px 16px; border-radius:4px; box-shadow:0 6px 18px rgba(0,0,0,.5); }
+</style></head><body>
+<div id="ide">
+  <div id="main">
+    <div id="activity">
+      <div class="act on">📄</div><div class="act">🔍</div><div class="act">⑂</div>
+      <div class="act">▶</div><div class="act">🧩</div><div class="act">⚙️</div>
+    </div>
+    <div id="sidebar">
+      <div class="stitle">资源管理器</div>
+      <div class="sitem folder">▾ my-first-led (工作区)</div>
+      <div class="sitem folder ssub">▾ my-first-led</div>
+      <div class="sitem folder ssub">▸ .eide</div>
+      <div class="sitem folder ssub">▸ .vscode</div>
+      <div class="sitem folder ssub sel">▾ source</div>
+      <div class="sitem file ssub2">main.c</div>
+      <div class="sitem folder ssub">▸ libraries</div>
+      <div class="sitem folder ssub">▸ img</div>
+      <div class="sitem file ssub">my-first-led.code-workspace</div>
+      <div class="sitem file ssub">README.md</div>
+    </div>
+    <div id="editorwrap">
+      <div id="tabs"><div class="tab on">main.c ×</div></div>
+      <div id="code">
+<div class="cl"><span class="ln">1</span><span class="cm">/*</span></div>
+<div class="cl"><span class="ln">2</span><span class="cm"> * STC51 开发工作区 - 入口模板</span></div>
+<div class="cl"><span class="ln">3</span><span class="cm"> *</span></div>
+<div class="cl"><span class="ln">4</span><span class="cm"> * LED: P3.4    主频: 16MHz</span></div>
+<div class="cl"><span class="ln">5</span><span class="cm"> * 产物: build/Debug/my-first-led.hex</span></div>
+<div class="cl"><span class="ln">6</span><span class="cm"> */</span></div>
+<div class="cl"><span class="ln">7</span></div>
+<div class="cl"><span class="ln">8</span><span class="pp">#include</span> <span class="str">"config.h"</span></div>
+<div class="cl"><span class="ln">9</span><span class="pp">#include</span> <span class="str">"STC15Fxxxx.H"</span></div>
+<div class="cl"><span class="ln">10</span><span class="pp">#include</span> <span class="str">"delay.h"</span></div>
+<div class="cl"><span class="ln">11</span></div>
+<div class="cl"><span class="ln">12</span><span class="kw">#define</span> LED P34</div>
+<div class="cl"><span class="ln">13</span></div>
+<div class="cl"><span class="ln">14</span><span class="kw">void</span> <span class="fn">main</span>(<span class="kw">void</span>)</div>
+<div class="cl"><span class="ln">15</span>{</div>
+<div class="cl"><span class="ln">16</span>    LED = <span class="num">0</span>;</div>
+<div class="cl"><span class="ln">17</span>    <span class="kw">while</span> (<span class="num">1</span>)</div>
+<div class="cl"><span class="ln">18</span>    {</div>
+<div class="cl"><span class="ln">19</span>        <span class="cm">/* 在这里写你的代码 */</span></div>
+<div class="cl"><span class="ln">20</span>    }</div>
+<div class="cl"><span class="ln">21</span>}</div>
+      </div>
+    </div>
+  </div>
+  <div id="status">
+    <span class="st">⑂ main</span><span class="st">⚠ 0 ⛒ 0</span>
+    <span class="st">EIDE Project: Debug</span><span class="st">🔨 Build</span><span class="st">⬇ Flash</span>
+    <span style="margin-left:auto">行 1, 列 1  UTF-8  C</span>
+  </div>
+</div>
+<div id="toast">✔ 工程 my-first-led 已创建并打开</div>
+</body></html>

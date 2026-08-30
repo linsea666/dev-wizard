@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1100px; height:700px; overflow:hidden; font-family:"Segoe UI","Microsoft YaHei",sans-serif; }
+#ide { width:1100px; height:700px; background:#1e1e1e; display:flex; flex-direction:column; }
+#main { flex:1; display:flex; }
+#activity { width:48px; background:#333333; display:flex; flex-direction:column; align-items:center; padding-top:8px; gap:18px; }
+.act { width:48px; height:40px; display:flex; align-items:center; justify-content:center; font-size:20px; color:#858585; }
+.act.on { color:#ffffff; border-left:2px solid #ffffff; }
+#sidebar { width:230px; background:#252526; color:#cccccc; font-size:13px; }
+.stitle { padding:8px 16px; color:#bbbbbb; font-size:11px; letter-spacing:0.5px; }
+.sitem { padding:3px 16px 3px 24px; white-space:nowrap; }
+.sitem.folder { color:#cccccc; }
+.sitem.file { color:#c5c5c5; }
+.sitem.sel { background:#37373d; }
+.ssub { padding-left:38px; }
+#editorwrap { flex:1; display:flex; flex-direction:column; }
+#tabs { height:35px; background:#252526; display:flex; align-items:stretch; }
+.tab { padding:8px 12px; color:#969696; font-size:13px; background:#2d2d2d; border-right:1px solid #252526; }
+.tab.on { background:#1e1e1e; color:#ffffff; border-top:1px solid #0078d4; }
+#breadcrumb { padding:4px 16px; font-size:12px; color:#969696; background:#1e1e1e; }
+#status { height:22px; background:#007acc; color:#ffffff; font-size:12px; display:flex; align-items:center; padding:0 10px; gap:14px; }
+.st { display:flex; align-items:center; gap:4px; }
+#overlay { position:absolute; left:240px; top:8px; width:620px; background:#252526; border:1px solid #454545; border-radius:6px; box-shadow:0 8px 24px rgba(0,0,0,.6); overflow:hidden; }
+#qinput { padding:10px 14px; font-size:13px; color:#cccccc; border-bottom:1px solid #454545; background:#3c3c3c; }
+.qitem { padding:6px 14px; font-size:13px; color:#cccccc; display:flex; align-items:center; gap:8px; }
+.qitem .d { color:#969696; font-size:12px; margin-left:auto; padding-left:12px; }
+.qitem.sel { background:#04395e; }
+.qsep { padding:4px 14px; font-size:11px; color:#868686; border-top:1px solid #303031; }
+.caret { display:inline-block; width:8px; height:16px; background:#cccccc; vertical-align:text-bottom; animation:none; }
+</style></head><body>
+<div id="ide">
+  <div id="main">
+    <div id="activity">
+      <div class="act on">📄</div><div class="act">🔍</div><div class="act">⑂</div>
+      <div class="act">▶</div><div class="act">🧩</div><div class="act">⚙️</div>
+    </div>
+    <div id="sidebar">
+      <div class="stitle">资源管理器</div>
+      <div class="sitem folder">▾ stc51-dev (工作区)</div>
+      <div class="sitem folder ssub">▾ stc51-dev</div>
+      <div class="sitem folder ssub">▸ .eide</div>
+      <div class="sitem folder ssub">▸ .vscode</div>
+      <div class="sitem folder ssub">▸ libraries</div>
+      <div class="sitem folder ssub sel">▾ source</div>
+      <div class="sitem file ssub">main.c</div>
+      <div class="sitem folder ssub">▸ img</div>
+      <div class="sitem file ssub">stc51-dev.code-workspace</div>
+      <div class="sitem file ssub">README.md</div>
+    </div>
+    <div id="editorwrap">
+      <div id="tabs"><div class="tab on">main.c ×</div></div>
+      <div id="breadcrumb">source &gt; main.c</div>
+    </div>
+  </div>
+  <div id="status">
+    <span class="st">⑂ main</span><span class="st">⚠ 0 ⛒ 0</span>
+    <span class="st">EIDE Project: Debug</span><span class="st">🔨 Build</span><span class="st">⬇ Flash</span>
+    <span style="margin-left:auto">行 1, 列 1  UTF-8  C</span>
+  </div>
+</div>
+<div id="overlay">
+  <div id="qinput">请输入新工程名称（字母 / 数字 / 下划线 / 中划线）</div>
+  <div style="padding:12px 14px; font-size:14px; color:#ffffff; background:#3c3c3c; border:1px solid #0078d4; border-left:none; border-right:none;">my-first-led<span class="caret">&nbsp;</span></div>
+  <div class="qsep">回车确认创建并打开 · Esc 取消</div>
+</div>
+</body></html>
