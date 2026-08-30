@@ -161,12 +161,15 @@ if (Test-Path (Join-Path $pyDir "python.exe")) {
 } elseif ($NoDownload) {
     Write-Host "[5/8] SKIP download (-NoDownload): Python missing!" -ForegroundColor Yellow
 } else {
-    Write-Host "[5/8] Installing Python 3.12 ..."
+    Write-Host "[5/8] Installing Python 3.12 (portable build) ..."
     try {
-        $exe = Join-Path $env:TEMP "python-3.12.10-amd64.exe"
-        Fetch "https://registry.npmmirror.com/-/binary/python/3.12.10/python-3.12.10-amd64.exe" $exe
-        Start-Process -FilePath $exe -Wait -ArgumentList "/quiet","InstallAllUsers=0","PrependPath=0","Include_test=0","Include_launcher=0","TargetDir=$pyDir"
-        Remove-Item $exe -Force
+        $pkg = Join-Path $env:TEMP "cpython-3.12.7-install_only.tar.gz"
+        Fetch "https://ghfast.top/https://github.com/indygreg/python-build-standalone/releases/download/20241016/cpython-3.12.7+20241016-x86_64-pc-windows-msvc-shared-install_only.tar.gz" $pkg
+        $tar = Join-Path $env:SystemRoot "System32\tar.exe"
+        & $tar -xzf $pkg -C $ToolsRoot
+        if ($LASTEXITCODE -ne 0) { throw "extraction failed" }
+        Move-Item (Join-Path $ToolsRoot "python") $pyDir
+        Remove-Item $pkg -Force
     } catch {
         Write-Host ("      Python failed: " + $_.Exception.Message) -ForegroundColor Red
         Write-Host "      skipped - re-run setup later to retry" -ForegroundColor Yellow
