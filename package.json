@@ -24,7 +24,7 @@
     "main": "./extension.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/YOUR_ACCOUNT/dev-wizard"
+        "url": "https://github.com/linsea666/dev-wizard"
     },
     "contributes": {
         "commands": [

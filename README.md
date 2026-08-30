@@ -40,7 +40,7 @@ code --install-extension dev-wizard-1.1.0.vsix
 ### From source / 从源码
 
 ```powershell
-git clone https://github.com/YOUR_ACCOUNT/dev-wizard
+git clone https://github.com/linsea666/dev-wizard
 cd dev-wizard
 # VSIX = zip; or use: npm i -g @vscode/vsce && vsce package
 code --install-extension dev-wizard-1.1.0.vsix
