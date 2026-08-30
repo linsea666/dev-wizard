@@ -35,8 +35,11 @@ opens the new workspace for you — **it stays on screen until you make a choice
 
 ### 第 1 步：拿到 VSIX 安装包
 
-**方式 A（推荐）**：打开仓库的 [**Releases 页面**](https://github.com/linsea666/dev-wizard/releases)，
-下载最新版本的 `dev-wizard-x.x.x.vsix`。
+**方式 A（推荐，直接下载）**：安装包就在本仓库里——
+下载 [`dev-wizard-1.1.0.vsix`](https://github.com/linsea666/dev-wizard/raw/main/dev-wizard-1.1.0.vsix)。
+
+> GitHub 直连慢？用加速链接下载：
+> `https://ghfast.top/https://github.com/linsea666/dev-wizard/raw/main/dev-wizard-1.1.0.vsix`
 
 **方式 B（从源码打包）**：
 
