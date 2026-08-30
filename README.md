@@ -1,22 +1,59 @@
 # Dev Wizard (开发向导)
 
-A startup wizard for Visual Studio Code. Every time you open VS Code it asks:
+![platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![vscode](https://img.shields.io/badge/VS%20Code-1.80%2B-007ACC) ![dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
+
+一个 VS Code 启动向导：**每次打开 VSCode 都会问你"今天做什么？"**——回到上次的工作，
+或从模板一键创建新工程（STC51 / STM32 / ESP32 / Python / C / C++ / 你自己的任意类型）。
+配套的 `setup.ps1` 把 SDCC、ARM GCC、OpenOCD、Python 等工具链**全自动配好**，
+让"新芯片的第一个工程"从半天环境配置变成一条命令。
 
 > **今天要做什么？ What are we doing today?**
 >
 > 📂 继续上次的工作 / Continue last work
 > ──── 开始新工程 / New project ────
 > 🧩 新建 STC51 工程 … 🔩 STM32 … 📡 ESP32 … 🐍 Python … ✨ 你自己的任意类型
-
-Pick **continue** to jump straight back to your last project. Pick a template type,
-type a project name, and the wizard copies the template, renames everything and
-opens the new workspace for you — **it stays on screen until you make a choice**.
-
-一个 VS Code 启动向导扩展：每次启动询问你今天做什么。可以一键回到上次的工作，
-也可以选择工程类型、输入工程名，自动从模板复制、改名并打开新工程。
-**不做出选择，向导就一直停留在屏幕上。**
+>
+> *（不做出选择，向导就一直停留在屏幕上）*
 
 <p align="center"><i>(screenshot placeholder — run the wizard and press PrintScreen 🙂)</i></p>
+
+## 这个项目解决什么问题 / The problem
+
+做嵌入式（或任何多语言）开发的人对这些场景一定不陌生：
+
+- **环境配置是劝退第一步**。学 51 单片机想用 VSCode + SDCC 代替 Keil，
+  得在网上翻半天教程：装编译器、配头文件路径、改链接参数……配完自己都
+  记不清动过哪些地方，换台电脑全部重来
+- **每换一种芯片就换一套 IDE**。51 用 Keil，STM32 用 CubeIDE，ESP32 又是
+  ESP-IDF——快捷键、构建流程、烧录方式全都不一样
+- **开新工程没有仪式感，全是体力活**：复制上一个工程 → 删旧代码 → 改工程
+  名 → 改配置 → 祈祷还能编译
+
+Dev Wizard 把这三件事全部自动化：
+
+1. **`setup.ps1` 一键配环境**——工具链自动下载安装、模板自动生成、扩展自动
+   装好、VSCode 配置自动写好（已有环境自动复用，不重复下载）
+2. **向导一键建工程**——模板就是"一个能编译的完整工程"，选类型、起名字，
+   复制-改名-打开一气呵成
+3. **统一的开发体验**——所有芯片都在同一个编辑器里：同样的快捷键、同样的
+   构建按钮（F7）、同样的产物目录
+
+## 服务对象 / Who is this for
+
+| 你是… | 你会得到… |
+|---|---|
+| **单片机初学者** | 跑一遍 `setup.ps1`，环境、模板、编译按钮全部就位。51/STM32 之旅从写代码开始，而不是从配环境开始 |
+| **多平台嵌入式开发者** | STC51、STM32、ESP32 换着做？新工程零成本起步，工具链路径一次配好终身受用 |
+| **老师 / 实验室管理员** | `setup.ps1` 幂等可重复执行，给整个机房统一部署开发环境就一行命令 |
+| **任何 VSCode 重度用户** | 工程类型完全由你的模板目录决定——加一种语言/平台/框架，就是往文件夹里放一个目录 |
+
+## 设计哲学 / Design notes
+
+- **向导只是入口，模板才是资产**。扩展本体刻意保持两百行以内；每个模板
+  是一个"能编译的完整工程"，沉淀的是工具链配置经验
+- **模板即文件夹**。没有 DSL、没有构建步骤——放一个目录就能出现在向导里，
+  分享模板 = 分享文件夹
+- **零依赖**。纯 VSCode API，不拖 node_modules，clone 即源码，zip 即安装包
 
 ## Quick start / 快速开始（Windows 10/11，推荐）
 
@@ -53,17 +90,6 @@ powershell -ExecutionPolicy Bypass -File scripts/setup.ps1
 
 > **前置条件**：仅 Windows 10/11 + 已安装 VSCode（勾选"添加到 PATH"）。
 > 没装 VSCode？脚本会明确报错提醒。macOS/Linux 用户请参考下方手动安装。
-
-## Features / 特性
-
-- **Startup wizard / 启动弹出** — optional, can be turned off in settings
-- **Persistent / 不选择不消失** — dismissed by mistake? It re-appears automatically
-- **Last-work shortcut / 一键回到上次工作**
-- **Template driven / 模板驱动** — every subfolder of the templates folder becomes
-  a wizard entry. Describe it with a small `.wizard.json` (optional)
-- **Zero dependencies / 零依赖** — pure VS Code API, no node_modules
-- Built-in experience tailored for embedded development (STC51 / STM32 / ESP32 /
-  Python), but the templates are 100% yours — anything works
 
 ## Install / 安装教程（已有环境的用户）
 
