@@ -20,7 +20,7 @@ Copy-Item package.json, extension.js, README.md, CHANGELOG.md, LICENSE "$tmp/ext
   <Default Extension="md" ContentType="text/markdown"/>
   <Default Extension="xml" ContentType="application/xml"/>
 </Types>
-'@ | Out-File "$tmp/[Content_Types].xml" -Encoding utf8
+'@ | Out-File -LiteralPath "$tmp/[Content_Types].xml" -Encoding utf8
 
 @'
 <?xml version="1.0" encoding="utf-8"?>
@@ -37,10 +37,11 @@ Copy-Item package.json, extension.js, README.md, CHANGELOG.md, LICENSE "$tmp/ext
     <Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true"/>
   </Assets>
 </PackageManifest>
-'@.Replace("__VER__", $ver) | Out-File "$tmp/extension.vsixmanifest" -Encoding utf8
+'@.Replace("__VER__", $ver) | Out-File -LiteralPath "$tmp/extension.vsixmanifest" -Encoding utf8
 
 if (Test-Path $out) { Remove-Item $out -Force }
 
+Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $zip = [System.IO.Compression.ZipFile]::Open($out, [System.IO.Compression.ZipArchiveMode]::Create)
 foreach ($f in @("[Content_Types].xml", "extension.vsixmanifest")) {
