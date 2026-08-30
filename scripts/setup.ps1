@@ -70,11 +70,19 @@ New-Item -ItemType Directory -Force -Path $ToolsRoot, $ProjectsRoot, $TemplatesR
 Write-Host ("[1/8] Tools: {0}  Templates: {1}  Projects: {2}" -f $ToolsRoot, $TemplatesRoot, $ProjectsRoot)
 
 function Fetch($url, $out) {
-    Write-Host ("      downloading {0}" -f $url) -ForegroundColor DarkGray
-    & curl.exe -L --ssl-no-revoke --retry 3 --show-error -o $out $url
-    if ($LASTEXITCODE -ne 0 -or -not (Test-Path $out)) {
-        throw "download failed: $url"
+    for ($i = 1; $i -le 8; $i++) {
+        Write-Host ("      download attempt {0}/8: {1}" -f $i, $url) -ForegroundColor DarkGray
+        if ($i -eq 1) {
+            & curl.exe -L --ssl-no-revoke --connect-timeout 20 -o $out $url
+        } else {
+            & curl.exe -L --ssl-no-revoke --connect-timeout 20 -C - -o $out $url   # resume
+        }
+        if ($LASTEXITCODE -eq 0 -and (Test-Path $out) -and ((Get-Item $out).Length -gt 0)) { return }
+        if ($LASTEXITCODE -eq 33) { return }   # range satisfied = file already complete
+        Write-Host "      retrying in 5s..." -ForegroundColor Yellow
+        Start-Sleep 5
     }
+    throw "download failed after retries: $url"
 }
 
 # --- step 2: SDCC (TUNA msys2 mirror, includes 8051 support) ----------------
@@ -85,17 +93,22 @@ if (Test-Path (Join-Path $sdccPath "bin\sdcc.exe")) {
     Write-Host "[2/8] SKIP download (-NoDownload): SDCC missing!" -ForegroundColor Yellow
 } else {
     Write-Host "[2/8] Installing SDCC ..."
-    $idx = Invoke-WebRequest -UseBasicParsing "https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/"
-    $f = ([regex]::Matches($idx.Content, 'mingw-w64-x86_64-sdcc-[\d\.]+-\d+-any\.pkg\.tar\.zst') |
-          ForEach-Object { $_.Value } | Sort-Object | Select-Object -Last 1)
-    if (-not $f) { throw "could not find SDCC package on TUNA mirror" }
-    $pkg = Join-Path $env:TEMP $f
-    Fetch "https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/$f" $pkg
-    $tar = Join-Path $env:SystemRoot "System32\tar.exe"
-    & $tar --zstd -xf $pkg -C $ToolsRoot
-    if ($LASTEXITCODE -ne 0) { throw "extraction failed (need Windows 10 1803+ built-in tar)" }
-    Move-Item (Join-Path $ToolsRoot "mingw64") $sdccPath
-    Remove-Item $pkg -Force
+    try {
+        $idx = Invoke-WebRequest -UseBasicParsing "https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/"
+        $f = ([regex]::Matches($idx.Content, 'mingw-w64-x86_64-sdcc-[\d\.]+-\d+-any\.pkg\.tar\.zst') |
+              ForEach-Object { $_.Value } | Sort-Object | Select-Object -Last 1)
+        if (-not $f) { throw "could not find SDCC package on TUNA mirror" }
+        $pkg = Join-Path $env:TEMP $f
+        Fetch "https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/$f" $pkg
+        $tar = Join-Path $env:SystemRoot "System32\tar.exe"
+        & $tar --zstd -xf $pkg -C $ToolsRoot
+        if ($LASTEXITCODE -ne 0) { throw "extraction failed" }
+        Move-Item (Join-Path $ToolsRoot "mingw64") $sdccPath
+        Remove-Item $pkg -Force
+    } catch {
+        Write-Host ("      SDCC failed: " + $_.Exception.Message) -ForegroundColor Red
+        Write-Host "      skipped - re-run setup later to retry" -ForegroundColor Yellow
+    }
 }
 if (Test-Path $sdccPath) { $script:SdccFwd = ($sdccPath -replace '\\', '/') }
 
@@ -107,10 +120,15 @@ if ($armDir) {
     Write-Host "[3/8] SKIP download (-NoDownload): ARM GCC missing!" -ForegroundColor Yellow
 } else {
     Write-Host "[3/8] Installing Arm GNU Toolchain (xpack, ~250 MB) ..."
-    $zip = Join-Path $env:TEMP "xpack-arm-none-eabi-gcc.zip"
-    Fetch "https://ghfast.top/https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v13.2.1-1.1/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64.zip" $zip
-    Expand-Archive -Path $zip -DestinationPath $ToolsRoot -Force
-    Remove-Item $zip -Force
+    try {
+        $zip = Join-Path $env:TEMP "xpack-arm-none-eabi-gcc.zip"
+        Fetch "https://ghfast.top/https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v13.2.1-1.1/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64.zip" $zip
+        Expand-Archive -Path $zip -DestinationPath $ToolsRoot -Force
+        Remove-Item $zip -Force
+    } catch {
+        Write-Host ("      ARM GCC failed: " + $_.Exception.Message) -ForegroundColor Red
+        Write-Host "      skipped - re-run setup later to retry" -ForegroundColor Yellow
+    }
     $armDir = Get-ChildItem $ToolsRoot -Directory -Filter "xpack-arm-none-eabi-gcc-*" | Select-Object -First 1
 }
 if ($armDir) { $script:ArmPath = $armDir.FullName }
@@ -123,10 +141,15 @@ if ($ocdDir) {
     Write-Host "[4/8] SKIP download (-NoDownload): OpenOCD missing!" -ForegroundColor Yellow
 } else {
     Write-Host "[4/8] Installing OpenOCD (xpack) ..."
-    $zip = Join-Path $env:TEMP "xpack-openocd.zip"
-    Fetch "https://ghfast.top/https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.12.0-7/xpack-openocd-0.12.0-7-win32-x64.zip" $zip
-    Expand-Archive -Path $zip -DestinationPath $ToolsRoot -Force
-    Remove-Item $zip -Force
+    try {
+        $zip = Join-Path $env:TEMP "xpack-openocd.zip"
+        Fetch "https://ghfast.top/https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.12.0-7/xpack-openocd-0.12.0-7-win32-x64.zip" $zip
+        Expand-Archive -Path $zip -DestinationPath $ToolsRoot -Force
+        Remove-Item $zip -Force
+    } catch {
+        Write-Host ("      OpenOCD failed: " + $_.Exception.Message) -ForegroundColor Red
+        Write-Host "      skipped - re-run setup later to retry" -ForegroundColor Yellow
+    }
     $ocdDir = Get-ChildItem $ToolsRoot -Directory -Filter "xpack-openocd-*" | Select-Object -First 1
 }
 if ($ocdDir) { $script:OcdPath = $ocdDir.FullName }
@@ -139,10 +162,15 @@ if (Test-Path (Join-Path $pyDir "python.exe")) {
     Write-Host "[5/8] SKIP download (-NoDownload): Python missing!" -ForegroundColor Yellow
 } else {
     Write-Host "[5/8] Installing Python 3.12 ..."
-    $exe = Join-Path $env:TEMP "python-3.12.10-amd64.exe"
-    Fetch "https://registry.npmmirror.com/-/binary/python/3.12.10/python-3.12.10-amd64.exe" $exe
-    Start-Process -FilePath $exe -Wait -ArgumentList "/quiet","InstallAllUsers=0","PrependPath=0","Include_test=0","Include_launcher=0","TargetDir=$pyDir"
-    Remove-Item $exe -Force
+    try {
+        $exe = Join-Path $env:TEMP "python-3.12.10-amd64.exe"
+        Fetch "https://registry.npmmirror.com/-/binary/python/3.12.10/python-3.12.10-amd64.exe" $exe
+        Start-Process -FilePath $exe -Wait -ArgumentList "/quiet","InstallAllUsers=0","PrependPath=0","Include_test=0","Include_launcher=0","TargetDir=$pyDir"
+        Remove-Item $exe -Force
+    } catch {
+        Write-Host ("      Python failed: " + $_.Exception.Message) -ForegroundColor Red
+        Write-Host "      skipped - re-run setup later to retry" -ForegroundColor Yellow
+    }
 }
 if (Test-Path (Join-Path $pyDir "python.exe")) {
     $script:PyExe = Join-Path $pyDir "python.exe"
