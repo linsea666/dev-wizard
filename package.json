@@ -1,0 +1,57 @@
+{
+    "name": "dev-wizard",
+    "displayName": "Dev Wizard (开发向导)",
+    "description": "A startup wizard for VS Code: continue your last project or scaffold new ones from your own templates. 启动向导：继续上次的工作，或从自定义模板一键新建工程。",
+    "publisher": "sea",
+    "version": "1.1.0",
+    "license": "MIT",
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "wizard",
+        "template",
+        "scaffold",
+        "embedded",
+        "project manager"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./extension.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/YOUR_ACCOUNT/dev-wizard"
+    },
+    "contributes": {
+        "commands": [
+            {
+                "command": "sea.devWizard.show",
+                "title": "Dev Wizard: what are we doing today?"
+            }
+        ],
+        "configuration": {
+            "title": "Dev Wizard",
+            "properties": {
+                "devWizard.showOnStartup": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show the wizard every time VS Code starts. 每次启动 VS Code 时弹出向导。"
+                },
+                "devWizard.projectsRoot": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Root folder where new projects are created. Empty = use templatesRoot. 新工程存放目录（留空则与模板目录一致）。"
+                },
+                "devWizard.templatesRoot": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Folder containing project templates (each subfolder = one template, optional .wizard.json manifest). 工程模板目录（每个子文件夹即一个模板，可用 .wizard.json 自定义）。"
+                }
+            }
+        }
+    }
+}
