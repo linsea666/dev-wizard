@@ -57,7 +57,11 @@ Dev Wizard 把这三件事全部自动化：
 
 ## Quick start / 快速开始（Windows 10/11，推荐）
 
-clone 之后跑一个脚本，脚本会把 **STC51(SDCC)、STM32(ARM GCC)、OpenOCD、Python**
+**前置条件**：已安装 VSCode 和 [Git](https://git-scm.com/download/win)（一路下一步即可）。
+没装 Git？也可以在仓库页面点 `Code` → `Download ZIP`，解压后从第 3 行继续
+（setup.ps1 本身不需要 Git）。
+
+在仓库目录里跑一个脚本，脚本会把 **STC51(SDCC)、STM32(ARM GCC)、OpenOCD、Python**
 全部装好、模板生成好、扩展装好、VSCode 配置写好——然后你就可以直接用了：
 
 ```powershell
@@ -68,6 +72,19 @@ powershell -ExecutionPolicy Bypass -File scripts/setup.ps1
 
 跑完重启 VSCode，向导弹出，**六种工程全部 F7 直接编译**。全程约 10-20 分钟
 （取决于网速，下载约 300 MB）。
+
+<details>
+<summary><b>遇到问题？/ Troubleshooting</b></summary>
+
+| 现象 | 处理 |
+|---|---|
+| 提示 `无法将"code"项识别为 cmdlet` | VSCode 未装或没勾"添加到 PATH"；重装 VSCode 勾选后重开终端 |
+| SDCC 解压报 `extraction failed` | Windows 10 较老版本内置 tar 不支持 zstd；手动从 [TUNA](https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/) 下载 sdcc 包，用 [7-Zip](https://www.7-zip.org/) 解压到 `<安装位置>\sdcc` |
+| 某个工具下载失败 / 中断 | **直接重跑 setup.ps1**——幂等设计，已装好的自动跳过，只补缺的（下载支持断点续传） |
+| 向导里列表为空 | 检查设置 `devWizard.templatesRoot` 是否指向模板目录 |
+| 新建工程后 EIDE 报找不到工具链 | 检查设置 `EIDE.SDCC.InstallDirectory` / `EIDE.ARM.GCC.InstallDirectory` 是否指向实际安装目录 |
+| 控制台窗口出现"选择"字样且停止滚动 | 不小心进入了标记模式：按 `Esc` 或回车恢复滚动 |
+</details>
 
 <details>
 <summary><b>setup.ps1 到底做了什么？（点开看明细）</b></summary>
