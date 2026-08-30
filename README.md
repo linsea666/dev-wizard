@@ -93,7 +93,7 @@ powershell -ExecutionPolicy Bypass -File scripts/setup.ps1
 
 ## Install / 安装教程（已有环境的用户）
 
-> 如果你像仓库作者一样已经配好了各工具链，可以跳过 setup.ps1，手动安装扩展 +
+> 如果你已经配好了各工具链，可以跳过 setup.ps1，手动安装扩展 +
 > 指向自己的模板目录即可；无需编译、无需 node_modules，一分钟装好。
 
 ### 第 1 步：拿到 VSIX 安装包
