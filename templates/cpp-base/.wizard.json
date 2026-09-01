@@ -1,6 +1,6 @@
 {
     "label": "新建 C++ 工程",
-    "description": "CMake 控制台工程（需本机安装 MinGW 或 MSVC 编译器）",
+    "description": "CMake 控制台工程（C/C++ 编译环境由 setup.ps1 自动部署 MinGW + CMake）",
     "icon": "code",
     "open": "folder",
     "replace": [

@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.1.2
+
+### Setup script (A7: C/C++ toolchain one-click deploy)
+
+- `setup.ps1` now also installs the **C/C++ build environment** so the
+  `c-base` / `cpp-base` templates compile out of the box:
+  - **CMake 3.30** (portable build) → `<ToolsRoot>\cmake-*`, and its `bin` is
+    added to the user PATH and written to `cmake.cmakePath`.
+  - **MinGW-w64 GCC/G++** (TUNA / MSYS2 mirror) → `<ToolsRoot>\mingw64`, a
+    complete **merged / self-contained** tree: gcc/g++ plus the `cc1` runtime
+    DLLs (gmp/mpc/mpfr/isl/winpthread/iconv/zlib), **binutils** (`as`/`ld`/
+    `ar`), the MinGW-w64 CRT (`crt-git`: crt2.o / libmingw32 / libmingwex /
+    libmsvcrt), the Windows headers (`headers-git`: windows.h),
+    `winpthreads` (pthread.h + libpthread.a, needed for C++ `<thread>`),
+    `make` (`mingw32-make.exe`, needed by CMake's "MinGW Makefiles"
+    generator), `gettext-runtime` (libintl-8.dll, linked by binutils/make) and
+    `windows-default-manifest` (default-manifest.o, required by `ld` at link
+    time). `mingw64\bin` is added to the user PATH. **Verified end-to-end**:
+    gcc/g++ compile, link and run C / C++ / `std::thread` programs, and CMake
+    configures + builds with the MinGW Makefiles generator.
+- VS Code setting `cmake.cmakePath` is now written during setup.
+- The 8 toolchains the doctor checks are now all deployed by `setup.ps1`
+  (embedded 5 + CMake + MinGW-w64 gcc/g++), so a fresh machine passes the
+  environment check with no manual steps.
+- Setup walkthrough renumbered to 10 steps (was 8); `README` C/C++ section and
+  directory-layout / PATH notes updated accordingly.
+
 ## 1.1.1
 
 ### Wizard

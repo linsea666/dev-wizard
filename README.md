@@ -137,26 +137,28 @@ Tools install root [C:\dev]:
 比如 `D:\embedded`（路径不要带中文；含空格的路径也行）。随后全自动，无需值守：
 
 ```
-[0/8] VS Code found.
-[1/8] Tools: C:\dev  Templates: C:\dev\templates  Projects: C:\dev\projects
-[2/8] Installing SDCC (+ runtime libraries) ...   ← 8051 编译器，~15 MB
-[3/8] Installing Arm GNU Toolchain (xpack, ~250 MB) ...  ← STM32 编译器
-[4/8] Installing OpenOCD (xpack) ...              ← 烧录/调试器，~30 MB
-[5/8] Installing Python 3.12 (portable build) ...  ← 便携版，不碰系统 Python
-[5/8] Installing stcgal (STC51 flashing tool) ...
-[6/8] Generating template library ...
-      template ready: stc51-base ... stm32-base ...
-[7/8] Installing VS Code extensions ...
-[8/8] Writing VS Code user settings ...
-[8/8] Updating user PATH (python / sdcc) ...
+[0/10] VS Code found.
+[1/10] Tools: C:\dev  Templates: C:\dev\templates  Projects: C:\dev\projects
+[2/10] Installing SDCC (+ runtime libraries) ...   ← 8051 编译器，~15 MB
+[3/10] Installing Arm GNU Toolchain (xpack, ~250 MB) ...  ← STM32 编译器
+[4/10] Installing OpenOCD (xpack) ...              ← 烧录/调试器，~30 MB
+[5/10] Installing Python 3.12 (portable build) + stcgal ...  ← 便携版，不碰系统 Python
+[6/10] Installing CMake 3.30 (C/C++ 构建系统) ...  ← ~45 MB
+[7/10] Installing MinGW-w64 GCC/G++ (C/C++ 编译器) ...  ← ~110 MB
+[8/10] Generating template library ...
+      template ready: stc51-base ... c-base ... cpp-base ...
+[9/10] Installing VS Code extensions ...
+[10/10] Writing VS Code user settings + Updating user PATH (python / sdcc / mingw / cmake) ...
 === DONE ===
 ```
 
 - 某一步显示黄色 `skipped - re-run setup later`？**直接重新运行同一条命令**，
   脚本幂等：装好的自动跳过，只补缺的；下载支持断点续传。
 - 全程只有一个交互（问安装路径），其余时间可以挂机。
-- **你原有的 VSCode 设置不会丢，但会被规范化重写**：第 8 步要往
-  `settings.json` 里写入 6 项 `devWizard.*` 配置，脚本会先读取你的现有
+- **你原有的 VSCode 设置不会丢，但会被规范化重写**：第 10 步会往
+  `settings.json` 里写入工具链与向导相关配置（如 `cmake.cmakePath`、
+  `devWizard.templatesRoot`、`devWizard.projectsRoot`、`EIDE.*`、
+  `python.defaultInterpreterPath` 等），脚本会先读取你的现有
   设置、合并后再整体写回（实测原有配置 100% 保留）。副作用是注释会被去掉、
   单引号会写成 `\u0027` 形式。**原始文件已备份在同目录的
   `settings.json.bak-setup`**，需要时照它恢复就行。
@@ -206,7 +208,8 @@ Tools install root [C:\dev]:
 - **VS Code 版本** 是否 ≥ 1.80
 - **4 个扩展**：EIDE、Cortex-Debug、CMake Tools、Python 是否都已装
 - **8 个工具链是否在 PATH**：`arm-none-eabi-gcc`(STM32)、`sdcc`(STC51)、`openocd`(调试)、
-  `python`、`stcgal`(STC 烧录)、`gcc`/`g++`(C/C++)、`cmake`(C/C++)
+  `python`、`stcgal`(STC 烧录)、`gcc`/`g++`(C/C++)、`cmake`(C/C++)——
+  这 8 个现在都由 `setup.ps1` 一键装好（嵌入式 5 个 + C/C++ 的 CMake 与 MinGW-w64 gcc/g++）
 - **模板目录** `devWizard.templatesRoot` 是否已配置、并发现了几个模板
 - **EIDE 路径**：`EIDE.ARM.GCC.InstallDirectory` / `EIDE.SDCC.InstallDirectory` 是否填好
 
@@ -271,12 +274,15 @@ ESP-IDF 本身体积较大，setup 脚本不自动安装；请按
 ### ✨ C / C++
 
 CMake 控制台工程骨架（`CMakeLists.txt` + `main.c/main.cpp`）。
-需要本机有编译器，二选一：
 
-- **MinGW-w64**（轻量）：用 [MSYS2](https://www.msys2.org/) 安装后把 `bin`
-  加入 PATH；CMake Tools 会自动识别；
-- **MSVC**（Visual Studio）：装 Visual Studio 勾选"使用 C++ 的桌面开发"，
-  从"Developer PowerShell"启动 VSCode，CMake Tools 选择对应 kit。
+**编译环境由 `setup.ps1` 一键部署**，无需任何手动配置：它会把
+**MinGW-w64 GCC/G++** 装到 `<安装位置>\mingw64`、**CMake** 装到
+`<安装位置>\cmake-*`，并把两者的 `bin` 加进用户 PATH、写
+`cmake.cmakePath`。向导新建工程后，CMake Tools 能直接自动识别编译器，
+按 `F7`（或状态栏 **Build**）即可编译。
+
+如果你更想用 MSVC：装 Visual Studio 勾选"使用 C++ 的桌面开发"，
+从"Developer PowerShell"启动 VSCode，CMake Tools 选择对应 kit 即可。
 
 ---
 
@@ -289,17 +295,20 @@ CMake 控制台工程骨架（`CMakeLists.txt` + `main.c/main.cpp`）。
 | 3 | Arm GNU Toolchain 13.2（STM32 编译器） | GitHub Release（ghfast.top 加速） | ~250 MB |
 | 4 | OpenOCD 0.12（STM32 烧录调试） | GitHub Release（ghfast.top 加速） | ~30 MB |
 | 5 | Python 3.12 + 清华 pip 源 + stcgal（STC51 烧录工具） | npmmirror 镜像 | ~28 MB |
-| 6 | 生成模板库（自动替换路径占位符） | 本仓库 | — |
-| 7 | 安装扩展：EIDE / Python / Cortex-Debug / CMake Tools / 本扩展 | VSCode 市场 | — |
-| 8 | 合并写入 VSCode 用户设置（已有设置会先备份为 `settings.json.bak-setup`），并把 python / sdcc 加入用户 PATH | — | — |
+| 6 | CMake 3.30（C/C++ 构建系统） | GitHub Release（ghfast.top 加速） | ~45 MB |
+| 7 | MinGW-w64 GCC/G++（C/C++ 编译器）+ binutils + CRT/headers + winpthreads + make + gettext-runtime + windows-default-manifest（完整自包含树，开箱即编译/链接/运行） | 清华 TUNA / MSYS2 源 | ~110 MB |
+| 8 | 生成模板库（自动替换路径占位符） | 本仓库 | — |
+| 9 | 安装扩展：EIDE / Python / Cortex-Debug / CMake Tools / 本扩展 | VSCode 市场 | — |
+| 10 | 合并写入 VSCode 用户设置（已有设置会先备份为 `settings.json.bak-setup`），并把 python / sdcc / mingw / cmake 加入用户 PATH | — | — |
 
 - **幂等**：随时可重跑，已安装的工具自动跳过；下载中断重跑即可续上
 - **不覆盖**：已有 VSCode 设置只会合并更新工具链路径，其他键原样保留；
   写入前自动备份为 `settings.json.bak-setup`
 - **下载校验**：所有下载按文件头（magic bytes）校验，镜像返回错误页会被
   识别并自动重试，不会把坏文件当成下载成功
-- **PATH**：把便携 Python、其 Scripts 目录（stcgal）、`sdcc\bin` 追加到
-  **用户 PATH**（幂等，不重复添加；新开的终端/重启后的 VSCode 生效）
+- **PATH**：把便携 Python、其 Scripts 目录（stcgal）、`sdcc\bin`、
+  `mingw64\bin`、`cmake-*\bin` 追加到 **用户 PATH**
+  （幂等，不重复添加；新开的终端/重启后的 VSCode 生效）
 - **目录布局**：
 
 ```
@@ -307,6 +316,8 @@ C:\dev\
 ├── sdcc\                        ← 8051 编译器（含运行库，自包含）
 ├── xpack-arm-none-eabi-gcc-*\   ← STM32 编译器
 ├── xpack-openocd-*\             ← 调试/烧录
+├── mingw64\                     ← C/C++ 编译器（gcc/g++，含运行库）
+├── cmake-*\                     ← C/C++ 构建系统
 ├── python312\                   ← 便携 Python + stcgal
 ├── templates\                   ← 生成的模板库（向导读这里）
 └── projects\                    ← 新建工程的存放处
@@ -493,7 +504,7 @@ misc-controls: >-
 | STM32 | EIDE + Arm GNU Toolchain + OpenOCD（或 ST-Link 工具） |
 | ESP32 | [ESP-IDF extension](https://marketplace.visualstudio.com/items?itemName=espressif.esp-idf-extension) |
 | Python | [Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) |
-| C / C++ | [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) + MinGW 或 MSVC |
+| C / C++ | [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) + MinGW（setup 自动装）或 MSVC |
 
 ---
 
@@ -534,7 +545,7 @@ mac/Linux 用户按[手动安装](#install--安装教程已有环境的用户)�
 | 向导里列表为空 / 显示"未找到模板" | 检查设置 `devWizard.templatesRoot` 是否指向模板目录 |
 | 新建工程后 EIDE 报找不到工具链 | 检查设置 `EIDE.SDCC.InstallDirectory` / `EIDE.ARM.GCC.InstallDirectory` 是否指向实际安装目录 |
 | F5 调试报 OpenOCD 相关错误 | 检查设置 `cortex-debug.openocdPath`；确认调试器驱动已装（ST-Link 需装驱动） |
-| 终端里 `python` / `stcgal` 不是内部命令 | PATH 是脚本新加的，**重开终端或重启 VSCode** 生效；或手动把 `<安装位置>\python312` 加入 PATH |
+| 终端里 `python` / `stcgal` / `gcc` / `cmake` 不是内部命令 | PATH 是脚本新加的，**重开终端或重启 VSCode** 生效；或手动把 `<安装位置>\python312`、`mingw64\bin`、`cmake-*\bin` 加入 PATH |
 | 向导不自动弹出 | `Ctrl+Shift+P` → `Dev Wizard: what are we doing today?` 手动唤出；检查扩展是否已启用、`devWizard.showOnStartup` 是否为 `true` |
 | stcgal 烧录一直 waiting / 失败 | 给单片机断电重新上电进入 ISP 模式；检查 TXD/RXD 是否接反、晶振频率 `oscFreq` 是否与板子一致 |
 | 控制台窗口出现"选择"字样且停止滚动 | 不小心进入了标记模式：按 `Esc` 或回车恢复滚动 |

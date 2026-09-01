@@ -3,7 +3,7 @@
     "displayName": "Dev Wizard (开发向导)",
     "description": "A startup wizard for VS Code: continue your last project or scaffold new ones from your own templates. 启动向导：继续上次的工作，或从自定义模板一键新建工程。",
     "publisher": "sea",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "license": "MIT",
     "engines": {
         "vscode": "^1.80.0"
