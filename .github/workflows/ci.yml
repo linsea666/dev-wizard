@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 1) 纯语法检查 —— 只解析不执行，避免 setup.ps1 去下载几个 GB 的工具链
+      - name: PowerShell syntax check
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $scripts = @("scripts/make-vsix.ps1", "scripts/setup.ps1")
+          $ok = $true
+          foreach ($f in $scripts) {
+            if (-not (Test-Path $f)) { Write-Error "missing: $f"; $ok = $false; continue }
+            $tokens = $null; $errors = $null
+            # NB: ParseFile is non-void; assign to $null so the AST (full script
+            # source) is not emitted to the CI log.
+            $null = [System.Management.Automation.Language.Parser]::ParseFile($f, [ref]$tokens, [ref]$errors)
+            if ($errors.Count) {
+              Write-Error "Syntax errors in $f :"
+              $errors | ForEach-Object { Write-Error ("  L{0}: {1}" -f $_.Extent.StartLineNumber, $_.Message) }
+              $ok = $false
+            } else {
+              Write-Host ("OK syntax: {0} ({1} lines)" -f $f, $tokens.Count)
+            }
+          }
+          if (-not $ok) { exit 1 }
+
+      # 2) make-vsix 冒烟测试 —— 验证能从源码打出结构正确的 .vsix
+      - name: Build vsix (make-vsix smoke test)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          & scripts/make-vsix.ps1
+
+          $ver  = (Get-Content package.json -Raw -Encoding utf8 | ConvertFrom-Json).version
+          $vsix = "dev-wizard-$ver.vsix"
+          if (-not (Test-Path $vsix)) { Write-Error "vsix not produced: $vsix"; exit 1 }
+
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $z = [System.IO.Compression.ZipFile]::OpenRead($vsix)
+          $entries = @($z.Entries | ForEach-Object { $_.FullName })
+          $z.Dispose()
+
+          $need = @(
+            "[Content_Types].xml",
+            "extension.vsixmanifest",
+            "extension/package.json",
+            "extension/extension.js",
+            "extension/README.md",
+            "extension/CHANGELOG.md",
+            "extension/LICENSE"
+          )
+          $missing = @($need | Where-Object { $entries -notcontains $_ })
+          if ($missing.Count) { Write-Error ("Missing vsix entries: " + ($missing -join ", ")); exit 1 }
+
+          Write-Host ("vsix OK: {0} entries, {1} bytes" -f $entries.Count, (Get-Item $vsix).Length)
+
+          # 提示：跟踪在仓库里的 .vsix 会因重新打包（mtime/EOL）而变脏，属已知现象，不在此 fail。
+          # 见 PROJECT-HANDOFF.md §7 关于“发布产物改走 GitHub Release / .gitignore”的建议。
+          $dirty = (git status --porcelain)
+          if ($dirty) { Write-Host "git working tree changes after pack (expected):`n$($dirty -join "`n")" }
+
+      - name: Upload vsix artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-wizard-vsix
+          path: dev-wizard-*.vsix
