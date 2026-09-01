@@ -52,7 +52,7 @@ targets:
             language-c: c99
           global:
             device: mcs51
-            misc-controls: --iram-size 128 --xram-size 0 --code-size 4096 -I__SDCC_ROOT__/share/sdcc/include -I__SDCC_ROOT__/share/sdcc/include/mcs51 -L__SDCC_ROOT__/share/sdcc/lib/small
+            misc-controls: --iram-size 128 --xram-size 0 --code-size 4096 "-I__SDCC_ROOT__/share/sdcc/include" "-I__SDCC_ROOT__/share/sdcc/include/mcs51" "-L__SDCC_ROOT__/share/sdcc/lib/small"
             optimize-type: balanced
           linker:
             $mainFileName: main
