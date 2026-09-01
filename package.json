@@ -31,6 +31,10 @@
             {
                 "command": "sea.devWizard.show",
                 "title": "Dev Wizard: what are we doing today?"
+            },
+            {
+                "command": "sea.devWizard.doctor",
+                "title": "Dev Wizard: environment check (环境体检)"
             }
         ],
         "configuration": {

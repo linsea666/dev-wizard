@@ -1,6 +1,7 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const SKIP_KEY = 'devWizard.skipNext';
 const LAST_KEY = 'devWizard.lastProject';
@@ -28,8 +29,10 @@ function readJsonSafe(file) {
  *   "description": "SDCC + EIDE ...",          // shown under the label
  *   "icon":        "chip",                     // any codicon name
  *   "open":        "workspace",                // "workspace" | "folder" (auto if omitted)
+ *   "mcus":        ["STM32F103C8T6", ...],     // optional: second-level chip picker
  *   "replace": [                               // text patches applied after copying
- *     { "files": ["CMakeLists.txt"], "find": "esp32-base" }
+ *     { "files": ["CMakeLists.txt"], "find": "esp32-base" },
+ *     { "files": [".eide/eide.yml"], "find": "<mcu>" }   // <mcu> filled by the picker
  *   ]
  * }
  * Automatic behaviour (no manifest needed):
@@ -63,6 +66,7 @@ function listTemplates(root) {
             description: mf.description || '',
             icon: mf.icon || 'new-folder',
             open: mf.open || (hasWorkspace ? 'workspace' : 'folder'),
+            mcus: Array.isArray(mf.mcus) ? mf.mcus : [],
             replace: Array.isArray(mf.replace) ? mf.replace : []
         });
     }
@@ -102,6 +106,26 @@ function replaceInFile(file, from, to) {
     }
 }
 
+// Recursively fill a token (e.g. "<mcu>") in every text file of the project.
+function replaceTokenRecursive(dir, token, value) {
+    let entries = [];
+    try {
+        entries = fs.readdirSync(dir, { withFileTypes: true });
+    } catch (e) {
+        return;
+    }
+    for (const ent of entries) {
+        const p = path.join(dir, ent.name);
+        if (ent.isDirectory()) {
+            replaceTokenRecursive(p, token, value);
+            continue;
+        }
+        if (/\.(c|h|cpp|hpp|cc|txt|cfg|ld|ini|cmake|yml|json|md|s|asm|lds)$/i.test(ent.name)) {
+            replaceInFile(p, token, value);
+        }
+    }
+}
+
 async function openTarget(ctx, target) {
     ctx.globalState.update(SKIP_KEY, true);
     await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(target), false);
@@ -109,7 +133,7 @@ async function openTarget(ctx, target) {
 
 /* Create a project from a template. Returns true when "no choice was made"
  * (input cancelled, missing template...) so the wizard can re-show itself. */
-async function createProject(tpl, ctx) {
+async function createProject(tpl, ctx, mcu) {
     const name = await vscode.window.showInputBox({
         prompt: 'Project name? (letters / digits / _ / -)   请输入工程名称',
         placeHolder: 'e.g. led-demo',
@@ -121,8 +145,19 @@ async function createProject(tpl, ctx) {
     });
     if (!name) return true;
 
-    let projectsRoot = cfg().get('projectsRoot');
-    if (!projectsRoot) projectsRoot = cfg().get('templatesRoot');
+    // A5: let the user pick where the project lives (pre-filled from settings).
+    const defaultRoot = cfg().get('projectsRoot') || cfg().get('templatesRoot') || '';
+    const picked = await vscode.window.showOpenDialog({
+        canSelectFiles: false,
+        canSelectFolders: true,
+        canSelectMany: false,
+        openLabel: '选择工程存放位置 / Select location',
+        title: '工程放在哪？ Where to put the project?',
+        defaultUri: defaultRoot ? vscode.Uri.file(defaultRoot) : undefined
+    });
+    if (!picked || !picked.length) return true; // cancelled -> re-show wizard
+    const projectsRoot = picked[0].fsPath;
+
     const dest = path.join(projectsRoot, name);
 
     if (!fs.existsSync(tpl.dir)) {
@@ -159,6 +194,11 @@ async function createProject(tpl, ctx) {
                 }
             }
 
+            // A6: fill the chosen MCU into any "<mcu>" placeholder
+            if (mcu) {
+                replaceTokenRecursive(dest, '<mcu>', mcu);
+            }
+
             const target =
                 tpl.open === 'workspace' && fs.existsSync(path.join(dest, name + '.code-workspace'))
                     ? path.join(dest, name + '.code-workspace')
@@ -167,7 +207,7 @@ async function createProject(tpl, ctx) {
         }
     );
 
-    vscode.window.showInformationMessage(`✔ Project created: ${name}`);
+    vscode.window.showInformationMessage(`✔ Project created: ${name}` + (mcu ? `  (MCU: ${mcu})` : ''));
     return false;
 }
 
@@ -202,7 +242,7 @@ async function showWizardOnce(ctx, templates) {
         });
     }
 
-    items.push({ kind: 'skip', label: '$(circle-slash) 今天先这样 / Not today' });
+    items.push({ kind: 'skip', label: "$(sign-out) 退下吧，我自己来 / I'll take it from here" });
 
     const pick = await vscode.window.showQuickPick(items, {
         placeHolder: '今天要做什么？ What are we doing today? （不选择会一直停留 / stays until you choose）',
@@ -228,7 +268,21 @@ async function showWizardOnce(ctx, templates) {
         return false;
     }
 
-    return await createProject(pick.tpl, ctx);
+    // A6: second-level chip picker (only when the template declares mcus)
+    let mcu = null;
+    if (pick.kind === 'new' && pick.tpl.mcus.length) {
+        const m = await vscode.window.showQuickPick(
+            pick.tpl.mcus.map((x) => ({ label: x })),
+            {
+                placeHolder: `选择 ${pick.tpl.label} 的芯片型号 / Pick the chip`,
+                ignoreFocusOut: true
+            }
+        );
+        if (!m) return true; // cancelled the sub-picker -> re-show wizard
+        mcu = m.label;
+    }
+
+    return await createProject(pick.tpl, ctx, mcu);
 }
 
 /* Wizard loop: re-show until the user makes a real choice. */
@@ -242,9 +296,93 @@ async function showWizard(ctx) {
     }
 }
 
+/* A1: Environment Doctor — probe the toolchain/extensions/settings and show a
+ * ✅/⚠/✗ tree. Pure extension code, no third-party deps. */
+function whichCmd(cmd) {
+    try {
+        const out = execSync(`where ${cmd}`, {
+            windowsHide: true,
+            stdio: ['ignore', 'pipe', 'ignore']
+        });
+        return out.toString().trim().split(/\r?\n/)[0] || null;
+    } catch (e) {
+        return null;
+    }
+}
+
+async function runDoctor(ctx) {
+    const root = cfg().get('templatesRoot');
+    const items = [];
+
+    const mark = (ok) => (ok ? '$(pass)' : '$(error)');
+    const add = (icon, label, detail) => items.push({ label: `${icon} ${label}`, detail });
+
+    // VS Code host
+    add('$(pass)', `VS Code  ${vscode.version}`, '编辑器运行正常');
+
+    // Extensions
+    const wantExt = [
+        ['cl.eide', 'EIDE (嵌入式构建/烧录)'],
+        ['marus25.cortex-debug', 'Cortex-Debug (ARM 调试)'],
+        ['ms-vscode.cmake-tools', 'CMake Tools (C/C++ 构建)'],
+        ['ms-python.python', 'Python']
+    ];
+    const have = vscode.extensions.all.map((e) => e.id);
+    for (const [id, name] of wantExt) {
+        const ok = have.includes(id);
+        add(mark(ok), `扩展 ${name}`, ok ? `已安装 (${id})` : `未安装 (${id}) —— 运行 setup.ps1 可自动装上`);
+    }
+
+    // Toolchains on PATH
+    const tools = [
+        ['arm-none-eabi-gcc', 'ARM GCC (STM32)'],
+        ['sdcc', 'SDCC (STC51)'],
+        ['openocd', 'OpenOCD (调试器)'],
+        ['python', 'Python'],
+        ['stcgal', 'stcgal (STC 烧录)'],
+        ['gcc', 'MinGW gcc (C/C++)'],
+        ['g++', 'MinGW g++ (C++)'],
+        ['cmake', 'CMake (C/C++)']
+    ];
+    for (const [c, name] of tools) {
+        const p = whichCmd(c);
+        add(mark(!!p), `工具链 ${name}`, p ? `在 PATH: ${p}` : `未在 PATH 找到 ${c} —— 运行 setup.ps1 或手动安装`);
+    }
+
+    // templatesRoot
+    let tOk = false;
+    let tDetail = '';
+    if (!root) {
+        tDetail = '未配置 devWizard.templatesRoot —— 在设置里填上你的模板目录';
+    } else if (!fs.existsSync(root)) {
+        tDetail = `目录不存在: ${root}`;
+    } else {
+        const ts = listTemplates(root);
+        tOk = ts.length > 0;
+        tDetail = tOk ? `找到 ${ts.length} 个模板` : '目录存在但为空，没发现模板子文件夹';
+    }
+    add(tOk ? '$(pass)' : '$(error)', '模板目录 templatesRoot', tDetail);
+
+    // EIDE settings
+    const eide = vscode.workspace.getConfiguration('EIDE');
+    const armDir = eide.get('ARM.GCC.InstallDirectory');
+    const sdccDir = eide.get('SDCC.InstallDirectory');
+    add(armDir ? '$(pass)' : '$(warning)', 'EIDE ARM GCC 路径', armDir || '未设置（STM32 编译前需在 EIDE 设置里指向 ARM GCC）');
+    add(sdccDir ? '$(pass)' : '$(warning)', 'EIDE SDCC 路径', sdccDir || '未设置（STC51 编译前需在 EIDE 设置里指向 SDCC）');
+
+    await vscode.window.showQuickPick(items, {
+        placeHolder: 'Dev Wizard 环境体检 / Environment check（点击一项看详情；按 Esc 退出）',
+        ignoreFocusOut: true,
+        matchOnDescription: true
+    });
+}
+
 function activate(ctx) {
     ctx.subscriptions.push(
         vscode.commands.registerCommand('sea.devWizard.show', () => showWizard(ctx))
+    );
+    ctx.subscriptions.push(
+        vscode.commands.registerCommand('sea.devWizard.doctor', () => runDoctor(ctx))
     );
 
     const folders = vscode.workspace.workspaceFolders;

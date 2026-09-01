@@ -1,6 +1,10 @@
 {
     "label": "新建 STM32 工程",
-    "description": "ARM GCC + EIDE，F103C8 标准库模板，F5 可用 OpenOCD 烧录",
-    "icon": "circuit-board",
-    "open": "workspace"
+    "description": "STM32 + EIDE (ARM GCC)",
+    "icon": "chip",
+    "open": "workspace",
+    "mcus": ["STM32F103C8T6", "STM32F407VGT6", "STM32G030F6P6"],
+    "replace": [
+        { "files": ["CMakeLists.txt"], "find": "stm32-base" }
+    ]
 }
