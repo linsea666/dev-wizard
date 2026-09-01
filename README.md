@@ -111,7 +111,8 @@ cd dev-wizard
 **方式 B：直接下载 ZIP（不想装 Git）**
 
 打开 <https://github.com/linsea666/dev-wizard>，点绿色的 **Code** 按钮 →
-**Download ZIP**，解压到任意位置（路径建议不要带中文和空格），
+**Download ZIP**，解压到任意位置（路径建议不要带中文；
+含空格的路径已被 `712ea1d` 的引号保护，可以正常用），
 然后在解压出来的 `dev-wizard-main` 文件夹里打开终端继续。
 
 ### 第 2 步：运行一键配置脚本 setup.ps1
@@ -133,7 +134,7 @@ Tools install root [C:\dev]:
 ```
 
 **工具链装哪里？直接回车 = 装到 `C:\dev`**；也可以输入别的位置，
-比如 `D:\embedded`（路径不要带中文/空格）。随后全自动，无需值守：
+比如 `D:\embedded`（路径不要带中文；含空格的路径也行）。随后全自动，无需值守：
 
 ```
 [0/8] VS Code found.
@@ -291,22 +292,23 @@ C:\dev\
 > 如果你已经配好了各工具链，可以跳过 setup.ps1，手动安装扩展 +
 > 指向自己的模板目录即可；无需编译、无需 node_modules，一分钟装好。
 
-### 第 1 步：拿到 VSIX 安装包
+### 第 1 步：从源码打 VSIX 包
 
-**方式 A（推荐，直接下载）**：安装包就在本仓库里——
-下载 [`dev-wizard-1.1.0.vsix`](https://github.com/linsea666/dev-wizard/raw/main/dev-wizard-1.1.0.vsix)。
-
-> GitHub 直连慢？用加速链接下载：
-> `https://ghfast.top/https://github.com/linsea666/dev-wizard/raw/main/dev-wizard-1.1.0.vsix`
-
-**方式 B（从源码打包）**：
+仓库不再提交预打的 `.vsix` 文件（见 `b6af19c` —— 二进制不再入库，
+让每次打包都可复现、并避免文档与代码不同步）。需要 .vsix 时，
+克隆仓库后用 `scripts/make-vsix.ps1` 现场打包：
 
 ```powershell
 git clone https://github.com/linsea666/dev-wizard.git
 cd dev-wizard
 powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
-# 生成 dev-wizard-1.1.0.vsix
+# 产出 dev-wizard-1.1.0.vsix（约 18 KB，无外部依赖）
 ```
+
+> 没有 Git？点仓库页的绿色 **Code → Download ZIP** 解压后同样
+> 在 `scripts\` 目录里跑 `make-vsix.ps1`。GitHub Action 每次
+> push 也会在 CI 工件里产出一个 .vsix，点仓库页顶部
+> **Actions → CI → 最新的 run → Artifacts → dev-wizard-vsix** 下载。
 
 ### 第 2 步：安装（二选一）
 
