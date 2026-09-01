@@ -1,16 +1,18 @@
 # 打包 dev-wizard.vsix —— 无需 npm/vsce，纯 PowerShell
 # 用法: powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
+# 注意: 所有路径都以仓库根解析，因此从任意目录调用都会输出到仓库根（不会误写到当前目录）
 $ErrorActionPreference = "Stop"
 
-$meta  = Get-Content package.json -Raw -Encoding UTF8 | ConvertFrom-Json
+$root  = Split-Path -Parent $PSScriptRoot          # 仓库根（scripts 的上一级）
+$meta  = Get-Content (Join-Path $root "package.json") -Raw -Encoding UTF8 | ConvertFrom-Json
 $ver   = $meta.version
-$out   = "dev-wizard-$ver.vsix"
+$out   = Join-Path $root "dev-wizard-$ver.vsix"
 $tmp   = Join-Path $env:TEMP "devwizard-pack"
 
 if (Test-Path $tmp) { Remove-Item $tmp -Recurse -Force }
 New-Item -ItemType Directory -Path "$tmp/extension" | Out-Null
 
-Copy-Item package.json, extension.js, README.md, CHANGELOG.md, LICENSE "$tmp/extension/"
+Copy-Item (Join-Path $root "package.json"), (Join-Path $root "extension.js"), (Join-Path $root "README.md"), (Join-Path $root "CHANGELOG.md"), (Join-Path $root "LICENSE") "$tmp/extension/"
 
 @'
 <?xml version="1.0" encoding="utf-8"?>
