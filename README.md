@@ -176,23 +176,42 @@ Tools install root [C:\dev]:
 |---|---|
 | **继续上次的工作** | 打开你上次用 VSCode 的工程（首次显示"暂无记录"） |
 | **开始新工程（六种类型）** | 进入命名步骤，见下图 |
-| **今天先这样 / Not today** | 关闭向导，本次不再打扰 |
+| **退下吧，我自己来 / I'll take it from here** | 关闭向导，本次不再打扰 |
 
 选择"新建 STC51 工程"后，给工程起个名字（回车确认）：
 
 ![输入工程名](docs/demo-frames/f3.png)
 
 - 命名规则：**字母 / 数字 / 下划线 / 中划线**，例如 `my-first-led`；
-- 工程会创建到 `<安装位置>\projects\<工程名>\`（如 `C:\dev\projects\`），
-  自动改好 EIDE 工程名、重命名工作区文件，然后**自动打开新窗口**进入工程。
+- 工程会创建到向导让你选的位置下的 `<工程名>\`：命名后向导弹出文件夹选择框，
+  默认落在 `devWizard.projectsRoot`，没设就用 `templatesRoot`，也可选任意目录
+  （如 `C:\dev\projects\`）；随后自动改好 EIDE 工程名、重命名工作区文件，
+  然后**自动打开新窗口**进入工程。
 
 几点向导行为说明：
 
 - 按 `Esc` 或点开别处？向导会自动弹回来——**只有做出选择它才会消失**
-  （这是刻意设计，不想看到就选"今天先这样"）；
+  （这是刻意设计，不想看到就选"退下吧，我自己来"）；
 - 想再次唤出：`Ctrl+Shift+P` → 输入 **what** → 选
   **Dev Wizard: what are we doing today?** 回车；
 - 不想每次启动都弹：设置里把 `devWizard.showOnStartup` 改为 `false`。
+
+### 环境体检 / Doctor（可选，排错利器）
+
+装好环境后若编译/烧录报工具链相关错误，先跑一遍体检，省得瞎猜：
+
+`Ctrl+Shift+P` → 输入 **check** → 选 **Dev Wizard: environment check (环境体检)** 回车。
+向导会列出一张 ✅ / ⚠ / ✗ 清单：
+
+- **VS Code 版本** 是否 ≥ 1.80
+- **4 个扩展**：EIDE、Cortex-Debug、CMake Tools、Python 是否都已装
+- **8 个工具链是否在 PATH**：`arm-none-eabi-gcc`(STM32)、`sdcc`(STC51)、`openocd`(调试)、
+  `python`、`stcgal`(STC 烧录)、`gcc`/`g++`(C/C++)、`cmake`(C/C++)
+- **模板目录** `devWizard.templatesRoot` 是否已配置、并发现了几个模板
+- **EIDE 路径**：`EIDE.ARM.GCC.InstallDirectory` / `EIDE.SDCC.InstallDirectory` 是否填好
+
+每项 ✗ 都会给出修复方向（重跑 `setup.ps1`、在 EIDE 设置里指向工具链、或去设置里填
+`templatesRoot`）；⚠ 多半是「还没用到、暂时可忽略」。
 
 ### 第 5 步：编译你的第一个工程
 
@@ -232,6 +251,9 @@ Tools install root [C:\dev]:
   OpenOCD 下载，或在 EIDE 的烧录配置里切换烧录器；
 - 换容量型号：同时修改链接脚本里的 FLASH/RAM 大小与启动文件
   （`startup_stm32f10x_md.s` 对应中容量）。
+- **选芯片**：用向导新建 STM32 工程时，选完模板还会让你挑具体型号
+  （F103C8T6 / F407VGT6 / G030F6P6），选中的型号会替换工程里的 `<mcu>` 占位符——
+  链接脚本、启动文件、CMSIS 设备头都能按芯片区分（见下方[编写模板](#authoring-templates--编写模板)的 `mcus` 字段）。
 
 ### 📡 ESP32
 
@@ -315,7 +337,7 @@ C:\dev\
 git clone https://github.com/linsea666/dev-wizard.git
 cd dev-wizard
 powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
-# 产出 dev-wizard-1.1.0.vsix（约 18 KB，无外部依赖）
+# 产出 dev-wizard-1.1.1.vsix（约 18 KB，无外部依赖）
 ```
 
 > 没有 Git？点仓库页的绿色 **Code → Download ZIP**，解压后在
@@ -337,7 +359,7 @@ powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
 **命令行**：
 
 ```powershell
-code --install-extension .\Downloads\dev-wizard-1.1.0.vsix
+code --install-extension .\Downloads\dev-wizard-1.1.1.vsix
 ```
 
 ### 第 3 步：告诉向导你的模板放在哪（**先配这项，再重启**）
@@ -355,7 +377,7 @@ code --install-extension .\Downloads\dev-wizard-1.1.0.vsix
 > ⚠️ **顺序很重要：请在重启 VSCode 之前配好它。** 向导一启动就会弹出，
 > 此时若 `templatesRoot` 还是空的，你只会看到"未找到模板 / No templates found"，
 > 而且**按 Esc 关不掉**——向导会一直弹回来，只有做出选择才会消失。
-> 真卡住了就先选"今天先这样 / Not today"退出，配好设置再重启。
+> 真卡住了就先选"退下吧，我自己来 / I'll take it from here"退出，配好设置再重启。
 
 还没有模板？随便建个文件夹，往里放一个能编译/运行的小工程，再放一个可选的
 `.wizard.json` 描述文件（详见下方 [Authoring templates](#authoring-templates--编写模板)），
@@ -422,6 +444,10 @@ my-templates/
 }
 ```
 
+其他可选字段：`mcus`（字符串数组）——声明后，向导在选完该模板会再弹一层「选芯片」，
+并把工程里的 `<mcu>` 占位符递归替换成所选型号。适合 STM32 这类「同一模板多种芯片」的场景
+（见上方 STM32 模板的 `mcus: ["STM32F103C8T6", "STM32F407VGT6", "STM32G030F6P6"]`）。
+
 Automatic behaviour, no manifest needed:
 
 - `.eide/eide.yml` (EIDE ≥ 3.27) or `.eide/eide.json` (older) → its `name`
@@ -442,6 +468,7 @@ each machine (so the same template works everywhere):
 | `__SDCC_ROOT__` | SDCC install root | EIDE `misc-controls` include/lib flags for 8051 |
 | `__ARM_GCC_ROOT__` | Arm GNU Toolchain root | custom linker paths |
 | `__OPENOCD_ROOT__` | OpenOCD root | debug scripts |
+| `<mcu>` | 向导中选中的芯片型号（仅当模板 `mcus` 声明时生效） | STM32 模板区分链接脚本/启动文件/CMSIS 设备 |
 
 Example (from the bundled STC51 template, `.eide/eide.yml`):
 
@@ -489,7 +516,7 @@ mac/Linux 用户按[手动安装](#install--安装教程已有环境的用户)�
 模板中的工具链路径自行填写。
 
 **Q：向导按 Esc 关不掉？**
-设计如此（避免"弹了一下就没"）。选"今天先这样"即可关闭本次；
+设计如此（避免"弹了一下就没"）。选"退下吧，我自己来"即可关闭本次；
 或设置 `devWizard.showOnStartup: false` 彻底关闭开机弹出。
 
 **Q：如何加一种新的工程类型（比如 Arduino、Rust）？**

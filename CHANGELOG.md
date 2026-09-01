@@ -1,13 +1,28 @@
 # Changelog
 
-## Unreleased (docs)
+## 1.1.1
 
-- README rewritten as a complete step-by-step tutorial: prerequisites,
-  setup walkthrough with real output, first-run wizard guide with
-  screenshots, per-project-type guides (build/flash/debug), FAQ,
-  expanded troubleshooting and an uninstall section.
+### Wizard
 
-## Unreleased (setup script)
+- Added `sea.devWizard.doctor` command (环境体检): a quick ✅/⚠/✗ check of
+  VS Code version, the 4 required extensions (EIDE / Cortex-Debug / CMake Tools
+  / Python), 8 toolchains on PATH, `templatesRoot`, and EIDE toolchain paths.
+- New project-location picker: after naming, the wizard asks where to put the
+  project (default `projectsRoot`, falling back to `templatesRoot`) instead of
+  a hard-coded `projects` folder.
+- STM32 template now offers a second-level MCU picker (F103C8T6 / F407VGT6 /
+  G030F6P6); the chosen chip is substituted into the project via the `<mcu>`
+  token.
+- Exit option renamed to "退下吧，我自己来 / I'll take it from here" (the
+  stay-on-screen-until-a-choice behaviour is intentional and unchanged).
+
+### Docs
+
+- README expanded with an environment-check walkthrough, the project-location
+  picker, the STM32 MCU picker, and the `<mcu>` token; tutorial text now uses
+  the renamed exit label consistently.
+
+### Setup script
 
 - **Fixed a critical fresh-machine bug**: the MSYS2 SDCC package needs runtime
   DLLs (`libgcc_s_seh-1`, `libstdc++-6`, `libwinpthread-1`, `libintl-8`,
