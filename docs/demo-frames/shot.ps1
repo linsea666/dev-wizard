@@ -1,4 +1,4 @@
-param([string]$Out)
+﻿param([string]$Out)
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds

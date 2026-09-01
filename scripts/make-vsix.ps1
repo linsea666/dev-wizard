@@ -1,4 +1,4 @@
-# 打包 dev-wizard.vsix —— 无需 npm/vsce，纯 PowerShell
+﻿# 打包 dev-wizard.vsix —— 无需 npm/vsce，纯 PowerShell
 # 用法: powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
 #
 # 可复现性约束（同版本、同源码 => 字节级一致）:

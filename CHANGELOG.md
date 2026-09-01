@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.1.3
+
+### Setup script bugfix (critical for Chinese-Windows users)
+
+- **Fixed `setup.ps1` failing to even start on systems with a non-UTF-8 OEM
+  code page (e.g. Chinese Windows, GBK / 936).** The script ships with Chinese
+  comments/strings but had **no UTF-8 BOM**, so PowerShell 5.1 read it as GBK and
+  mangled the quote characters inside Chinese strings → `ParserError` ("表达式中
+  包含意外的标记", script never ran). Added a **UTF-8 BOM** to `setup.ps1`,
+  `make-vsix.ps1` (invoked by the extension-packaging step) and
+  `docs/demo-frames/shot.ps1`.
+- **Verified in a clean VS Code sandbox** (isolated `APPDATA`/`USERPROFILE`/
+  `PATH`, real `setup.ps1` executed end-to-end): all 10 steps complete, CMake
+  3.30 + MinGW-w64 gcc/g++ 14.2.0 deploy correctly, and C / C++ / `std::thread`
+  compile → link → run, plus a CMake `MinGW Makefiles` configure + build + run,
+  all with exit code 0.
+
 ## 1.1.2
 
 ### Setup script (A7: C/C++ toolchain one-click deploy)

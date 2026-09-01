@@ -1,4 +1,4 @@
-# =============================================================================
+﻿# =============================================================================
 # Dev Wizard environment setup (Windows 10/11, PowerShell 5.1 built-in)
 #
 # Installs every toolchain the bundled project templates need, generates the
