@@ -13,16 +13,15 @@ virtualFolder:
         - path: source/main.c
       folders: []
     - name: Firmware
+      # Only the libs the blank project actually references. Adding the rest
+      # of the stc15_lib here pushes the firmware well past the STC15F104W
+      # 4 KB flash limit and the link step fails with
+      # "Insufficient ROM/EPROM/FLASH memory". Need USART / ADC / EEPROM /
+      # Exti / PCA / GPIO? Add the corresponding .c here and your own code.
       files:
         - path: libraries/stc15_lib/source/delay.c
-        - path: libraries/stc15_lib/source/GPIO.c
-        - path: libraries/stc15_lib/source/timer.c
-        - path: libraries/stc15_lib/source/USART.C
-        - path: libraries/stc15_lib/source/ADC.c
-        - path: libraries/stc15_lib/source/EEPROM.c
-        - path: libraries/stc15_lib/source/Exti.c
-        - path: libraries/stc15_lib/source/PCA.c
         - path: libraries/stc15_lib/source/soft_uart.c
+        - path: libraries/stc15_lib/source/timer.c
       folders: []
 dependenceList: []
 outDir: build
