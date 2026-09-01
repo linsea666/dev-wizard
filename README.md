@@ -155,6 +155,11 @@ Tools install root [C:\dev]:
 - 某一步显示黄色 `skipped - re-run setup later`？**直接重新运行同一条命令**，
   脚本幂等：装好的自动跳过，只补缺的；下载支持断点续传。
 - 全程只有一个交互（问安装路径），其余时间可以挂机。
+- **你原有的 VSCode 设置不会丢，但会被规范化重写**：第 8 步要往
+  `settings.json` 里写入 6 项 `devWizard.*` 配置，脚本会先读取你的现有
+  设置、合并后再整体写回（实测原有配置 100% 保留）。副作用是注释会被去掉、
+  单引号会写成 `\u0027` 形式。**原始文件已备份在同目录的
+  `settings.json.bak-setup`**，需要时照它恢复就行。
 
 ### 第 3 步：重启 VSCode
 
@@ -292,11 +297,19 @@ C:\dev\
 > 如果你已经配好了各工具链，可以跳过 setup.ps1，手动安装扩展 +
 > 指向自己的模板目录即可；无需编译、无需 node_modules，一分钟装好。
 
-### 第 1 步：从源码打 VSIX 包
+### 第 1 步：拿到 VSIX 安装包
 
-仓库不再提交预打的 `.vsix` 文件（见 `b6af19c` —— 二进制不再入库，
-让每次打包都可复现、并避免文档与代码不同步）。需要 .vsix 时，
-克隆仓库后用 `scripts/make-vsix.ps1` 现场打包：
+**方式 A（推荐）：直接从 Release 下载**
+
+<https://github.com/linsea666/dev-wizard/releases/latest/download/dev-wizard.vsix>
+
+约 18 KB，免登录、点击即下。这个链接不带版本号，永远指向最新版；
+想挑特定版本请到 [Releases 页面](https://github.com/linsea666/dev-wizard/releases)。
+
+**方式 B：从源码自己打包**
+
+仓库不再把预打的 `.vsix` 提交进版本库（见 `b6af19c` —— 二进制不入库，
+每次打包都可复现，也避免文档与代码不同步）。想自己打就 `make-vsix.ps1`：
 
 ```powershell
 git clone https://github.com/linsea666/dev-wizard.git
@@ -305,10 +318,12 @@ powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
 # 产出 dev-wizard-1.1.0.vsix（约 18 KB，无外部依赖）
 ```
 
-> 没有 Git？点仓库页的绿色 **Code → Download ZIP** 解压后同样
-> 在 `scripts\` 目录里跑 `make-vsix.ps1`。GitHub Action 每次
-> push 也会在 CI 工件里产出一个 .vsix，点仓库页顶部
-> **Actions → CI → 最新的 run → Artifacts → dev-wizard-vsix** 下载。
+> 没有 Git？点仓库页的绿色 **Code → Download ZIP**，解压后在
+> `scripts` 目录里跑 `make-vsix.ps1` 效果完全一样。
+>
+> 注意：CI 的 Actions 工件（Artifacts）里也有 .vsix，但
+> **下载工件要求登录 GitHub 账号**，所以上面的 Release 链接才是给
+> 别人用的那条。
 
 ### 第 2 步：安装（二选一）
 
@@ -325,12 +340,7 @@ powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
 code --install-extension .\Downloads\dev-wizard-1.1.0.vsix
 ```
 
-### 第 3 步：重启 VSCode
-
-`Ctrl+Shift+P` → 输入 **Reload Window（重新加载窗口）** → 回车
-启动后向导自动弹出。
-
-### 第 4 步：告诉向导你的模板放在哪（首次使用必做）
+### 第 3 步：告诉向导你的模板放在哪（**先配这项，再重启**）
 
 向导的工程类型来自 `devWizard.templatesRoot` 指向的目录——**每个子文件夹就是一个工程类型**：
 
@@ -342,9 +352,19 @@ code --install-extension .\Downloads\dev-wizard-1.1.0.vsix
 }
 ```
 
+> ⚠️ **顺序很重要：请在重启 VSCode 之前配好它。** 向导一启动就会弹出，
+> 此时若 `templatesRoot` 还是空的，你只会看到"未找到模板 / No templates found"，
+> 而且**按 Esc 关不掉**——向导会一直弹回来，只有做出选择才会消失。
+> 真卡住了就先选"今天先这样 / Not today"退出，配好设置再重启。
+
 还没有模板？随便建个文件夹，往里放一个能编译/运行的小工程，再放一个可选的
 `.wizard.json` 描述文件（详见下方 [Authoring templates](#authoring-templates--编写模板)），
 它就会出现在向导里。
+
+### 第 4 步：重启 VSCode
+
+`Ctrl+Shift+P` → 输入 **Reload Window（重新加载窗口）** → 回车
+启动后向导自动弹出。
 
 ### 第 5 步：验证
 
