@@ -102,7 +102,7 @@ function Fetch($url, $out) {
         Write-Host "      retrying in 5s..." -ForegroundColor Yellow
         Start-Sleep 5
     }
-    throw "download failed after retries: $url"
+    throw "下载失败（已重试 8 次仍失败）：多半是网络或镜像源问题。请检查代理/网络后重新运行本脚本，已下载的部分会自动续传。URL: $url"
 }
 
 function Resolve-Msys2Pkg($IndexContent, $Pattern) {
@@ -161,7 +161,7 @@ if (Test-Path (Join-Path $sdccPath "bin\sdcc.exe")) {
             $pkg = Join-Path $env:TEMP $f
             Fetch "https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/$f" $pkg
             & $tar --zstd -xf $pkg -C $ToolsRoot
-            if ($LASTEXITCODE -ne 0) { throw "extraction failed for $f" }
+            if ($LASTEXITCODE -ne 0) { throw "解压失败：$f。若提示 .zst 不支持，见 README 故障排查，用 7-Zip 手动解压后重跑 setup.ps1。" }
             Remove-Item $pkg -Force
         }
         Move-Item (Join-Path $ToolsRoot "mingw64") $sdccPath
@@ -227,7 +227,7 @@ if (Test-Path (Join-Path $pyDir "python.exe")) {
         Fetch "https://ghfast.top/https://github.com/indygreg/python-build-standalone/releases/download/20241016/cpython-3.12.7+20241016-x86_64-pc-windows-msvc-shared-install_only.tar.gz" $pkg
         $tar = Join-Path $env:SystemRoot "System32\tar.exe"
         & $tar -xzf $pkg -C $ToolsRoot
-        if ($LASTEXITCODE -ne 0) { throw "extraction failed" }
+        if ($LASTEXITCODE -ne 0) { throw "解压失败：Python 压缩包解压出错，见 README 故障排查（或手动用 tar 解压）。" }
         Move-Item (Join-Path $ToolsRoot "python") $pyDir
         Remove-Item $pkg -Force
     } catch {
