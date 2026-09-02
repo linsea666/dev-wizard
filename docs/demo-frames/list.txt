@@ -1,9 +1,0 @@
-file 'E:/vscode/dev-wizard/docs/demo-frames/f1.png'
-duration 3
-file 'E:/vscode/dev-wizard/docs/demo-frames/f2.png'
-duration 1.5
-file 'E:/vscode/dev-wizard/docs/demo-frames/f3.png'
-duration 2.5
-file 'E:/vscode/dev-wizard/docs/demo-frames/f4.png'
-duration 3.5
-file 'E:/vscode/dev-wizard/docs/demo-frames/f4.png'

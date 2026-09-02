@@ -15,8 +15,6 @@
 >
 > *（不做出选择，向导会一直停留在屏幕上——这是故意设计：避免弹一下就消失。选「退下吧，我自己来 / I'll take it from here」即可退出）*
 
-![向导界面](docs/demo-frames/f1.png)
-
 ## 目录 / Table of Contents
 
 - [这个项目解决什么问题](#这个项目解决什么问题--the-problem)
@@ -170,19 +168,15 @@ Tools install root [C:\dev]:
 
 ### 第 4 步：首次使用向导
 
-启动后约 2.5 秒，向导自动弹出：
-
-![选择工程类型](docs/demo-frames/f1.png)
+启动后约 2.5 秒，向导自动弹出，选项如下：
 
 | 选项 | 行为 |
 |---|---|
 | **继续上次的工作** | 打开你上次用 VSCode 的工程（首次显示"暂无记录"） |
-| **开始新工程（六种类型）** | 进入命名步骤，见下图 |
+| **开始新工程（六种类型）** | 进入命名步骤 |
 | **退下吧，我自己来 / I'll take it from here** | 关闭向导，本次不再打扰 |
 
-选择"新建 STC51 工程"后，给工程起个名字（回车确认）：
-
-![输入工程名](docs/demo-frames/f3.png)
+选择"新建 STC51 工程"后，给工程起个名字（回车确认），命名规则如下：
 
 - 命名规则：**字母 / 数字 / 下划线 / 中划线**，例如 `my-first-led`；
 - 工程会创建到向导让你选的位置下的 `<工程名>\`：命名后向导弹出文件夹选择框，
@@ -348,7 +342,7 @@ C:\dev\
 git clone https://github.com/linsea666/dev-wizard.git
 cd dev-wizard
 powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
-# 产出 dev-wizard-1.1.1.vsix（约 18 KB，无外部依赖）
+# 产出 dev-wizard-1.1.3.vsix（约 18 KB，无外部依赖）
 ```
 
 > 没有 Git？点仓库页的绿色 **Code → Download ZIP**，解压后在
@@ -370,7 +364,7 @@ powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
 **命令行**：
 
 ```powershell
-code --install-extension .\Downloads\dev-wizard-1.1.1.vsix
+code --install-extension .\Downloads\dev-wizard-1.1.3.vsix
 ```
 
 ### 第 3 步：告诉向导你的模板放在哪（**先配这项，再重启**）
