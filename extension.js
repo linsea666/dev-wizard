@@ -30,6 +30,8 @@ function readJsonSafe(file) {
  *   "icon":        "chip",                     // any codicon name
  *   "open":        "workspace",                // "workspace" | "folder" (auto if omitted)
  *   "mcus":        ["STM32F103C8T6", ...],     // optional: second-level chip picker
+ *   "pythonEnv":   true,                       // optional: ask for a conda env, bind it
+ *                                              //   as python.defaultInterpreterPath
  *   "replace": [                               // text patches applied after copying
  *     { "files": ["CMakeLists.txt"], "find": "esp32-base" },
  *     { "files": [".eide/eide.yml"], "find": "<mcu>" }   // <mcu> filled by the picker
@@ -67,6 +69,7 @@ function listTemplates(root) {
             icon: mf.icon || 'new-folder',
             open: mf.open || (hasWorkspace ? 'workspace' : 'folder'),
             mcus: Array.isArray(mf.mcus) ? mf.mcus : [],
+            pythonEnv: mf.pythonEnv === true,
             replace: Array.isArray(mf.replace) ? mf.replace : []
         });
     }
@@ -131,6 +134,132 @@ async function openTarget(ctx, target) {
     await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(target), false);
 }
 
+/* ---------------------------------------------------------------------------
+ * Python environments (v1.2): templates with `"pythonEnv": true` in their
+ * .wizard.json let the wizard bind a conda env as the project interpreter.
+ * Conda roots are discovered from (merged, de-duplicated):
+ *   1. devWizard.condaRoot            (explicit override)
+ *   2. python.condaPath               (set by setup.ps1 / the user)
+ *   3. well-known install locations   (%USERPROFILE% / %LOCALAPPDATA% / ProgramData)
+ * The chosen env is written to <project>/.vscode/settings.json as
+ * python.defaultInterpreterPath; with no conda found the user-level default
+ * interpreter is left untouched.
+ * ------------------------------------------------------------------------- */
+function condaRootFromCondaExe(p) {
+    if (!p || typeof p !== 'string') return null;
+    let dir = path.dirname(path.resolve(p.trim().replace(/^"|"$/g, '')));
+    const base = path.basename(dir).toLowerCase();
+    if (base === 'scripts' || base === 'condabin' || base === 'bin') dir = path.dirname(dir);
+    return dir;
+}
+
+function findCondaRoots() {
+    const roots = [];
+    const push = (r) => {
+        if (!r) return;
+        r = path.normalize(String(r));
+        try {
+            if (!fs.statSync(r).isDirectory()) return;
+        } catch (e) {
+            return;
+        }
+        if (!roots.some((x) => x.toLowerCase() === r.toLowerCase())) roots.push(r);
+    };
+
+    push(cfg().get('condaRoot'));
+
+    const pyConda = vscode.workspace.getConfiguration('python').inspect('condaPath');
+    const pyCondaPath = pyConda
+        ? pyConda.workspaceValue || pyConda.globalValue || pyConda.defaultValue
+        : null;
+    push(condaRootFromCondaExe(pyCondaPath));
+
+    const homes = process.platform === 'win32'
+        ? [process.env.USERPROFILE, process.env.LOCALAPPDATA, process.env.ProgramData]
+        : [process.env.HOME];
+    for (const home of homes) {
+        if (!home) continue;
+        for (const name of ['anaconda3', 'miniconda3']) push(path.join(home, name));
+    }
+    return roots;
+}
+
+function listCondaEnvs(root) {
+    const out = [];
+    const tryPy = (dir, name) => {
+        for (const cand of [
+            path.join(dir, 'python.exe'),
+            path.join(dir, 'python3.exe'),
+            path.join(dir, 'bin', 'python3'),
+            path.join(dir, 'bin', 'python')
+        ]) {
+            if (fs.existsSync(cand)) {
+                out.push({ name, python: cand });
+                return;
+            }
+        }
+    };
+    tryPy(root, 'base');
+    let entries = [];
+    try {
+        entries = fs.readdirSync(path.join(root, 'envs'), { withFileTypes: true });
+    } catch (e) {
+        entries = [];
+    }
+    for (const ent of entries) {
+        if (ent.isDirectory()) tryPy(path.join(root, 'envs', ent.name), ent.name);
+    }
+    return out;
+}
+
+function writeVscodeSettings(dir, patch) {
+    try {
+        const vscDir = path.join(dir, '.vscode');
+        fs.mkdirSync(vscDir, { recursive: true });
+        const file = path.join(vscDir, 'settings.json');
+        const obj = readJsonSafe(file) || {};
+        for (const [k, v] of Object.entries(patch)) obj[k] = v;
+        fs.writeFileSync(file, JSON.stringify(obj, null, 4) + '\n', 'utf8');
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+/* Returns: {settings} = bind this env | null = skip gracefully |
+ * undefined = picker cancelled (caller re-shows the wizard). */
+async function pickCondaEnv() {
+    const envs = [];
+    for (const root of findCondaRoots()) {
+        for (const env of listCondaEnvs(root)) {
+            if (!envs.some((e) => e.python.toLowerCase() === env.python.toLowerCase())) {
+                envs.push(env);
+            }
+        }
+    }
+    if (!envs.length) {
+        vscode.window.showInformationMessage(
+            '未检测到 Anaconda/Miniconda，工程将使用默认解释器 / No conda found, keeping the default interpreter'
+        );
+        return null;
+    }
+    const items = envs.map((e) => ({
+        label: `$(file-binary) ${e.name}`,
+        description: e.python,
+        settings: { 'python.defaultInterpreterPath': e.python }
+    }));
+    items.push({ label: '$(close) 不用 conda，用默认解释器 / Skip', skip: true });
+
+    const pick = await vscode.window.showQuickPick(items, {
+        placeHolder: '这个工程用哪个 conda 环境？ / Pick a conda environment for this project',
+        ignoreFocusOut: true,
+        matchOnDescription: true
+    });
+    if (!pick) return undefined;
+    if (pick.skip) return null;
+    return pick.settings;
+}
+
 /* Create a project from a template. Returns true when "no choice was made"
  * (input cancelled, missing template...) so the wizard can re-show itself. */
 async function createProject(tpl, ctx, mcu) {
@@ -157,6 +286,13 @@ async function createProject(tpl, ctx, mcu) {
     });
     if (!picked || !picked.length) return true; // cancelled -> re-show wizard
     const projectsRoot = picked[0].fsPath;
+
+    // Python templates: ask which conda env to bind (before any file work)
+    let pySettings = null;
+    if (tpl.pythonEnv) {
+        pySettings = await pickCondaEnv();
+        if (pySettings === undefined) return true; // cancelled the sub-picker -> re-show wizard
+    }
 
     const dest = path.join(projectsRoot, name);
 
@@ -197,6 +333,13 @@ async function createProject(tpl, ctx, mcu) {
             // A6: fill the chosen MCU into any "<mcu>" placeholder
             if (mcu) {
                 replaceTokenRecursive(dest, '<mcu>', mcu);
+            }
+
+            // bind the picked conda env as the project interpreter
+            if (pySettings && !writeVscodeSettings(dest, pySettings)) {
+                vscode.window.showWarningMessage(
+                    '写入 .vscode/settings.json 失败 / Failed to write .vscode/settings.json'
+                );
             }
 
             const target =

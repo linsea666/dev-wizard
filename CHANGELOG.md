@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.2.0
+
+### New: conda environment picker for Python projects
+
+- Templates can now declare `"pythonEnv": true` in their `.wizard.json`
+  manifest (the shipped `python-base` template does). When such a template is
+  picked, the wizard **asks which conda environment to bind** and writes the
+  chosen interpreter into the new project's `.vscode/settings.json`
+  (`python.defaultInterpreterPath`) — so a project created by the wizard runs
+  against the exact Anaconda/Miniconda env you picked, while other projects
+  keep their own interpreters.
+- Conda installs are auto-discovered from `devWizard.condaRoot` (new setting,
+  explicit override), `python.condaPath`, and the usual install locations
+  (`%USERPROFILE%\anaconda3|miniconda3`, `%LOCALAPPDATA%\...`, `%ProgramData%\...`,
+  `~/anaconda3|miniconda3`). The `base` env plus every folder under `envs\`
+  that contains a Python interpreter is offered; picking "skip" (or having no
+  conda at all) keeps the previous behaviour untouched.
+- `setup.ps1` and the bundled portable Python 3.12 remain unchanged — conda is
+  purely optional and never written to PATH by this extension.
+
 ## 1.1.3
 
 ### Setup script bugfix (critical for Chinese-Windows users)

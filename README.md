@@ -265,6 +265,14 @@ ESP-IDF 本身体积较大，setup 脚本不自动安装；请按
 `python.defaultInterpreterPath` 已指向它——新建工程后 `main.py` 直接
 `F5` 运行或点右上角运行按钮。不需要任何额外配置。
 
+**装了 Anaconda / Miniconda？** 向导建 Python 工程时会弹出
+**conda 环境选择器**：`base` 和所有 `envs\` 下的环境都会列出来，
+选中的环境会被写进该工程的 `.vscode/settings.json`
+（`python.defaultInterpreterPath`），实现"每个工程绑一个环境"。
+conda 的位置自动探测（也认 `python.condaPath` 设置），探测不到时
+行为和以前完全一样（走便携版 3.12）；特殊安装路径可在设置里手动填
+`devWizard.condaRoot`。conda 不会、也不需要进 PATH。
+
 ### ✨ C / C++
 
 CMake 控制台工程骨架（`CMakeLists.txt` + `main.c/main.cpp`）。
