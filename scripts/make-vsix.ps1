@@ -39,9 +39,19 @@ if (Test-Path $tmp)    { Remove-Item $tmp    -Recurse -Force }
 if (Test-Path $tmpOut) { Remove-Item $tmpOut -Force }
 New-Item -ItemType Directory -Path "$tmp/extension" | Out-Null
 
-# 复制扩展文件，统一 LF / 无 BOM
+# 复制扩展根文件，统一 LF / 无 BOM
 foreach ($f in @("package.json", "extension.js", "README.md", "CHANGELOG.md", "LICENSE")) {
     Copy-Normalized (Join-Path $root $f) (Join-Path (Join-Path $tmp "extension") $f)
+}
+
+# 复制 src/ 子模块（v2.0）
+$srcDir = Join-Path $root "src"
+$srcDst = Join-Path (Join-Path $tmp "extension") "src"
+if (Test-Path $srcDir) {
+    New-Item -ItemType Directory -Path $srcDst -Force | Out-Null
+    foreach ($f in Get-ChildItem $srcDir -File -Filter "*.js") {
+        Copy-Normalized $f.FullName (Join-Path $srcDst $f.Name)
+    }
 }
 
 # [Content_Types].xml（无 BOM、LF）
@@ -85,6 +95,12 @@ $fixedFiles = @(
     (Join-Path (Join-Path $tmp "extension") "CHANGELOG.md"),
     (Join-Path (Join-Path $tmp "extension") "LICENSE")
 )
+# 加入 src/ 模块文件的时间固定
+if (Test-Path $srcDst) {
+    foreach ($f in Get-ChildItem $srcDst -File -Filter "*.js") {
+        $fixedFiles += $f.FullName
+    }
+}
 foreach ($p in $fixedFiles) { [System.IO.File]::SetLastWriteTime($p, $fixedTime) }
 
 # 打包（先写 .tmp，成功后再覆盖 $out）
@@ -95,6 +111,12 @@ $zip = [System.IO.Compression.ZipFile]::Open($tmpOut, [System.IO.Compression.Zip
 [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, (Join-Path $tmp "extension.vsixmanifest"), "extension.vsixmanifest") | Out-Null
 foreach ($f in @("package.json", "extension.js", "README.md", "CHANGELOG.md", "LICENSE")) {
     [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, (Join-Path (Join-Path $tmp "extension") $f), "extension/$f") | Out-Null
+}
+# 打包 src/ 子模块
+if (Test-Path $srcDst) {
+    foreach ($f in Get-ChildItem $srcDst -File -Filter "*.js") {
+        [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $f.FullName, "extension/src/$($f.Name)") | Out-Null
+    }
 }
 $zip.Dispose()
 

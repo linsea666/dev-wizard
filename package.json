@@ -3,7 +3,7 @@
     "displayName": "Dev Wizard (开发向导)",
     "description": "A startup wizard for VS Code: continue your last project or scaffold new ones from your own templates. 启动向导：继续上次的工作，或从自定义模板一键新建工程。",
     "publisher": "sea",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "license": "MIT",
     "engines": {
         "vscode": "^1.80.0"
@@ -35,6 +35,42 @@
             {
                 "command": "sea.devWizard.doctor",
                 "title": "Dev Wizard: environment check (环境体检)"
+            },
+            {
+                "command": "sea.devWizard.templateDoctor",
+                "title": "Dev Wizard: template doctor (模板体检)"
+            },
+            {
+                "command": "sea.devWizard.installTemplate",
+                "title": "Dev Wizard: install template (安装模板)"
+            },
+            {
+                "command": "sea.devWizard.updateTemplates",
+                "title": "Dev Wizard: update templates (更新模板)"
+            },
+            {
+                "command": "sea.devWizard.uninstallTemplate",
+                "title": "Dev Wizard: uninstall template (卸载模板)"
+            },
+            {
+                "command": "sea.devWizard.browseTemplates",
+                "title": "Dev Wizard: browse templates (浏览模板)"
+            },
+            {
+                "command": "sea.devWizard.writeContext",
+                "title": "Dev Wizard: write context.md (生成上下文文件)"
+            },
+            {
+                "command": "sea.devWizard.flash",
+                "title": "Dev Wizard: flash (烧录)"
+            },
+            {
+                "command": "sea.devWizard.gitInit",
+                "title": "Dev Wizard: git init (初始化 git)"
+            },
+            {
+                "command": "sea.devWizard.build",
+                "title": "Dev Wizard: build (构建)"
             }
         ],
         "configuration": {
@@ -59,6 +95,22 @@
                     "type": "string",
                     "default": "",
                     "description": "Anaconda/Miniconda install root for the Python template's env picker (auto-detected from python.condaPath or common locations when empty). conda 安装根目录，供 Python 模板选择环境用（留空则自动探测）。"
+                },
+                "devWizard.writeContextFile": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Auto-generate .dev-wizard/context.md when creating a new project (helps AI assistants understand the project). 创建工程时自动生成上下文文件。"
+                },
+                "devWizard.gitInitOnCreate": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Prompt to git init + initial commit after creating a project. 创建工程后提示 git 初始化并提交。"
+                },
+                "devWizard.allowAfterCreate": {
+                    "type": "string",
+                    "enum": ["ask", "allow", "deny"],
+                    "default": "ask",
+                    "description": "How to handle afterCreate commands in templates: ask (confirm each), allow (run silently), deny (skip all). 模板中 afterCreate 命令的处理方式。"
                 }
             }
         }
