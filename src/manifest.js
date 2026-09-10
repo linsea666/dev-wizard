@@ -211,16 +211,31 @@ function validateManifest(m) {
     return issues;
 }
 
+/* Known non-token uses of <...> that should NOT be treated as placeholders:
+ *   - EIDE's own <virtual_root> / <virtual_project> markers in eide.yml
+ *   - HTML tags found inside doxygen/Doxygen-style comments in vendor HAL headers
+ *   - C/C++ #include <header> angle-bracket includes */
+const KNOWN_IGNORE_ANGLES = new Set([
+    'virtual_root', 'virtual_project',
+    // common HTML tags in ST/Atmel HAL doxygen comments
+    'h1', 'h2', 'h3', 'h4', 'center', 'code', 'hr', 'b', 'i', 'em',
+    'strong', 'pre', 'br', 'ul', 'ol', 'li', 'p', 'div', 'span',
+    'table', 'td', 'tr', 'th', 'a', 'img'
+]);
+
 /* Scan the template's text files for {{token}} / <token> placeholders and
- * report which are NOT defined (neither builtin <name>/<mcu> nor a v2 variable). */
+ * report which are NOT defined (neither builtin <name>/<mcu> nor a v2 variable).
+ * Filters out false positives:
+ *   - C/C++ #include <header> lines (header names contain dots, e.g. <stdint.h>)
+ *   - HTML tags in doxygen comments (matched against KNOWN_IGNORE_ANGLES)
+ *   - EIDE internal markers like <virtual_root> */
 function scanTokens(tplDir, m) {
-    const builtin = new Set(['name', 'mcu']);
     const defined = new Set(['name', 'mcu']);
     for (const v of m.variables) defined.add(v.name);
 
     const exRe = [...m.exclude.map(globToRe).filter(Boolean)];
     const files = listTextFiles(tplDir, exRe);
-    const tokenRe = /\{\{([A-Za-z_][A-Za-z0-9_]*)\}\}|<([A-Za-z_][A-Za-z0-9_]*)\>/g;
+    const tokenRe = /\{\{([A-Za-z_][A-Za-z0-9_]*)\}\}|<([A-Za-z_][A-Za-z0-9_]*)>/g;
 
     const used = new Set();
     for (const f of files) {
@@ -230,9 +245,19 @@ function scanTokens(tplDir, m) {
         } catch (e) {
             continue;
         }
+
+        // Pre-process: strip #include <...> lines to avoid matching C/C++ headers
+        let cleaned = txt.replace(/^\s*#\s*include\s*<[^>]+>/gm, '');
+
         let mm;
-        while ((mm = tokenRe.exec(txt)) !== null) {
-            used.add(mm[1] || mm[2]);
+        while ((mm = tokenRe.exec(cleaned)) !== null) {
+            const tok = mm[1] || mm[2];
+            if (!tok) continue;
+            // Skip <angle> tokens that are actually HTML tags or EIDE markers
+            if (!mm[1] && KNOWN_IGNORE_ANGLES.has(tok)) continue;
+            // Skip <angle> tokens that look like C headers (contain dots, e.g. stdint.h)
+            if (!mm[1] && tok.includes('.')) continue;
+            used.add(tok);
         }
     }
 

@@ -3,8 +3,5 @@
     "description": "STM32 + EIDE (ARM GCC)",
     "icon": "chip",
     "open": "workspace",
-    "mcus": ["STM32F103C8T6", "STM32F407VGT6", "STM32G030F6P6"],
-    "replace": [
-        { "files": ["CMakeLists.txt"], "find": "stm32-base" }
-    ]
+    "mcus": ["STM32F103C8T6", "STM32F407VGT6", "STM32G030F6P6"]
 }

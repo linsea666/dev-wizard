@@ -30,6 +30,8 @@
 - [setup.ps1 到底做了什么](#setupps1-到底做了什么点开看明细)
 - [手动安装（已有环境的用户）](#install--安装教程已有环境的用户)
 - [配置参考](#configuration--配置)
+- [模板注册表](#模板注册表--template-registryv20-新增)
+- [开发体验](#开发体验--developer-experiencev20-新增)
 - [编写自己的模板](#authoring-templates--编写模板)
 - [常见问题 FAQ](#常见问题-faq)
 - [故障排查](#遇到问题--troubleshooting)
@@ -416,15 +418,85 @@ code --install-extension .\Downloads\dev-wizard-1.1.3.vsix
 | `devWizard.showOnStartup` | `true` | Show wizard on every VS Code start |
 | `devWizard.projectsRoot` | same as templatesRoot | Where new projects are created |
 | `devWizard.templatesRoot` | *(empty)* | Folder of project templates — **this is the only thing you must set** |
+| `devWizard.writeContextFile` | `true` | Auto-generate `.dev-wizard/context.md` on project creation (v2.0) |
+| `devWizard.gitInitOnCreate` | `true` | Run `git init` + initial commit after project creation (v2.0) |
+| `devWizard.allowAfterCreate` | `true` | Run `afterCreate` commands from manifest v2 (v2.0) |
 
 Example:
 
 ```json
 {
     "devWizard.templatesRoot": "D:/my-templates",
-    "devWizard.projectsRoot":  "D:/my-projects"
+    "devWizard.projectsRoot":  "D:/my-projects",
+    "devWizard.writeContextFile": true,
+    "devWizard.gitInitOnCreate": true
 }
 ```
+
+## 模板注册表 / Template Registry（v2.0 新增）
+
+除了手动放文件夹，还可以从 GitHub 一键安装社区模板：
+
+`Ctrl+Shift+P` → `DevWizard: Browse Templates` → 选择安装来源：
+
+| 输入格式 | 示例 | 说明 |
+|---|---|---|
+| `owner/repo` | `linsea666/esp32-templates` | 自动补全为 GitHub URL |
+| 完整 URL | `https://github.com/owner/repo` | 直接使用 |
+| SSH | `git@github.com:owner/repo.git` | 支持私有仓库 |
+
+- **安装**：`git clone --depth 1` 浅克隆，失败自动降级为 GitHub ZIP 直连
+- **更新**：`DevWizard: Update Templates` 一键拉取最新版
+- **卸载**：`DevWizard: Uninstall Template` 移除并清理注册表
+- **状态持久化**：注册信息存在 `templatesRoot/.registry.json`
+
+## 开发体验 / Developer Experience（v2.0 新增）
+
+### 智能构建
+
+打开工程后，状态栏自动出现 **Build** 按钮，构建方式按工程类型自动探测：
+
+| 探测顺序 | 标识文件 | 构建方式 |
+|---|---|---|
+| 1 | `.eide/eide.yml` | EIDE 构建（F7） |
+| 2 | `CMakeLists.txt` | CMake 构建 |
+| 3 | `Makefile` | make |
+| 4 | `platformio.ini` | pio run |
+
+### 一键烧录
+
+`Ctrl+Shift+P` → `DevWizard: Smart Flash`，按工程类型自动选择烧录工具：
+
+| MCU | 工具 | 说明 |
+|---|---|---|
+| STM32 | openocd | 支持 ST-Link / J-Link |
+| STC51 | stcgal | 自动扫描 COM 端口 |
+| ESP32 | idf.py | 需 ESP-IDF 环境 |
+
+### 串口探测
+
+`Ctrl+Shift+P` → `DevWizard: Detect Serial Ports`，列出当前可用 COM 端口。
+
+### context.md 自动生成
+
+每个工程创建后自动在 `.dev-wizard/context.md` 写入：
+
+- 工程名、类型、MCU 型号
+- 构建/烧录命令
+- 工具链路径
+- AI 助手提示词
+
+打开工程的 AI 助手（Copilot / Cline / Cursor 等）可直接读到准确上下文，
+不需要手动解释"这是个 STM32 工程，用 openocd 烧录…"。
+
+### 模板体检（Template Doctor）
+
+`Ctrl+Shift+P` → `DevWizard: Template Doctor`，检查所有模板：
+
+- manifest 字段校验
+- `replace` 引用的文件是否存在
+- `{{token}}` 占位符是否有对应定义（已过滤 `#include <header>` 和 HTML 标签误报）
+- `afterCreate` 命令是否在 PATH
 
 ## Authoring templates / 编写模板
 
@@ -443,6 +515,8 @@ my-templates/
 └── anything-else/       ← no manifest? wizard shows the folder name
 ```
 
+### Manifest v1（基础字段）
+
 `.wizard.json` (all fields optional):
 
 ```json
@@ -460,6 +534,60 @@ my-templates/
 其他可选字段：`mcus`（字符串数组）——声明后，向导在选完该模板会再弹一层「选芯片」，
 并把工程里的 `<mcu>` 占位符递归替换成所选型号。适合 STM32 这类「同一模板多种芯片」的场景
 （见上方 STM32 模板的 `mcus: ["STM32F103C8T6", "STM32F407VGT6", "STM32G030F6P6"]`）。
+
+### Manifest v2（增强字段，v2.0 新增）
+
+在 v1 基础上，`.wizard.json` 新增以下可选字段，**旧 manifest 无需修改即可继续使用**：
+
+```jsonc
+{
+    "label": "新建 ESP32 工程",
+    "description": "ESP-IDF + CMake",
+
+    // 预填工程名输入框（用户可修改）
+    "defaultName": "esp32-blink",
+
+    // 拷贝模板时跳过这些文件/目录（glob 语法）
+    "exclude": ["build/", "*.bak", "docs/**"],
+
+    // 创建时逐个弹窗提问，结果递归替换 {{name}} 占位符
+    "variables": [
+        {
+            "name": "board",          // 会替换 {{board}}
+            "label": "板子型号",      // 输入框提示
+            "default": "esp32s3",     // 默认值（用户可修改）
+            "pattern": "^[a-z0-9-]+$", // 正则校验
+            "required": true          // 是否必填
+        },
+        {
+            "name": "wifi_ssid",
+            "label": "WiFi 名称",
+            "default": "",
+            "required": true
+        }
+    ],
+
+    // 工程创建后自动执行（每个命令弹窗确认后才跑）
+    "afterCreate": [
+        { "command": "idf.py", "args": ["set-target", "esp32s3"], "cwd": "." },
+        { "command": "git", "args": ["init"], "cwd": "." }
+    ],
+
+    // 列表排序权重（小者在前，默认 0）
+    "sort": 5
+}
+```
+
+**令牌替换**（复制模板文件后递归执行）：
+
+| 令牌 | 来源 | 说明 |
+|---|---|---|
+| `{{board}}` | `variables[].name` | v2 变量，创建时提问 |
+| `<mcu>` / `{{mcu}}` | 向导芯片选择器 | 仅当模板声明 `mcus` 时 |
+| `<name>` / `{{name}}` | 工程名 | 始终可用 |
+
+> **注意**：`#include <iostream>` 和 HAL 头文件中的 HTML 标签（如 `<h2><center>`）
+> 不会被误认为占位符——Doctor 和令牌扫描已过滤这些常见误报。
 
 Automatic behaviour, no manifest needed:
 
