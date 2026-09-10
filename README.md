@@ -10,11 +10,13 @@
 > **今天要做什么？ What are we doing today?**
 >
 > 📂 继续上次的工作 / Continue last work
-> ──── 开始新工程 / New project ────
-> 🧩 新建 STC51 工程 … 🔩 STM32 … 📡 ESP32 … 🐍 Python … ✨ 你自己的任意类型
+> ──── 开始新工程 / New project ──── 
+> 🧩 新建 STC51 工程 …
+> 🔩 STM32 …
+> 📡 ESP32 …
+>  🐍 Python …
+> ✨ 你自己的任意类型
 >
-> *（不做出选择，向导会一直停留在屏幕上——这是故意设计：避免弹一下就消失。选「退下吧，我自己来 / I'll take it from here」即可退出）*
-
 ## 目录 / Table of Contents
 
 - [这个项目解决什么问题](#这个项目解决什么问题--the-problem)
