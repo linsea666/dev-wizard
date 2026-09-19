@@ -3,630 +3,111 @@
 ![platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![vscode](https://img.shields.io/badge/VS%20Code-1.80%2B-007ACC) ![dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
 
 一个 VS Code 启动向导：**每次打开 VSCode 都会问你"今天做什么？"**——回到上次的工作，
-或从模板一键创建新工程（STC51 / AT89S51 / STM32 / ESP32 / Python / C / C++ / 你自己的任意类型）。
-配套的 `setup.ps1` 把 SDCC、ARM GCC、OpenOCD、Python 等工具链**全自动配好**，
-让"新芯片的第一个工程"从大半天的环境配置，变成**一条命令 + 一次重启**。
+或从模板一键创建新工程（STC89 / STC15 / AT89S51 / STM32 / ESP32 / Python / C / C++）。
+配套 `setup.ps1` 把工具链全自动配好，"新芯片的第一个工程"从大半天环境配置
+变成**一条命令 + 一次重启**；建完的工程编译（F7）、烧录、体检也全在 VSCode 里完成。
 
-> **今天要做什么？ What are we doing today?**
->
-> 📂 继续上次的工作 / Continue last work
-> ──── 开始新工程 / New project ────
-> 🧩 新建 STC51 工程 … 🔌 新建 AT89S51 工程 … 🔩 STM32 … 📡 ESP32 … 🐍 Python … ✨ 你自己的任意类型
->
-> 
-## 目录 / Table of Contents
+> 📂 继续上次的工作 ──── 开始新工程 ──── 🔩 嵌入式工程（选芯片：STC89 / STC15 / AT89S51 / STM32 / ESP32）· 🐍 Python · ✨ C / C++
 
-- [这个项目解决什么问题](#这个项目解决什么问题--the-problem)
-- [服务对象](#服务对象--who-is-this-for)
-- [**快速开始（从零到编译，推荐）**](#快速开始--从零到编译)
-  - [第 0 步 安装前置软件](#第-0-步安装前置软件)
-  - [第 1 步 拿到项目](#第-1-步拿到项目)
-  - [第 2 步 运行一键配置脚本](#第-2-步运行一键配置脚本-setupps1)
-  - [第 3 步 重启 VSCode](#第-3-步重启-vscode)
-  - [第 4 步 首次使用向导](#第-4-步首次使用向导)
-  - [第 5 步 编译你的第一个工程](#第-5-步编译你的第一个工程)
-- [各工程类型使用指南](#各工程类型使用指南)
-- [setup.ps1 到底做了什么](#setupps1-到底做了什么点开看明细)
-- [手动安装（已有环境的用户）](#install--安装教程已有环境的用户)
-- [配置参考](#configuration--配置)
-- [编写自己的模板](#authoring-templates--编写模板)
-- [常见问题 FAQ](#常见问题-faq)
-- [故障排查](#遇到问题--troubleshooting)
-- [卸载](#卸载--uninstall)
+详细图文教程（含每一步截图级别的说明）见 **[docs/tutorial.md](docs/tutorial.md)**。
 
-## 这个项目解决什么问题 / The problem
+## 功能一览
 
-做嵌入式（或任何多语言）开发的人对这些场景一定不陌生：
+- **启动向导**：开机一问"今天做什么"，Esc 可收起，命令面板随时唤回
+- **一键建工程**：模板就是"一个能编译的完整工程"，选类型起名字即得；Python 模板还带 conda 环境选择器
+- **一键构建/烧录**：按工程类型自动选 EIDE/CMake/Makefile/PlatformIO；烧录自动识别芯片协议（STC89/STC15/AT89/STM32/ESP32），STC 烧录前提醒冷启动
+- **环境体检 doctor**：扩展、工具链、模板目录一屏检查，缺什么点一下就能修
+- **模板生态**：`installTemplate` 从 git 仓库装模板、`templateDoctor` 校验模板质量
+- **context.md**：建工程自动生成 AI 助手上下文文件（给 Copilot/Claude 用）
 
-- **环境配置是劝退第一步** 学 51 单片机想用 VSCode + SDCC 代替 Keil，
-  得在网上翻半天教程：装编译器、配头文件路径、改链接参数……配完自己都
-  记不清动过哪些地方，换台电脑全部重来
-- **每换一种芯片就换一套 IDE** 51 用 Keil，STM32 用 CubeIDE，ESP32 又是
-  ESP-IDF——快捷键、构建流程、烧录方式全都不一样
-- **开新工程没有仪式感，全是体力活** 复制上一个工程 → 删旧代码 → 改工程
-  名 → 改配置 → 祈祷还能编译
+## 快速开始
 
-Dev Wizard 把这三件事全部自动化：
-
-1. **`setup.ps1` 一键配环境**——工具链自动下载安装、模板自动生成、扩展自动
-   装好、VSCode 配置自动写好（已有环境自动复用，不重复下载）
-2. **向导一键建工程**——模板就是"一个能编译的完整工程"，选类型、起名字，
-   复制-改名-打开一气呵成
-3. **统一的开发体验**——所有芯片都在同一个编辑器里：同样的快捷键、同样的
-   构建按钮（F7）、同样的产物目录
-
-## 服务对象 / Who is this for
-
-| 你是… | 你会得到… |
-|---|---|
-| **单片机初学者** | 跑一遍 `setup.ps1`，环境、模板、编译按钮全部就位。51/STM32 之旅从写代码开始，而不是从配环境开始 |
-| **多平台嵌入式开发者** | STC51、STM32、ESP32 换着做？新工程零成本起步，工具链路径一次配好终身受用 |
-| **老师 / 实验室管理员** | `setup.ps1` 幂等可重复执行，给整个机房统一部署开发环境就一行命令 |
-| **任何 VSCode 重度用户** | 工程类型完全由你的模板目录决定——加一种语言/平台/框架，就是往文件夹里放一个目录 |
-
-## 设计哲学 / Design notes
-
-- **向导只是入口，模板才是资产** 扩展本体刻意保持两百行以内；每个模板
-  是一个"能编译的完整工程"，沉淀的是工具链配置经验
-- **模板即文件夹** 没有 DSL、没有构建步骤——放一个目录就能出现在向导里，
-  分享模板 = 分享文件夹
-- **零依赖** 纯 VSCode API，不拖 node_modules，clone 即源码，zip 即安装包
-
----
-
-## 快速开始 / 从零到编译
-
-> 适用：Windows 10/11，一台**什么开发环境都没装**的电脑。
-> 全程约 10–20 分钟（视网速），总共下载约 310 MB，需要你动手的就 3 次。
-
-### 第 0 步：安装前置软件
-
-只需要两样，全部一路"下一步"即可：
-
-1. **VSCode**（必需）
-   - 官网下载：<https://code.visualstudio.com/>
-   - ⚠️ 安装时请**勾选"添加到 PATH"**（"其他任务"页的第一个选项，默认已勾选，
-     别取消）。脚本靠 `code` 命令安装扩展，没勾会报错。
-2. **Git**（推荐，不是必需）
-   - 官网下载：<https://git-scm.com/download/win>
-   - 全部默认即可。Git 只是方便你克隆/更新本项目；
-     不想装 Git？见[下一步的 ZIP 方式](#第-1-步拿到项目)。
-
-> 已经装过 VSCode / Git？跳过本步，直接往下走。
-
-### 第 1 步：拿到项目
-
-**方式 A（推荐）：git clone**
-
-打开"开始菜单 → Git → Git Bash"（或 PowerShell），逐行执行：
-
-```bash
+```powershell
 git clone https://github.com/linsea666/dev-wizard
 cd dev-wizard
+powershell -ExecutionPolicy Bypass -File scripts\setup.ps1
 ```
 
-**方式 B：直接下载 ZIP（不想装 Git）**
+重启 VSCode → 向导自动弹出 → 选模板建工程 → `F7` 编译。
+`setup.ps1` 支持组件化：`-Component python` 只装单组件、`-OnlyFix` 自动补缺失（详见 [docs/tutorial.md](docs/tutorial.md)）。
 
-打开 <https://github.com/linsea666/dev-wizard>，点绿色的 **Code** 按钮 →
-**Download ZIP**，解压到任意位置（路径建议不要带中文；
-含空格的路径已被 `712ea1d` 的引号保护，可以正常用），
-然后在解压出来的 `dev-wizard-main` 文件夹里打开终端继续。
+已有环境、只想装扩展？手动方式： Releases 下载 `.vsix` → VSCode `扩展面板 … → 从 VSIX 安装` → 设置里把
+`devWizard.templatesRoot` 指向本仓库的 `templates/` 目录。
 
-### 第 2 步：运行一键配置脚本 setup.ps1
+## 内置模板
 
-在本项目文件夹里打开 PowerShell（资源管理器地址栏输入 `powershell` 回车），
-执行：
+| 模板 | 芯片 | 编译 | 烧录 | 内置示例 |
+|---|---|---|---|---|
+| stc51-base | STC15F104W | SDCC | stcgal（串口，冷启动） | 空白入口 + stc15 库 |
+| stc89-base | STC89C51RC | SDCC | stcgal `-P stc89`（串口，冷启动） | 板载 LED @ P2.2 闪烁 |
+| at89s51-base | AT89S51 | Keil C51 / SDCC | USBasp + avrdude（SPI-ISP） | Keil 语法 LED + SDCC 备份 |
+| stm32-base | STM32F103C8T6 等 | ARM GCC | OpenOCD（SWD） | 标准库点灯 |
+| esp32-base | ESP32 | ESP-IDF | `idf.py flash` | CMake 骨架 |
+| python-base | — | Python | — | main.py + conda 环境选择 |
+| c-base / cpp-base | — | MinGW / MSVC | — | CMake 控制台工程 |
 
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/setup.ps1
-```
+## 命令速查（Ctrl+Shift+P 搜 "Dev Wizard"）
 
-> 为什么加 `-ExecutionPolicy Bypass`？Windows 默认禁止运行未签名的 ps1 脚本，
-> 这个参数只对本次运行生效，不会改动你的系统安全策略。
-
-脚本会问你一句话：
-
-```
-Tools install root [C:\dev]:
-```
-
-**工具链装哪里？直接回车 = 装到 `C:\dev`**；也可以输入别的位置，
-比如 `D:\embedded`（路径不要带中文；含空格的路径也行）。随后全自动，无需值守：
-
-```
-[0/10] VS Code found.
-[1/10] Tools: C:\dev  Templates: C:\dev\templates  Projects: C:\dev\projects
-[2/10] Installing SDCC (+ runtime libraries) ...   ← 8051 编译器，~15 MB
-[3/10] Installing Arm GNU Toolchain (xpack, ~250 MB) ...  ← STM32 编译器
-[4/10] Installing OpenOCD (xpack) ...              ← 烧录/调试器，~30 MB
-[5/10] Installing Python 3.12 (portable build) + stcgal ...  ← 便携版，不碰系统 Python
-[6/10] Installing CMake 3.30 (C/C++ 构建系统) ...  ← ~45 MB
-[7/10] Installing MinGW-w64 GCC/G++ (C/C++ 编译器) ...  ← ~110 MB
-[8/10] Generating template library ...
-      template ready: stc51-base ... c-base ... cpp-base ...
-[9/10] Installing VS Code extensions ...
-[10/10] Writing VS Code user settings + Updating user PATH (python / sdcc / mingw / cmake) ...
-=== DONE ===
-```
-
-- 某一步显示黄色 `skipped - re-run setup later`？**直接重新运行同一条命令**，
-  脚本幂等：装好的自动跳过，只补缺的；下载支持断点续传。
-- 全程只有一个交互（问安装路径），其余时间可以挂机。
-- **你原有的 VSCode 设置不会丢，但会被规范化重写**：第 10 步会往
-  `settings.json` 里写入工具链与向导相关配置（如 `cmake.cmakePath`、
-  `devWizard.templatesRoot`、`devWizard.projectsRoot`、`EIDE.*`、
-  `python.defaultInterpreterPath` 等），脚本会先读取你的现有
-  设置、合并后再整体写回（实测原有配置 100% 保留）。副作用是注释会被去掉、
-  单引号会写成 `\u0027` 形式。**原始文件已备份在同目录的
-  `settings.json.bak-setup`**，需要时照它恢复就行。
-
-### 第 3 步：重启 VSCode
-
-**完全退出** VSCode（不是只关窗口：右下角托盘图标也退掉），再重新打开。
-这样它才会读到新写入的配置和 PATH。
-
-### 第 4 步：首次使用向导
-
-启动后约 2.5 秒，向导自动弹出，选项如下：
-
-| 选项 | 行为 |
+| 命令 | 用途 |
 |---|---|
-| **继续上次的工作** | 打开你上次用 VSCode 的工程（首次显示"暂无记录"） |
-| **开始新工程（六种类型）** | 进入命名步骤 |
-| **退下吧，我自己来 / I'll take it from here** | 关闭向导，本次不再打扰 |
+| what are we doing today? | 打开启动向导 |
+| build / flash | 一键构建 / 一键烧录（自动识别工程与芯片） |
+| environment check | 环境体检（可点击修复） |
+| template doctor | 模板体检（字段校验/引用检查） |
+| install / update / uninstall / browse templates | 模板注册表：装/更/卸/逛 |
+| write context.md | 生成/更新 AI 助手上下文 |
+| git init | 初始化 git 并提交首版 |
 
-选择"新建 STC51 工程"后，给工程起个名字（回车确认），命名规则如下：
+> STC 系列烧录口诀：**点烧录 → 板子断电再上电**（STC 冷启动进 ISP，stcgal 会自动等）。
 
-- 命名规则：**字母 / 数字 / 下划线 / 中划线**，例如 `my-first-led`；
-- 工程会创建到向导让你选的位置下的 `<工程名>\`：命名后向导弹出文件夹选择框，
-  默认落在 `devWizard.projectsRoot`，没设就用 `templatesRoot`，也可选任意目录
-  （如 `C:\dev\projects\`）；随后自动改好 EIDE 工程名、重命名工作区文件，
-  然后**自动打开新窗口**进入工程。
+## 写自己的模板
 
-几点向导行为说明：
-
-- 按 `Esc` 或点开别处？向导会自动弹回来——**只有做出选择它才会消失**
-  （这是刻意设计，不想看到就选"退下吧，我自己来"）；
-- 想再次唤出：`Ctrl+Shift+P` → 输入 **what** → 选
-  **Dev Wizard: what are we doing today?** 回车；
-- 不想每次启动都弹：设置里把 `devWizard.showOnStartup` 改为 `false`。
-
-### 环境体检 / Doctor（可选，排错利器）
-
-装好环境后若编译/烧录报工具链相关错误，先跑一遍体检，省得瞎猜：
-
-`Ctrl+Shift+P` → 输入 **check** → 选 **Dev Wizard: environment check (环境体检)** 回车。
-向导会列出一张 ✅ / ⚠ / ✗ 清单：
-
-- **VS Code 版本** 是否 ≥ 1.80
-- **4 个扩展**：EIDE、Cortex-Debug、CMake Tools、Python 是否都已装
-- **工具链是否在 PATH**：`arm-none-eabi-gcc`(STM32)、`sdcc`(STC51 / AT89S51 编译)、
-  `packihx`(SDCC 的 ihx→hex)、`openocd`(调试)、`python`、`stcgal`(STC 烧录)、
-  `avrdude`(AT89S51 的 USBasp 下载，**可选**)、`gcc`/`g++`(C/C++)、`cmake`(C/C++)
-- **SDCC 版本**：51 系列直接读 `sdcc -v` 的版本号，装错版本一眼看得出
-- **模板目录** `devWizard.templatesRoot` 是否已配置、并发现了几个模板
-- **EIDE 路径**：`EIDE.ARM.GCC.InstallDirectory` / `EIDE.SDCC.InstallDirectory`
-  是否填好、目录是否真实存在（含 `bin\`）
-
-每项 ✗ 都会给出修复方向（重跑 `setup.ps1`、在 EIDE 设置里指向工具链、或去设置里填
-`templatesRoot`）；⚠ 多半是「还没用到、暂时可忽略」（比如没装 avrdude，只是暂时
-不能烧 AT89S51）。
-
-### 第 5 步：编译你的第一个工程
-
-新工程里已经放好一个可以直接编译的空白入口（STC51 是 `source/main.c`，
-带 STC15 官方库；AT89S51 是 `src/main.c`）。打开工程后：
-
-- **编译**：按 `F7`（或点底部状态栏的 **Build**），EIDE 开始构建，
-  产物在工程的 `build\Debug\` 目录（51 工程是 `.hex`，STM32 是 `.elf/.hex`）；
-- **改代码**：编辑 `source/main.c` 里 `while(1)` 中的内容，保存后再按 `F7`。
-
-到这里，从零到编译的流程就完成了。往下看[各工程类型指南](#各工程类型使用指南)
-了解烧录、调试和其余类型。
-
----
-
-## 各工程类型使用指南
-
-### 🔩 STC51（8051 / STC15 系列）
-
-- **编译** `F7`：SDCC 编译，STC15 官方库已放进 `libraries/stc15_lib/`，
-  头文件路径已配好，入口 `source/main.c`；
-- **烧录**：先用 USB-TTL 串口板连接单片机（TXD→P3.0/RXD，RXD→P3.1/TXD，
-  GND 共地），点状态栏 **Flash** 或 `Ctrl+Shift+B` 选 `flash` 任务。
-  脚本底层用 [stcgal](https://github.com/grigorig/stcgal)（已自动装好）；
-  stcgal 进入等待后，给单片机**断电再上电**即可进入 ISP 下载模式；
-- **晶振频率**：模板默认按 16 MHz 配置（`.eide/stc.flash.json` 里的 `oscFreq`），
-  与你板子不符就改这个值，否则串口波特率会不准；
-- 换型号：`libraries/stc15_lib/config.h` 里选择芯片与主频。
-
-### 🔌 AT89S51（经典 8051）
-
-- **默认编译器是 Keil C51**（本机装了 `E:\keilc51v957` 就能用）：教材上的
-  Keil 语法——`#include <reg51.h>`、`sfr P1=0x90;`、`sbit k=P1^0;`、
-  `data` / `code`、`interrupt 1 using 1`——**原样编译，不用改一个字**。
-  按 `Ctrl+Shift+B` 跑默认任务，或命令行：
-
-  ```powershell
-  .\build-keil.ps1              # C51 → BL51 → OH51，产物 build\Debug\<工程名>.hex
-  .\build-keil.ps1 -Flash       # 编完顺便用 USBasp + avrdude 下载
-  .\build-keil.ps1 -KeilRoot D:\Keil_v5   # 手动指定 Keil 目录
-  ```
-
-  脚本按 `-KeilRoot` → `KEIL_ROOT` → `E:\keilc51v957` → `C:\Keil_v5` 找 Keil，
-  并打印 `Program Size: data=… code=…` 容量占用；
-- **SDCC / EIDE 那条路还在**：`F7` 用 SDCC 走 `mcs51` 目标，寄存器定义用
-  SDCC 自带的 `<at89x51.h>`（**不用**把 Keil 的 `reg51.h` 拷进工程），
-  引脚与晶振定义在 `src/board.h`（按编译器自动切头文件）。注意两种语法
-  不通用：`sfr`/`sbit` SDCC 编不了，`__sbit __at` Keil 也编不了——
-  模板里 `src/main.c` 是 Keil 风格、`src/main_sdcc.c.example` 是 SDCC
-  风格对照，想走哪条路就把哪个文件名换成 `main.c`；
-- **不装 EIDE 也能用 SDCC 编译**：命令行直接跑
-
-  ```powershell
-  .\build.ps1              # 编译，产物 build\Debug\<工程名>.hex（如 myproj.hex）
-  .\build.ps1 -Clean       # 先删掉上次的产物再编译
-  ```
-
-  脚本会自己找 SDCC（`-SdccRoot` → `SDCC_ROOT` → `PATH` → 常见安装路径），
-  编译参数和产物路径与 EIDE（F7）**完全一致**（都是
-  `build\Debug\<工程名>.hex`），并打印 Flash/RAM 占用；
-- **烧录**：AT89S51 用 SPI 方式 ISP（MOSI/MISO/SCK 就是 P1.5/P1.6/P1.7），
-  主流做法是 **USBasp 编程器 + avrdude**：
-
-  ```powershell
-  avrdude -c usbasp -p at89s51 -U flash:w:build\Debug\myproj.hex:i
-  ```
-
-  这条命令已经写进模板的 `.eide/eide.yml`（`uploadConfigMap.Custom`），
-  EIDE 里显示为 **Custom CLI** 烧录器，所以 EIDE 的烧录按钮也能直接用
-  （前提是 avrdude 在 PATH 里）。用 ProgISP 之类的图形工具直接烧
-  `build\Debug\<工程名>.hex` 也行。
-  ⚠️ AT89S51 用不了 EIDE 的内置烧录器（stcgal / openocd / pyocd /
-  jlink / stlink 都不认），所以才走 `Custom` 自定义命令行；
-- **容量**：AT89S51 是 4 KB Flash / 128 B RAM（AT89S52 是 8 KB），超了会
-  链接报错 `Insufficient ROM/EPROM/FLASH memory`，
-  `build\Debug\<工程名>.mem` 里能看到实际占用。换 AT89S52 时把
-  `.eide/eide.yml` 的 `--code-size` 和 `build.ps1 -CodeSize` 一起改成 `8192`。
-
-### ⚡ STM32（F103 为例，标准库）
-
-- **编译** `F7`：Arm GNU Toolchain 编译，CMSIS + 标准外设库已就位，
-  链接脚本 `stm32f1x_64KB_flash.ld` 对应 64KB Flash 型号（C8T6）；
-- **调试** `F5`：OpenOCD 已配好（`cortex-debug.openocdPath`），
-  接上调试器（ST-Link/J-Link）直接按 `F5` 打断点、看变量；
-- **烧录**：模板默认按 J-Link 配置；用 ST-Link 的同学可以直接 `F5` 借助
-  OpenOCD 下载，或在 EIDE 的烧录配置里切换烧录器；
-- 换容量型号：同时修改链接脚本里的 FLASH/RAM 大小与启动文件
-  （`startup_stm32f10x_md.s` 对应中容量）。
-- **选芯片**：用向导新建 STM32 工程时，选完模板还会让你挑具体型号
-  （F103C8T6 / F407VGT6 / G030F6P6），选中的型号会替换工程里的 `<mcu>` 占位符——
-  链接脚本、启动文件、CMSIS 设备头都能按芯片区分（见下方[编写模板](#authoring-templates--编写模板)的 `mcus` 字段）。
-
-### 📡 ESP32
-
-向导创建的是 **ESP-IDF 工程骨架**（CMake 结构，`main/main.c` 入口）。
-ESP-IDF 本身体积较大，setup 脚本不自动安装；请按
-[ESP-IDF 扩展](https://marketplace.visualstudio.com/items?itemName=espressif.esp-idf-extension)
-的引导安装框架（扩展内可设镜像加速），之后用扩展面板的 Build/Flash 按钮。
-
-### 🐍 Python
-
-便携版 Python 3.12 已装在 `<安装位置>\python312`（pip 已换清华源），
-`python.defaultInterpreterPath` 已指向它——新建工程后 `main.py` 直接
-`F5` 运行或点右上角运行按钮。不需要任何额外配置。
-
-**装了 Anaconda / Miniconda？** 向导建 Python 工程时会弹出
-**conda 环境选择器**：`base` 和所有 `envs\` 下的环境都会列出来，
-选中的环境会被写进该工程的 `.vscode/settings.json`
-（`python.defaultInterpreterPath`），实现"每个工程绑一个环境"。
-conda 的位置自动探测（也认 `python.condaPath` 设置），探测不到时
-行为和以前完全一样（走便携版 3.12）；特殊安装路径可在设置里手动填
-`devWizard.condaRoot`。conda 不会、也不需要进 PATH。
-
-### ✨ C / C++
-
-CMake 控制台工程骨架（`CMakeLists.txt` + `main.c/main.cpp`）。
-
-**编译环境由 `setup.ps1` 一键部署**，无需任何手动配置：它会把
-**MinGW-w64 GCC/G++** 装到 `<安装位置>\mingw64`、**CMake** 装到
-`<安装位置>\cmake-*`，并把两者的 `bin` 加进用户 PATH、写
-`cmake.cmakePath`。向导新建工程后，CMake Tools 能直接自动识别编译器，
-按 `F7`（或状态栏 **Build**）即可编译。
-
-如果你更想用 MSVC：装 Visual Studio 勾选"使用 C++ 的桌面开发"，
-从"Developer PowerShell"启动 VSCode，CMake Tools 选择对应 kit 即可。
-
----
-
-## setup.ps1 到底做了什么？（点开看明细）
-
-| 步骤 | 内容 | 下载源 | 大小 |
-|---|---|---|---|
-| 1 | 询问安装位置（默认 `C:\dev`，检测到已有安装可复用） | — | — |
-| 2 | SDCC 4.x（8051 编译器）+ 自动补齐 MSYS2 运行库（否则裸机装完 sdcc 无法启动） | 清华 TUNA / MSYS2 源 | ~15 MB |
-| 3 | Arm GNU Toolchain 13.2（STM32 编译器） | GitHub Release（ghfast.top 加速） | ~250 MB |
-| 4 | OpenOCD 0.12（STM32 烧录调试） | GitHub Release（ghfast.top 加速） | ~30 MB |
-| 5 | Python 3.12 + 清华 pip 源 + stcgal（STC51 烧录工具） | npmmirror 镜像 | ~28 MB |
-| 6 | CMake 3.30（C/C++ 构建系统） | GitHub Release（ghfast.top 加速） | ~45 MB |
-| 7 | MinGW-w64 GCC/G++（C/C++ 编译器）+ binutils + CRT/headers + winpthreads + make + gettext-runtime + windows-default-manifest（完整自包含树，开箱即编译/链接/运行） | 清华 TUNA / MSYS2 源 | ~110 MB |
-| 8 | 生成模板库（自动替换路径占位符） | 本仓库 | — |
-| 9 | 安装扩展：EIDE / Python / Cortex-Debug / CMake Tools / 本扩展 | VSCode 市场 | — |
-| 10 | 合并写入 VSCode 用户设置（已有设置会先备份为 `settings.json.bak-setup`），并把 python / sdcc / mingw / cmake 加入用户 PATH | — | — |
-
-- **幂等**：随时可重跑，已安装的工具自动跳过；下载中断重跑即可续上
-- **不覆盖**：已有 VSCode 设置只会合并更新工具链路径，其他键原样保留；
-  写入前自动备份为 `settings.json.bak-setup`
-- **下载校验**：所有下载按文件头（magic bytes）校验，镜像返回错误页会被
-  识别并自动重试，不会把坏文件当成下载成功
-- **PATH**：把便携 Python、其 Scripts 目录（stcgal）、`sdcc\bin`、
-  `mingw64\bin`、`cmake-*\bin` 追加到 **用户 PATH**
-  （幂等，不重复添加；新开的终端/重启后的 VSCode 生效）
-- **目录布局**：
-
-```
-C:\dev\
-├── sdcc\                        ← 8051 编译器（含运行库，自包含）
-├── xpack-arm-none-eabi-gcc-*\   ← STM32 编译器
-├── xpack-openocd-*\             ← 调试/烧录
-├── mingw64\                     ← C/C++ 编译器（gcc/g++，含运行库）
-├── cmake-*\                     ← C/C++ 构建系统
-├── python312\                   ← 便携 Python + stcgal
-├── templates\                   ← 生成的模板库（向导读这里）
-└── projects\                    ← 新建工程的存放处
-```
-
----
-
-## Install / 安装教程（已有环境的用户）
-
-> 如果你已经配好了各工具链，可以跳过 setup.ps1，手动安装扩展 +
-> 指向自己的模板目录即可；无需编译、无需 node_modules，一分钟装好。
-
-### 第 1 步：拿到 VSIX 安装包
-
-**方式 A（推荐）：直接从 Release 下载**
-
-<https://github.com/linsea666/dev-wizard/releases/latest/download/dev-wizard.vsix>
-
-约 18 KB，免登录、点击即下。这个链接不带版本号，永远指向最新版；
-想挑特定版本请到 [Releases 页面](https://github.com/linsea666/dev-wizard/releases)。
-
-**方式 B：从源码自己打包**
-
-仓库不再把预打的 `.vsix` 提交进版本库（见 `b6af19c` —— 二进制不入库，
-每次打包都可复现，也避免文档与代码不同步）。想自己打就 `make-vsix.ps1`：
-
-```powershell
-git clone https://github.com/linsea666/dev-wizard.git
-cd dev-wizard
-powershell -ExecutionPolicy Bypass -File scripts/make-vsix.ps1
-# 产出 dev-wizard-1.1.3.vsix（约 18 KB，无外部依赖）
-```
-
-> 没有 Git？点仓库页的绿色 **Code → Download ZIP**，解压后在
-> `scripts` 目录里跑 `make-vsix.ps1` 效果完全一样。
->
-> 注意：CI 的 Actions 工件（Artifacts）里也有 .vsix，但
-> **下载工件要求登录 GitHub 账号**，所以上面的 Release 链接才是给
-> 别人用的那条。
-
-### 第 2 步：安装（二选一）
-
-**图形界面**（鼠标点两下）：
-
-1. 打开 VSCode → 左侧扩展面板（`Ctrl+Shift+X`）
-2. 点面板标题栏右上角的 `···`
-3. 选 **从 VSIX 安装...(Install from VSIX...)**
-4. 选中下载好的 `.vsix` 文件
-
-**命令行**：
-
-```powershell
-code --install-extension .\Downloads\dev-wizard-1.1.3.vsix
-```
-
-### 第 3 步：告诉向导你的模板放在哪（**先配这项，再重启**）
-
-向导的工程类型来自 `devWizard.templatesRoot` 指向的目录——**每个子文件夹就是一个工程类型**：
+模板 = 一个文件夹，放进 `templatesRoot` 即出现在向导里。可选的 `.wizard.json` 清单：
 
 ```jsonc
-// VSCode 设置 (Ctrl+, 打开 settings.json)
 {
-    "devWizard.templatesRoot": "D:/my-templates",   // 你的模板库
-    "devWizard.projectsRoot":  "D:/my-projects"     // 新工程的存放位置（可省略）
+    "label": "新建 STC89 工程",
+    "description": "SDCC + EIDE，点灯示例",
+    "icon": "chip",
+    "open": "workspace",          // 或 "folder"
+    "mcus": ["STM32F103C8T6"],    // 二级芯片选择，填入 <mcu> 占位符
+    "defaultName": "led-demo",    // 工程名默认值
+    "pythonEnv": true,            // 建工程时弹 conda 环境选择器
+    "variables": [],              // v2：自定义变量（{{name}} 占位）
+    "exclude": ["build/"],        // 复制时排除
+    "afterCreate": []             // v2：创建后执行的命令（默认逐条确认）
 }
 ```
 
-> ⚠️ **顺序很重要：请在重启 VSCode 之前配好它。** 向导一启动就会弹出，
-> 此时若 `templatesRoot` 还是空的，你只会看到"未找到模板 / No templates found"，
-> 而且**按 Esc 关不掉**——向导会一直弹回来，只有做出选择才会消失。
-> 真卡住了就先选"退下吧，我自己来 / I'll take it from here"退出，配好设置再重启。
+工程名会替换模板里的 `<name>`/`{{name}}`，EIDE 工程的 `eide.yml` 自动同步改名。
+更多字段与占位符见 [docs/tutorial.md](docs/tutorial.md)。
 
-还没有模板？随便建个文件夹，往里放一个能编译/运行的小工程，再放一个可选的
-`.wizard.json` 描述文件（详见下方 [Authoring templates](#authoring-templates--编写模板)），
-它就会出现在向导里。
+## 配置
 
-### 第 4 步：重启 VSCode
-
-`Ctrl+Shift+P` → 输入 **Reload Window（重新加载窗口）** → 回车
-启动后向导自动弹出。
-
-### 第 5 步：验证
-
-重启后向导自动弹出，选择一种工程类型 → 输入工程名 → 自动创建并打开。
-按 Esc 关掉向导？它会自动弹回来——**只有做出选择它才会消失**。
-想再次唤出：`Ctrl+Shift+P` → **Dev Wizard: what are we doing today?**
-
----
-
-## Configuration / 配置
-
-| Setting | Default | Description |
+| 设置 | 默认 | 说明 |
 |---|---|---|
-| `devWizard.showOnStartup` | `true` | Show wizard on every VS Code start |
-| `devWizard.projectsRoot` | same as templatesRoot | Where new projects are created |
-| `devWizard.templatesRoot` | *(empty)* | Folder of project templates — **this is the only thing you must set** |
+| `devWizard.showOnStartup` | `true` | 启动时弹向导 |
+| `devWizard.persistOnEsc` | `false` | Esc 后是否继续重弹（旧行为） |
+| `devWizard.templatesRoot` | — | 模板目录（必配） |
+| `devWizard.projectsRoot` | — | 新工程存放目录 |
+| `devWizard.condaRoot` | 自动探测 | conda 安装根目录 |
+| `devWizard.writeContextFile` | `true` | 建工程时生成 context.md |
+| `devWizard.gitInitOnCreate` | `false` | 建工程后询问 git init |
+| `devWizard.allowAfterCreate` | `ask` | afterCreate 命令：ask/allow/deny |
 
-Example:
+## FAQ
 
-```json
-{
-    "devWizard.templatesRoot": "D:/my-templates",
-    "devWizard.projectsRoot":  "D:/my-projects"
-}
-```
+**已有 Keil/SDCC 环境会冲突吗？** 不会。工具装在独立目录，不写注册表不抢 PATH；
+Keil 由 `build-keil.ps1` 自动探测（`-KeilRoot` 可指定）。
 
-## Authoring templates / 编写模板
+**向导每次都弹很烦？** 按 Esc 收起（本次不再弹）；或在设置关 `showOnStartup`。
 
-A template is just a folder inside `templatesRoot`:
+**烧录失败提示 Waiting？** STC 芯片在等你冷启动——给板子断电再上电即可。
 
-```
-my-templates/
-├── stc51-base/          ← template = a complete project you can already build
-│   ├── .wizard.json     ← (optional) how it appears in the wizard
-│   ├── .eide/eide.yml
-│   ├── source/main.c
-│   └── ...
-├── at89s51-base/        ← AT89S51 工程：Keil C51（默认）/ EIDE+SDCC 双编译器
-│                          （独立构建脚本 build-keil.ps1 / build.ps1）
-│   ├── .wizard.json
-│   ├── .eide/eide.yml
-│   ├── src/main.c
-│   ├── build.ps1
-│   └── ...
-├── python-base/
-│   ├── .wizard.json
-│   └── main.py
-└── anything-else/       ← no manifest? wizard shows the folder name
-```
+## 卸载
 
-`.wizard.json` (all fields optional):
+VSCode 扩展面板卸载 Dev Wizard；工具链目录（默认 `C:\dev`）直接删除即可。
 
-```json
-{
-    "label":       "新建 STC51 工程",     // list title
-    "description": "SDCC + EIDE ...",     // list subtitle
-    "icon":        "chip",                // any codicon name
-    "open":        "workspace",           // "workspace" | "folder" (auto-detected if omitted)
-    "replace": [                          // text replaced with the project name after copying
-        { "files": ["CMakeLists.txt"], "find": "esp32-base" }
-    ]
-}
-```
-
-其他可选字段：`mcus`（字符串数组）——声明后，向导在选完该模板会再弹一层「选芯片」，
-并把工程里的 `<mcu>` 占位符递归替换成所选型号。适合 STM32 这类「同一模板多种芯片」的场景
-（见上方 STM32 模板的 `mcus: ["STM32F103C8T6", "STM32F407VGT6", "STM32G030F6P6"]`）。
-
-Automatic behaviour, no manifest needed:
-
-- `.eide/eide.yml` (EIDE ≥ 3.27) or `.eide/eide.json` (older) → its `name`
-  field is set to the project name
-  ([EIDE](https://marketplace.visualstudio.com/items?itemName=cl.eide) embedded projects)
-- a `*.code-workspace` in the template root is renamed to `<name>.code-workspace`
-  and opened instead of the plain folder
-- the template's `build/` output folder is stripped from the copy
-
-### Toolchain path tokens / 工具链路径占位符
-
-Templates that reference tools installed by `setup.ps1` should use **path tokens**
-instead of absolute paths — `setup.ps1` replaces them with the real locations on
-each machine (so the same template works everywhere):
-
-| Token | Replaced with | Typical use |
-|---|---|---|
-| `__SDCC_ROOT__` | SDCC install root | EIDE `misc-controls` include/lib flags for 8051 |
-| `__ARM_GCC_ROOT__` | Arm GNU Toolchain root | custom linker paths |
-| `__OPENOCD_ROOT__` | OpenOCD root | debug scripts |
-| `<mcu>` | 向导中选中的芯片型号（仅当模板 `mcus` 声明时生效） | STM32 模板区分链接脚本/启动文件/CMSIS 设备 |
-
-Example (from the bundled STC51 template, `.eide/eide.yml`):
-
-```yaml
-misc-controls: >-
-  --iram-size 128 --xram-size 0 --code-size 4096
-  -I__SDCC_ROOT__/share/sdcc/include
-  -I__SDCC_ROOT__/share/sdcc/include/mcs51
-  -L__SDCC_ROOT__/share/sdcc/lib/small
-```
-
-> Tokens are resolved when `setup.ps1` materializes the template library.
-> On machines set up without the script, put the real paths in the template
-> yourself (or run setup.ps1 pointing at your existing tools folder — it
-> detects and reuses installed tools).
-
-## Recommended companions / 推荐搭配
-
-| Wizard type | Needs |
-|---|---|
-| STC51 | [EIDE](https://marketplace.visualstudio.com/items?itemName=cl.eide) + [SDCC](https://sdcc.sourceforge.net/) + stcgal（setup 自动装） |
-| AT89S51 | 默认 **Keil C51**（本机装 Keil 即可，命令行脚本 `build-keil.ps1`）；也支持 EIDE + SDCC（setup 自动装）；烧录用 [avrdude](https://github.com/avrdudes/avrdude) + USBasp（可选） |
-| STM32 | EIDE + Arm GNU Toolchain + OpenOCD（或 ST-Link 工具） |
-| ESP32 | [ESP-IDF extension](https://marketplace.visualstudio.com/items?itemName=espressif.esp-idf-extension) |
-| Python | [Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) |
-| C / C++ | [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) + MinGW（setup 自动装）或 MSVC |
-
----
-
-## 常见问题 FAQ
-
-**Q：会动我已有的 VSCode 配置吗？**
-
-不会覆盖。脚本只新增/更新工具链路径和向导相关键，其余原样保留；
-写入前自动备份为 `settings.json.bak-setup`（在同目录，随时可还原）。
-
-**Q：脚本可以重复运行吗？中途断网/关机了怎么办？**
-
-可以、且鼓励。幂等设计：装好的自动跳过，下载断点续传，重跑同一条命令即可。
-
-**Q：我系统里已经装过 Python / SDCC，会冲突吗？**
-
-不会。全部工具装在独立目录（默认 `C:\dev`），便携 Python 不写注册表、
-不影响系统版本；模板里写的是绝对路径，与你 PATH 里已有的工具互不干扰。
-
-**Q：支持 macOS / Linux 吗？**
-
-`setup.ps1` 仅支持 Windows 10/11。扩展本体是纯 VSCode API，跨平台——
-mac/Linux 用户按[手动安装](#install--安装教程已有环境的用户)操作即可，
-模板中的工具链路径自行填写。
-
-**Q：向导按 Esc 关不掉？**
-
-设计如此。选"退下吧，我自己来"即可关闭本次；
-或设置 `devWizard.showOnStartup: false` 彻底关闭开机弹出。
-
-**Q：如何加一种新的工程类型（比如 Arduino、Rust）？**
-
-往 `templatesRoot` 里放一个文件夹即可，无需改代码，见
-[编写模板](#authoring-templates--编写模板)。
-
-## 遇到问题？/ Troubleshooting
-
-| 现象 | 处理 |
-|---|---|
-| 提示 `无法将"code"项识别为 cmdlet` | VSCode 未装或没勾"添加到 PATH"；重装 VSCode 勾选后重开终端 |
-| 某步显示黄色 `skipped` / 某个工具下载失败 | **直接重跑 setup.ps1**——幂等设计，只补缺的（下载支持断点续传） |
-| 提示 `downloaded file is not a valid archive` | 镜像临时返回了错误页，脚本已自动删除坏文件；稍后重跑即可 |
-| SDCC 解压报 `extraction failed` | Windows 10 较老版本内置 tar 不支持 zstd；手动从 [TUNA](https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/mingw64/) 下载 sdcc 及 gcc-libs 等运行库包，用 [7-Zip](https://www.7-zip.org/) 解压到 `<安装位置>\sdcc` |
-| 向导里列表为空 / 显示"未找到模板" | 检查设置 `devWizard.templatesRoot` 是否指向模板目录 |
-| 新建工程后 EIDE 报找不到工具链 | 检查设置 `EIDE.SDCC.InstallDirectory` / `EIDE.ARM.GCC.InstallDirectory` 是否指向实际安装目录 |
-| F5 调试报 OpenOCD 相关错误 | 检查设置 `cortex-debug.openocdPath`；确认调试器驱动已装（ST-Link 需装驱动） |
-| 终端里 `python` / `stcgal` / `gcc` / `cmake` 不是内部命令 | PATH 是脚本新加的，**重开终端或重启 VSCode** 生效；或手动把 `<安装位置>\python312`、`mingw64\bin`、`cmake-*\bin` 加入 PATH |
-| 向导不自动弹出 | `Ctrl+Shift+P` → `Dev Wizard: what are we doing today?` 手动唤出；检查扩展是否已启用、`devWizard.showOnStartup` 是否为 `true` |
-| stcgal 烧录一直 waiting / 失败 | 给单片机断电重新上电进入 ISP 模式；检查 TXD/RXD 是否接反、晶振频率 `oscFreq` 是否与板子一致 |
-| 控制台窗口出现"选择"字样且停止滚动 | 不小心进入了标记模式：按 `Esc` 或回车恢复滚动 |
-
-## 卸载 / Uninstall
-
-1. **扩展**：VSCode 扩展面板找到 Dev Wizard → 卸载；
-2. **工具链**：直接删除安装目录（默认 `C:\dev`），便携工具无残留；
-3. **设置**：`settings.json` 里删除 `devWizard.*`、`EIDE.*`、
-   `cortex-debug.openocdPath`、`python.defaultInterpreterPath` 中不需要的键
-   （或还原 `settings.json.bak-setup` 备份）；
-4. **PATH**：系统设置 → 环境变量 → 用户变量 Path，删除对应的三条
-   （`...\python312`、`...\python312\Scripts`、`...\sdcc\bin`）。
-
-## License / 许可证
+## License
 
 [MIT](LICENSE)

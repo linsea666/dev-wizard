@@ -1,7 +1,10 @@
 {
     "label": "新建 AT89S51 工程",
-    "description": "SDCC + EIDE，8051 寄存器头与空白入口已配好，F7 直接编译",
+    "description": "Keil C51 语法默认（build-keil.ps1），SDCC 备份（build.ps1），EIDE 工程",
     "icon": "chip",
     "open": "workspace",
-    "defaultName": "at89s51-demo"
+    "defaultName": "at89s51-demo",
+    "group": "embedded",
+    "pick": "AT89S51 / AT89S52 — Atmel 经典 8051（教科书 reg51.h/sbit 语法）· Keil C51 或 SDCC 编译 · USBasp 下载器烧录（SPI-ISP，不占串口）",
+    "sort": 3
 }

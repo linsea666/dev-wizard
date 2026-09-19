@@ -36,7 +36,7 @@
  * ------------------------------------------------------------------------- */
 const fs = require('fs');
 const path = require('path');
-const { execSync, spawn } = require('child_process');
+const { execSync } = require('child_process');
 
 // Lazy-load vscode: only available inside the VS Code host process.
 // All functions that need it call getVs() at the top.
@@ -93,20 +93,82 @@ function detectSerialPorts() {
     }
 }
 
-/* Locate the built hex for a project: EIDE writes to <outDir>/<target>/,
- * the standalone build.ps1 writes to build/. Returns a project-relative path
- * (or a glob) to hand to the flasher. */
-function findHex(projectDir) {
-    const cands = [
-        path.join('build', 'Debug', 'main.hex'),
-        path.join('build', 'main.hex'),
-        path.join('build', 'Debug', 'firmware.hex'),
-        path.join('build', 'firmware.hex')
-    ];
-    for (const c of cands) {
-        if (fs.existsSync(path.join(projectDir, c))) return c.replace(/\\/g, '/');
+/* Locate a build artifact (.hex/.elf) for a project: EIDE writes to
+ * <outDir>/<target>/<project>.hex, build.ps1 writes to build\*.hex.
+ * Preference: <工程名>.hex > main/firmware.hex > 第一个命中。
+ * Returns a project-relative path, or null when nothing was built. */
+function findArtifact(projectDir, ext) {
+    ext = (ext || '.hex').toLowerCase();
+    const base = path.basename(projectDir);
+    const score = (f) => {
+        if (!f.toLowerCase().endsWith(ext)) return 9;
+        const stem = path.parse(f).name.toLowerCase();
+        if (stem === base.toLowerCase()) return 0;
+        if (stem === 'main' || stem === 'firmware') return 1;
+        return 2;
+    };
+    for (const d of [path.join('build', 'Debug'), path.join('build', 'Release'), 'build', '.']) {
+        const abs = path.join(projectDir, d);
+        let files = [];
+        try {
+            files = fs.readdirSync(abs);
+        } catch (e) {
+            continue;
+        }
+        const hits = files.filter((f) => score(f) < 9).sort((a, b) => score(a) - score(b));
+        if (hits.length) return path.join(d, hits[0]).replace(/\\/g, '/');
     }
-    return 'build/*.hex';
+    return null;
+}
+
+function findHex(projectDir) {
+    return findArtifact(projectDir, '.hex');
+}
+
+/* stcgal 协议推断：.eide/stc.flash.json（模板自带，与 EIDE 烧录按钮同一份配置）
+ * 最权威；其次按芯片前缀猜。STC8/STC12 有多套协议，猜错会白烧一次，留给用户选。 */
+function readEideFlashOptions(projectDir) {
+    try {
+        const yml = fs.readFileSync(path.join(projectDir, '.eide', 'eide.yml'), 'utf8');
+        // 注意用 [ \t]* 匹配同行值——\s 会跨行吞掉下一个键
+        const up = yml.match(/^[ \t]*uploader:[ \t]*(\S+)/m);
+        const op = yml.match(/^[ \t]*options:[ \t]*(\S+)/m);
+        if (up && up[1] === 'stcgal' && op) {
+            const j = JSON.parse(fs.readFileSync(path.join(projectDir, op[1]), 'utf8'));
+            if (j && j.device) return { device: j.device, baudrate: j.baudrate || '', oscFreq: j.oscFreq || '' };
+        }
+    } catch (e) {
+        /* fall through */
+    }
+    return null;
+}
+
+function stcProtocolFromMcu(mcu) {
+    if (/^STC89/i.test(mcu)) return 'stc89';
+    if (/^STC15/i.test(mcu)) return 'stc15';
+    return '';
+}
+
+/* 从工程文件推断 MCU 型号：context.md（建工程时生成）→ eide.yml deviceName */
+function detectMcu(projectDir) {
+    try {
+        const ctx = fs.readFileSync(path.join(projectDir, '.dev-wizard', 'context.md'), 'utf8');
+        const m = ctx.match(/\*\*MCU\*\*:\s*([^\s*]+)/);
+        if (m && m[1] && !/未指定/.test(m[1])) return m[1];
+    } catch (e) {
+        /* no context file */
+    }
+    try {
+        const yml = fs.readFileSync(path.join(projectDir, '.eide', 'eide.yml'), 'utf8');
+        const m = yml.match(/^deviceName:[ \t]*(.+)$/m);
+        if (m) {
+            const v = m[1].trim().replace(/^["']|["']$/g, '');
+            if (v && v !== 'null') return v;
+        }
+    } catch (e) {
+        /* not an eide project */
+    }
+    return '';
 }
 
 /* AT89 系列（AT89S51 / AT89S52 / AT89C51 …）：8 位 8051 内核，
@@ -245,39 +307,39 @@ function registerBuildTask(projectDir) {
     return task;
 }
 
-/* Flash command builder (returns the full command string + args). */
+/* Flash command builder (returns the full command string + args).
+ * opts: { mcu, serialPort, protocol, baud, oscFreq, programmer, openocdCfg } */
 function buildFlashCommand(projectDir, opts) {
     opts = opts || {};
-    const pt = detectProjectType(projectDir);
     const mcu = opts.mcu || '';
     const port = opts.serialPort || '';
+
+    // STC：协议优先级 = 显式传入（模板 stc.flash.json）> 芯片前缀推断
+    const protocol = opts.protocol || stcProtocolFromMcu(mcu);
+    if (protocol || /^STC/i.test(mcu)) {
+        const stcgal = which('stcgal');
+        if (!stcgal) return { ok: false, error: 'stcgal 不在 PATH（安装：pip install stcgal）' };
+        if (!port) return { ok: false, error: '未选择串口' };
+        const hex = findHex(projectDir);
+        if (!hex) return { ok: false, error: '找不到 .hex 产物——先编译（F7 或构建按钮）再烧录' };
+        const args = ['-p', port, '-P', protocol || 'stc89'];
+        if (opts.baud) args.push('-b', String(opts.baud));
+        if (opts.oscFreq) args.push('-t', String(opts.oscFreq));
+        args.push(hex);
+        return { ok: true, command: stcgal, args, cwd: projectDir, flasher: 'stcgal' };
+    }
 
     if (mcu.startsWith('STM32')) {
         const openocd = which('openocd');
         if (!openocd) return { ok: false, error: 'openocd 不在 PATH' };
         const boardCfg = opts.openocdCfg || `board/stm32f103c8t6.cfg`;
-        const elf = fs.existsSync(path.join(projectDir, 'build', 'firmware.elf'))
-            ? 'build/firmware.elf'
-            : 'build/*.elf';
+        const elf = findArtifact(projectDir, '.elf') || 'build/*.elf';
         return {
             ok: true,
             command: openocd,
             args: ['-f', boardCfg, '-c', `program ${elf} verify reset exit`],
-            cwd: projectDir
-        };
-    }
-
-    if (mcu.startsWith('STC')) {
-        const stcgal = which('stcgal');
-        if (!stcgal) return { ok: false, error: 'stcgal 不在 PATH' };
-        const hex = fs.existsSync(path.join(projectDir, 'build', 'firmware.hex'))
-            ? 'build/firmware.hex'
-            : 'build/*.hex';
-        return {
-            ok: true,
-            command: stcgal,
-            args: ['-p', port, hex],
-            cwd: projectDir
+            cwd: projectDir,
+            flasher: 'openocd'
         };
     }
 
@@ -291,11 +353,14 @@ function buildFlashCommand(projectDir, opts) {
                 error: 'avrdude 不在 PATH。AT89S51 需要 USBasp + avrdude 下载（也可用 ProgISP 等图形工具）'
             };
         }
+        const hex = findHex(projectDir);
+        if (!hex) return { ok: false, error: '找不到 .hex 产物——先编译（F7 或 .\\build-keil.ps1）再烧录' };
         return {
             ok: true,
             command: avrdude,
-            args: ['-c', opts.programmer || 'usbasp', '-p', at89Part(mcu), '-U', `flash:w:${findHex(projectDir)}:i`],
-            cwd: projectDir
+            args: ['-c', opts.programmer || 'usbasp', '-p', at89Part(mcu), '-U', `flash:w:${hex}:i`],
+            cwd: projectDir,
+            flasher: 'avrdude'
         };
     }
 
@@ -306,56 +371,59 @@ function buildFlashCommand(projectDir, opts) {
             ok: true,
             command: idfpy,
             args: ['flash'],
-            cwd: projectDir
+            cwd: projectDir,
+            flasher: 'idf'
         };
     }
 
-    return { ok: false, error: `未识别的 MCU 类型: ${mcu || '(空)'}` };
+    return { ok: false, error: `无法确定烧录方式——MCU: ${mcu || '(未识别)'}` };
 }
 
-/* Execute a flash command (with confirmation dialog). */
+/* Execute a flash. Everything runs in the integrated terminal so the output
+ * (stcgal 的握手等待、openocd 的进度) 实时可见、失败可诊断、命令可重发。
+ * STC 额外弹冷启动提示——"给板子重新上电"是新手必踩的坑。 */
 async function executeFlash(projectDir, opts) {
     const vscode = getVs();
     const cmd = buildFlashCommand(projectDir, opts);
     if (!cmd.ok) {
         vscode.window.showErrorMessage(`烧录失败: ${cmd.error}`);
-        return;
+        return false;
+    }
+    const fullCmd = `${cmd.command} ${cmd.args.join(' ')}`;
+
+    if (cmd.flasher === 'stcgal') {
+        const go = await vscode.window.showInformationMessage(
+            'STC 芯片需要冷启动：点「开始烧录」，然后给板子断电再上电——stcgal 会自动握手并写入。',
+            { modal: false },
+            '开始烧录'
+        );
+        if (go !== '开始烧录') return false;
+    } else {
+        const confirm = await vscode.window.showWarningMessage(
+            `即将执行烧录:\n${fullCmd}\n\n确认继续？`,
+            { modal: true },
+            '允许'
+        );
+        if (confirm !== '允许') return false;
     }
 
-    const confirm = await vscode.window.showWarningMessage(
-        `即将执行烧录:\n${cmd.command} ${cmd.args.join(' ')}\n\n确认继续？`,
-        { modal: true },
-        '允许'
-    );
-    if (confirm !== '允许') return;
-
-    return new Promise((resolve) => {
-        const proc = spawn(cmd.command, cmd.args, { cwd: cmd.cwd, stdio: 'pipe' });
-        const out = vscode.window.createOutputChannel('Dev Wizard Flash');
-        out.clear();
-        out.show();
-
-        proc.stdout.on('data', (d) => out.appendLine(d.toString()));
-        proc.stderr.on('data', (d) => out.appendLine(d.toString()));
-        proc.on('close', (code) => {
-            if (code === 0) {
-                vscode.window.showInformationMessage('✔ 烧录完成');
-                resolve(true);
-            } else {
-                vscode.window.showErrorMessage(`烧录失败（exit code ${code}）`);
-                resolve(false);
-            }
-        });
-        proc.on('error', (e) => {
-            vscode.window.showErrorMessage(`烧录进程错误: ${e.message}`);
-            resolve(false);
-        });
-    });
+    let term = vscode.window.terminals.find((t) => t.name === 'Dev Wizard Flash' && !t.exitStatus);
+    if (!term) term = vscode.window.createTerminal('Dev Wizard Flash');
+    term.show(true);
+    term.sendText(`cd "${cmd.cwd}"`);
+    term.sendText(fullCmd);
+    if (cmd.flasher === 'stcgal') {
+        vscode.window.showInformationMessage('stcgal 已在终端运行——若显示 Waiting，请给板子重新上电');
+    }
+    return true;
 }
 
 module.exports = {
     detectProjectType,
     detectSerialPorts,
+    detectMcu,
+    readEideFlashOptions,
+    stcProtocolFromMcu,
     generateContextFile,
     gitInit,
     registerBuildTask,
@@ -364,5 +432,6 @@ module.exports = {
     isAt89,
     at89Part,
     findHex,
+    findArtifact,
     which
 };

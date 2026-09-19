@@ -2,5 +2,8 @@
     "label": "新建 STC51 工程",
     "description": "SDCC + EIDE，STC15 库与空白入口已配好，F7 直接编译",
     "icon": "chip",
-    "open": "workspace"
+    "open": "workspace",
+    "group": "embedded",
+    "pick": "STC15F104W — 增强 8051 内核（8 脚迷你贴片，4K Flash，1T 速度）· SDCC 编译 · 串口 ISP 烧录（USB 转串口线，冷启动）",
+    "sort": 2
 }

@@ -10,6 +10,7 @@ const exp = require('./src/experience');
 
 const SKIP_KEY = 'devWizard.skipNext';
 const LAST_KEY = 'devWizard.lastProject';
+const CREATED_KEY = 'devWizard.lastCreated';
 
 function cfg() {
     return vscode.workspace.getConfiguration('devWizard');
@@ -54,7 +55,9 @@ function listTemplates(root) {
             variables: m.variables,
             exclude: m.exclude,
             afterCreate: m.afterCreate,
-            sort: m.sort
+            sort: m.sort,
+            group: m.group,
+            pick: m.pick
         });
     }
     out.sort((a, b) => a.sort - b.sort || a.label.localeCompare(b.label));
@@ -422,6 +425,8 @@ async function createProject(tpl, ctx, mcu) {
                 tpl.open === 'workspace' && fs.existsSync(path.join(dest, name + '.code-workspace'))
                     ? path.join(dest, name + '.code-workspace')
                     : dest;
+            // 记录给新窗口的 activate()：打开后弹带动作按钮的完成提示
+            ctx.globalState.update(CREATED_KEY, { name, dir: dest });
             await openTarget(ctx, target);
         }
     );
@@ -450,6 +455,25 @@ async function createProject(tpl, ctx, mcu) {
 /* ---------------------------------------------------------------------------
  * Wizard UI
  * ------------------------------------------------------------------------- */
+/* MCU 选择 + 创建（含二级芯片选择的模板共用这条路径） */
+async function startCreate(ctx, tpl) {
+    let mcu = null;
+    if (tpl.mcus.length) {
+        const m = await vscode.window.showQuickPick(
+            tpl.mcus.map((x) => ({ label: x })),
+            { placeHolder: `选择 ${tpl.label} 的芯片型号`, ignoreFocusOut: true }
+        );
+        if (!m) return true;
+        mcu = m.label;
+    }
+    return await createProject(tpl, ctx, mcu);
+}
+
+/* 分组入口的展示名 —— 未知分组回退为分组 id 本身 */
+const GROUP_LABELS = {
+    embedded: { label: '$(chip) 嵌入式工程 / Embedded', desc: '51 / STM32 / ESP32 —— 点进去选芯片' }
+};
+
 async function showWizardOnce(ctx, templates) {
     const last = ctx.globalState.get(LAST_KEY);
     const items = [
@@ -462,7 +486,30 @@ async function showWizardOnce(ctx, templates) {
 
     if (templates.length) {
         items.push({ kind: 'sep', label: '─'.repeat(24) + ' 开始新工程 / New project ' + '─'.repeat(24) });
+
+        // 按 .wizard.json 的 group 字段折叠：同组一个入口（二级菜单选芯片），
+        // 没有分组的模板照旧单列
+        const grouped = new Map();
+        const singles = [];
         for (const t of templates) {
+            if (t.group) {
+                if (!grouped.has(t.group)) grouped.set(t.group, []);
+                grouped.get(t.group).push(t);
+            } else {
+                singles.push(t);
+            }
+        }
+        for (const [gid, members] of grouped) {
+            const gl = GROUP_LABELS[gid] || { label: `$(folder-library) ${gid}`, desc: '' };
+            items.push({
+                kind: 'group',
+                gid,
+                members,
+                label: gl.label,
+                description: gl.desc || `${members.length} 个模板 / ${members.length} templates`
+            });
+        }
+        for (const t of singles) {
             items.push({
                 kind: 'new',
                 tpl: t,
@@ -481,12 +528,13 @@ async function showWizardOnce(ctx, templates) {
     items.push({ kind: 'skip', label: "$(sign-out) 退下吧，我自己来 / I'll take it from here" });
 
     const pick = await vscode.window.showQuickPick(items, {
-        placeHolder: '今天要做什么？（不选择会一直停留）',
+        placeHolder: '今天要做什么？（Esc 收起，命令面板随时唤起）',
         ignoreFocusOut: true,
         matchOnDescription: true
     });
 
-    if (!pick || !pick.kind || pick.kind === 'sep') return true;
+    if (pick === undefined) return 'esc'; // 主菜单按 Esc / 关闭：本次不再纠缠
+    if (!pick.kind || pick.kind === 'sep') return true;
     if (pick.kind === 'skip') return false;
     if (pick.kind === 'notpl') return true;
 
@@ -504,24 +552,36 @@ async function showWizardOnce(ctx, templates) {
         return false;
     }
 
-    // MCU picker
-    let mcu = null;
-    if (pick.kind === 'new' && pick.tpl.mcus.length) {
-        const m = await vscode.window.showQuickPick(
-            pick.tpl.mcus.map((x) => ({ label: x })),
-            { placeHolder: `选择 ${pick.tpl.label} 的芯片型号`, ignoreFocusOut: true }
-        );
-        if (!m) return true;
-        mcu = m.label;
+    if (pick.kind === 'group') {
+        // 二级菜单：芯片名写清楚（模板 .wizard.json 的 pick 字段）
+        const memItems = pick.members.map((t) => ({
+            kind: 'new',
+            tpl: t,
+            label: t.pick || t.label,
+            description: t.pick ? t.label : t.description
+        }));
+        const mem = await vscode.window.showQuickPick(memItems, {
+            placeHolder: `选择芯片型号 / Pick a chip —— ${pick.gid}`,
+            ignoreFocusOut: true,
+            matchOnDescription: true
+        });
+        if (!mem) return true; // Esc 返回主菜单
+        return await startCreate(ctx, mem.tpl);
     }
 
-    return await createProject(pick.tpl, ctx, mcu);
+    return await startCreate(ctx, pick.tpl);
 }
 
 async function showWizard(ctx) {
     let templates = listTemplates(cfg().get('templatesRoot'));
     for (;;) {
         const dismissed = await showWizardOnce(ctx, templates);
+        if (dismissed === 'esc' && !cfg().get('persistOnEsc', false)) {
+            vscode.window.showInformationMessage(
+                '向导已收起 —— 命令面板运行 “Dev Wizard: what are we doing today?” 随时唤起'
+            );
+            return;
+        }
         if (!dismissed) return;
         console.log('[dev-wizard] dismissed without choice, re-showing');
         await new Promise((r) => setTimeout(r, 800));
@@ -571,7 +631,7 @@ async function runDoctor(ctx) {
     const root = cfg().get('templatesRoot');
     const items = [];
     const mark = (ok) => (ok ? '$(pass)' : '$(error)');
-    const add = (icon, label, detail) => items.push({ label: `${icon} ${label}`, detail });
+    const add = (icon, label, detail, act) => items.push({ label: `${icon} ${label}`, detail, act });
 
     add('$(pass)', `VS Code  ${vscode.version}`, '编辑器运行正常');
 
@@ -584,29 +644,33 @@ async function runDoctor(ctx) {
     const have = vscode.extensions.all.map((e) => e.id);
     for (const [id, name] of wantExt) {
         const ok = have.includes(id);
-        add(mark(ok), `扩展 ${name}`, ok ? `已安装 (${id})` : `未安装 (${id})`);
+        add(
+            mark(ok),
+            `扩展 ${name}`,
+            ok ? `已安装 (${id})` : `未安装 (${id}) —— 点我打开扩展商店安装`,
+            ok ? null : { type: 'openExt', id }
+        );
     }
 
     // [命令, 名称, 是否可选] —— 可选工具缺失只提示，不算问题
     const tools = [
-        ['arm-none-eabi-gcc', 'ARM GCC (STM32)'],
-        ['sdcc', 'SDCC (STC51 / AT89S51 编译)'],
-        ['packihx', 'packihx (SDCC 配套：ihx 转 hex)'],
-        ['openocd', 'OpenOCD (调试器)'],
-        ['python', 'Python'],
-        ['stcgal', 'stcgal (STC 烧录)'],
-        ['avrdude', 'avrdude (AT89S51 的 USBasp 下载)', true],
-        ['gcc', 'MinGW gcc (C/C++)'],
-        ['g++', 'MinGW g++ (C++)'],
-        ['cmake', 'CMake (C/C++)']
+        ['arm-none-eabi-gcc', 'ARM GCC (STM32)', '', '由 setup.ps1 自动部署'],
+        ['sdcc', 'SDCC (STC51 / AT89S51 编译)', '', '由 setup.ps1 自动部署'],
+        ['packihx', 'packihx (SDCC 配套：ihx 转 hex)', '', '随 SDCC 一起安装'],
+        ['openocd', 'OpenOCD (调试器)', '', '由 setup.ps1 自动部署'],
+        ['python', 'Python', '', '由 setup.ps1 自动部署'],
+        ['stcgal', 'stcgal (STC 烧录)', 'pip install stcgal', '由 setup.ps1 自动部署'],
+        ['avrdude', 'avrdude (AT89S51 的 USBasp 下载)', '', '可选：只在烧录 AT89S51 时需要'],
+        ['gcc', 'MinGW gcc (C/C++)', '', '由 setup.ps1 自动部署'],
+        ['g++', 'MinGW g++ (C/C++)', '', '由 setup.ps1 自动部署'],
+        ['cmake', 'CMake (C/C++)', '', '由 setup.ps1 自动部署']
     ];
-    for (const [c, name, optional] of tools) {
+    for (const [c, name, fixCmd, note] of tools) {
         const p = whichCmd(c);
-        const icon = p ? '$(pass)' : (optional ? '$(warning)' : '$(error)');
-        const detail = p
-            ? `在 PATH: ${p}`
-            : `未在 PATH 找到 ${c}` + (optional ? '（只在烧录 AT89S51 时需要，可选）' : '');
-        add(icon, `工具链 ${name}`, detail);
+        const optional = c === 'avrdude';
+        const icon = p ? '$(pass)' : optional ? '$(warning)' : '$(error)';
+        const detail = p ? `在 PATH: ${p}` : `未在 PATH 找到 ${c}（${note}）`;
+        add(icon, `工具链 ${name}`, detail, !p && fixCmd ? { type: 'copy', text: fixCmd } : null);
     }
 
     const sdccVer = sdccVersion();
@@ -638,11 +702,28 @@ async function runDoctor(ctx) {
     add(armDir ? '$(pass)' : '$(warning)', 'EIDE ARM GCC 路径', dirDetail(armDir));
     add(sdccDir ? '$(pass)' : '$(warning)', 'EIDE SDCC 路径', dirDetail(sdccDir));
 
-    await vscode.window.showQuickPick(items, {
-        placeHolder: 'Dev Wizard 环境体检（点击一项看详情；按 Esc 退出）',
+    const passN = items.filter((i) => i.label.startsWith('$(pass)')).length;
+    const errN = items.filter((i) => i.label.startsWith('$(error)')).length;
+    const summary = errN
+        ? `环境体检：${passN}/${items.length} 通过，${errN} 项待修（点条目执行修复，Esc 退出）`
+        : `环境体检：${passN}/${items.length} 全部通过 ✓（Esc 退出）`;
+
+    const pick = await vscode.window.showQuickPick(items, {
+        placeHolder: summary,
         ignoreFocusOut: true,
         matchOnDescription: true
     });
+
+    if (!pick) return; // Esc 退出
+    if (pick.act) {
+        if (pick.act.type === 'openExt') {
+            await vscode.commands.executeCommand('extension.open', pick.act.id);
+        } else if (pick.act.type === 'copy') {
+            await vscode.env.clipboard.writeText(pick.act.text);
+            vscode.window.showInformationMessage(`已复制到剪贴板: ${pick.act.text}`);
+        }
+    }
+    return runDoctor(ctx); // 处理完再刷一轮，Esc 退出
 }
 
 /* ---------------------------------------------------------------------------
@@ -794,10 +875,10 @@ function browseTemplatesCmd() {
 /* ---------------------------------------------------------------------------
  * Experience commands (new)
  * ------------------------------------------------------------------------- */
-function getProjectDir() {
+function getProjectDir(opts) {
     const folders = vscode.workspace.workspaceFolders;
     if (!folders || !folders.length) {
-        vscode.window.showErrorMessage('请先打开一个工程文件夹');
+        if (!opts || !opts.silent) vscode.window.showErrorMessage('请先打开一个工程文件夹');
         return null;
     }
     return folders[0].uri.fsPath;
@@ -816,30 +897,100 @@ async function writeContextCmd() {
     vscode.window.showInformationMessage(`✔ 已生成 ${path.relative(projectDir, ctxFile)}`);
 }
 
-async function flashCmd() {
+const COMMON_MCUS = ['STC89C52RC', 'STC15F104W', 'STM32F103C8T6', 'AT89S51', 'AT89S52', 'ESP32'];
+
+async function pickMcu() {
+    const items = COMMON_MCUS.map((m) => ({ label: m }));
+    items.push({ label: '$(edit) 其他型号（手动输入）', manual: true });
+    const pick = await vscode.window.showQuickPick(items, {
+        placeHolder: '工程里没写芯片型号——选一个，或手动输入',
+        ignoreFocusOut: true
+    });
+    if (!pick) return null;
+    if (pick.manual) {
+        const v = await vscode.window.showInputBox({ prompt: 'MCU 型号', placeHolder: 'e.g. STM32F407VGT6' });
+        return v || null;
+    }
+    return pick.label;
+}
+
+async function flashCmd(ctx) {
     const projectDir = getProjectDir();
     if (!projectDir) return;
+    const pt = exp.detectProjectType(projectDir);
+    const stcOpts = exp.readEideFlashOptions(projectDir); // 模板自带的 .eide/stc.flash.json
+    let mcu = exp.detectMcu(projectDir);
+    let protocol = stcOpts ? stcOpts.device : '';
 
-    const mcu = await vscode.window.showInputBox({
-        prompt: 'MCU 型号（用于推断烧录命令）',
-        placeHolder: 'e.g. STM32F103C8T6'
-    });
-    if (!mcu) return;
-
-    let serialPort = '';
-    if (mcu.startsWith('STC')) {
-        const ports = exp.detectSerialPorts();
-        if (ports.length) {
-            const pick = await vscode.window.showQuickPick(
-                ports.map((p) => ({ label: p.port, description: p.description, port: p.port })),
-                { placeHolder: '选择串口', ignoreFocusOut: true }
+    // EIDE 工程 + 非内置烧录器（如 at89s51 的 Custom/avrdude）：配置里有 EIDE 变量，
+    // 这里展开不了——引导用户用 EIDE 自己的 Flash 按钮
+    if (pt.type === 'eide' && !protocol) {
+        const yml = (() => {
+            try {
+                return fs.readFileSync(path.join(projectDir, '.eide', 'eide.yml'), 'utf8');
+            } catch (e) {
+                return '';
+            }
+        })();
+        const up = yml.match(/^[ \t]*uploader:[ \t]*(\S+)/m);
+        if (up && up[1] !== 'stcgal') {
+            vscode.window.showInformationMessage(
+                '这个工程在 EIDE 里配了自定义烧录器——请点 EIDE 面板的 Flash 按钮（那里会展开模板的烧录配置）'
             );
-            if (!pick) return;
-            serialPort = pick.port;
+            return;
         }
     }
 
-    await exp.executeFlash(projectDir, { mcu, serialPort });
+    if (!mcu && !protocol) {
+        mcu = await pickMcu();
+        if (!mcu) return;
+    }
+    if (protocol && !mcu) mcu = protocol.toUpperCase(); // 仅用于展示
+
+    // STC 子系列协议：stc.flash.json > 芯片前缀 > 用户手选
+    if (protocol || /^STC/i.test(mcu)) {
+        if (!protocol) protocol = exp.stcProtocolFromMcu(mcu);
+        if (!protocol) {
+            const p = await vscode.window.showQuickPick(
+                ['stc89', 'stc15', 'stc15a', 'stc12a', 'stc12b', 'stc12x', 'stc8', 'stc8d', 'stc8g', 'stc8h', 'stc16', 'stc32']
+                    .map((x) => ({ label: x })),
+                { placeHolder: 'STC 子系列协议（stcgal -P）——不确定就选芯片手册标注的系列', ignoreFocusOut: true }
+            );
+            if (!p) return;
+            protocol = p.label;
+        }
+    }
+
+    let serialPort = '';
+    if (protocol || /^STC/i.test(mcu)) {
+        const ports = exp.detectSerialPorts();
+        if (!ports.length) {
+            vscode.window.showErrorMessage('没检测到串口设备——插好 USB 转串口线（装好驱动）再试');
+            return;
+        }
+        const last = ctx.workspaceState.get('devWizard.lastSerialPort', '');
+        const items = ports.map((p) => ({
+            label: p.port === last ? `$(check) ${p.port}` : p.port,
+            description: p.description + (p.port === last ? '（上次使用）' : ''),
+            port: p.port
+        }));
+        if (last) items.sort((a, b) => (b.port === last) - (a.port === last));
+        const pick = await vscode.window.showQuickPick(items, {
+            placeHolder: '选择串口（STC 烧录用）',
+            ignoreFocusOut: true
+        });
+        if (!pick) return;
+        serialPort = pick.port;
+        ctx.workspaceState.update('devWizard.lastSerialPort', serialPort);
+    }
+
+    await exp.executeFlash(projectDir, {
+        mcu,
+        serialPort,
+        protocol,
+        baud: stcOpts ? stcOpts.baudrate : '',
+        oscFreq: stcOpts ? stcOpts.oscFreq : ''
+    });
 }
 
 async function gitInitCmd() {
@@ -868,16 +1019,33 @@ let statusBar = null;
 
 function updateStatusBar() {
     if (!statusBar) return;
-    const projectDir = getProjectDir();
+    const projectDir = getProjectDir({ silent: true });
     if (!projectDir) {
         statusBar.hide();
         return;
     }
     const pt = exp.detectProjectType(projectDir);
-    statusBar.text = `$(tools) ${pt.type.toUpperCase()}`;
-    statusBar.tooltip = pt.detail;
-    statusBar.command = 'sea.devWizard.build';
+    const mcu = exp.detectMcu(projectDir);
+    statusBar.text = `$(tools) ${pt.type.toUpperCase()}` + (mcu ? ` · ${mcu}` : '');
+    statusBar.tooltip = pt.detail + '\n点击：构建 / 烧录 / 体检';
+    statusBar.command = 'sea.devWizard.menu';
     statusBar.show();
+}
+
+/* 状态栏点击后的快捷菜单 */
+async function statusBarMenu() {
+    const items = [
+        { label: '$(zap) 构建 / Build', cmd: 'sea.devWizard.build' },
+        { label: '$(rocket) 烧录 / Flash', cmd: 'sea.devWizard.flash' },
+        { label: '$(pulse) 环境体检 / Doctor', cmd: 'sea.devWizard.doctor' },
+        { label: '$(file-text) 生成 context.md', cmd: 'sea.devWizard.writeContext' },
+        { label: '$(git-branch) git init + 首次提交', cmd: 'sea.devWizard.gitInit' }
+    ];
+    const pick = await vscode.window.showQuickPick(items, {
+        placeHolder: 'Dev Wizard 快捷操作',
+        ignoreFocusOut: true
+    });
+    if (pick) await vscode.commands.executeCommand(pick.cmd);
 }
 
 async function buildCmd() {
@@ -944,13 +1112,16 @@ function activate(ctx) {
         vscode.commands.registerCommand('sea.devWizard.writeContext', () => writeContextCmd())
     );
     ctx.subscriptions.push(
-        vscode.commands.registerCommand('sea.devWizard.flash', () => flashCmd())
+        vscode.commands.registerCommand('sea.devWizard.flash', () => flashCmd(ctx))
     );
     ctx.subscriptions.push(
         vscode.commands.registerCommand('sea.devWizard.gitInit', () => gitInitCmd())
     );
     ctx.subscriptions.push(
         vscode.commands.registerCommand('sea.devWizard.build', () => buildCmd())
+    );
+    ctx.subscriptions.push(
+        vscode.commands.registerCommand('sea.devWizard.menu', () => statusBarMenu())
     );
 
     // status bar
@@ -976,6 +1147,21 @@ function activate(ctx) {
     if (ctx.globalState.get(SKIP_KEY)) {
         console.log('[dev-wizard] skip-once flag set, skip this startup');
         ctx.globalState.update(SKIP_KEY, false);
+        // 刚由向导建完工程跳转过来：弹带动作按钮的完成提示
+        const lc = ctx.globalState.get(CREATED_KEY);
+        if (lc && fs.existsSync(lc.dir)) {
+            ctx.globalState.update(CREATED_KEY, undefined);
+            const btns = [];
+            if (fs.existsSync(path.join(lc.dir, 'README.md'))) btns.push('打开 README');
+            btns.push('立即构建');
+            vscode.window.showInformationMessage(`✔ 工程已创建: ${lc.name}`, ...btns).then((sel) => {
+                if (sel === '打开 README') {
+                    vscode.commands.executeCommand('vscode.open', vscode.Uri.file(path.join(lc.dir, 'README.md')));
+                } else if (sel === '立即构建') {
+                    vscode.commands.executeCommand('sea.devWizard.build');
+                }
+            });
+        }
         return;
     }
 

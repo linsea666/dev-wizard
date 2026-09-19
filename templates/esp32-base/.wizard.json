@@ -3,7 +3,10 @@
     "description": "ESP-IDF 工程骨架（用 ESP-IDF 插件构建）",
     "icon": "radio-tower",
     "open": "folder",
+    "group": "embedded",
+    "pick": "ESP32 / ESP32-S3 — 双核 Wi-Fi + 蓝牙 SoC · ESP-IDF 框架（CMake）· 需单独安装 ESP-IDF，向导只建骨架",
     "replace": [
         { "files": ["CMakeLists.txt", "main/CMakeLists.txt"], "find": "esp32-base" }
-    ]
+    ],
+    "sort": 5
 }

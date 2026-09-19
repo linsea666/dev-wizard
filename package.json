@@ -3,7 +3,7 @@
     "displayName": "Dev Wizard (开发向导)",
     "description": "A startup wizard for VS Code: continue your last project or scaffold new ones from your own templates. 启动向导：继续上次的工作，或从自定义模板一键新建工程。",
     "publisher": "sea",
-    "version": "2.1.2",
+    "version": "2.2.0",
     "license": "MIT",
     "engines": {
         "vscode": "^1.80.0"
@@ -83,6 +83,11 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Show the wizard every time VS Code starts. 每次启动 VS Code 时弹出向导。"
+                },
+                "devWizard.persistOnEsc": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Keep re-showing the wizard after Esc (old behavior). Esc 关闭向导后是否继续重弹。默认 false：收起，命令面板随时唤起。"
                 },
                 "devWizard.projectsRoot": {
                     "type": "string",

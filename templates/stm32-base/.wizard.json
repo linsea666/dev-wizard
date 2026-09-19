@@ -3,5 +3,8 @@
     "description": "STM32 + EIDE (ARM GCC)",
     "icon": "chip",
     "open": "workspace",
-    "mcus": ["STM32F103C8T6", "STM32F407VGT6", "STM32G030F6P6"]
+    "mcus": ["STM32F103C8T6", "STM32F407VGT6", "STM32G030F6P6"],
+    "group": "embedded",
+    "pick": "STM32F103C8T6 / F407 / G030 — ARM Cortex-M 内核 · ARM GCC + EIDE 编译 · SWD 烧录（OpenOCD，需 ST-Link 等调试器）",
+    "sort": 4
 }

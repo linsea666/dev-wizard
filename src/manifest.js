@@ -16,6 +16,10 @@
  *   afterCreate   [{ command, args, cwd }] commands run in the project,
  *                         each confirmed by the user first
  *   sort          number  ordering weight in the wizard (smaller = first)
+ *   group         string  collapse same-group templates into ONE wizard menu
+ *                         entry (e.g. "embedded"), with a second-level picker
+ *   pick          string  display text in the group's second-level picker
+ *                         (write the chip name out in full here)
  *
  * Tokens interpolated recursively into text files after copying:
  *   <name>  / {{name}}          project name        (always available)
@@ -113,7 +117,11 @@ function normalizeManifest(raw) {
         variables: normalizeVariables(m.variables),
         exclude: normalizeExclude(m.exclude),
         afterCreate: normalizeAfterCreate(m.afterCreate),
-        sort: typeof m.sort === 'number' ? m.sort : 0
+        sort: typeof m.sort === 'number' ? m.sort : 0,
+        // v2.2: 分组折叠 —— 同 group 的模板在向导主菜单折叠为一个入口，
+        // 二级菜单用 pick 文案展示（芯片名写清楚）。无 group 的模板照旧单列。
+        group: typeof m.group === 'string' && m.group.trim() ? m.group.trim() : '',
+        pick: typeof m.pick === 'string' ? m.pick : ''
     };
 }
 

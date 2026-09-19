@@ -1,5 +1,62 @@
 # Changelog
 
+## 2.2.0
+
+### Interaction overhaul (A 系列)
+
+- **Wizard menu decluttered**: the five MCU templates (STC89 / STC15 /
+  AT89S51 / STM32 / ESP32) collapse into one 「嵌入式工程 / Embedded」 entry;
+  a second-level picker lists every chip with its name spelled out in full
+  (core, flash size, toolchain, flashing method, hardware needed). Templates
+  opt in via the new `.wizard.json` fields `group` / `pick` / `sort` —
+  custom templates can use the same mechanism (unknown groups fall back to
+  their id as the menu label).
+- **Wizard is dismissable with Esc.** Pressing Esc / closing the startup
+  quick pick no longer re-shows it in a loop — it stays closed with a hint
+  that the command palette brings it back anytime. Set
+  `devWizard.persistOnEsc: true` to restore the old "stays until you choose"
+  behaviour. Cancelling a sub-step (name / location / chip) still returns to
+  the main menu.
+- **Flash command reworked** (`Dev Wizard: flash`):
+  - MCU is auto-detected from `.dev-wizard/context.md` / `.eide/eide.yml`,
+    and the STC protocol comes from the template's `.eide/stc.flash.json`
+    (the same config EIDE's own flash button uses) — no more typing
+    `STM32F103C8T6` by hand; only truly unknown projects ask, with a
+    common-chips quick pick.
+  - STC sub-family protocols auto-mapped (`STC89*` → `stc89`,
+    `STC15*` → `stc15`); exotic families get a protocol picker instead of a
+    silent wrong guess.
+  - Artifact lookup fixed: scans `build/Debug/`, `build/`, `.` and prefers
+    `<project>.hex` (EIDE's actual output name) — the old code only knew
+    `main.hex`/`firmware.hex` and silently flashed a glob.
+  - Last-used serial port is remembered per workspace and preselected.
+  - **Everything runs in the integrated terminal** (visible output, re-runnable)
+    and STC flashing shows the cold-boot hint ("give the board a power cycle")
+    *before* starting — the #1 beginner trap.
+- **Project-created toast now has actions** — [打开 README] / [立即构建]
+  appear in the freshly opened project window instead of a plain message.
+- **Doctor is actionable**: pass/fail summary in the header, clicking a
+  missing extension opens its marketplace page, `stcgal` offers a copyable
+  `pip install stcgal`; the list re-runs after an action, Esc exits.
+- **Status bar** shows `<TYPE> · <MCU>` and opens a quick menu
+  (build / flash / doctor / context.md / git init) instead of hardwiring build.
+  Also fixed: an empty window no longer pops "请先打开一个工程文件夹" on
+  every startup (status bar detection is silent now).
+
+### Template fixes
+
+- `stc51-base`: removed the bogus `__SDCC_ROOT__` include/lib flags from
+  `misc-controls` (EIDE does not expand that token — same bug class fixed
+  for `at89s51-base` in 2.1.1; it made every STC15 EIDE build fail). sdcc
+  knows its own include/lib paths; sizes kept (4K ROM / 128B IRAM).
+- New in 2.2.0 line: `stc89-base` template for **STC89C51RC** (EIDE + SDCC,
+  builtin stcgal uploader with `-P stc89`, onboard LED @ P2.2 blink demo).
+
+### Docs
+
+- README rewritten to be concise (~140 lines); the full step-by-step tutorial
+  moved to `docs/tutorial.md`.
+
 ## 2.1.2
 
 ### Feature: AT89S51 template now defaults to Keil C51 syntax
