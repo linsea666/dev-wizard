@@ -8,7 +8,7 @@
     // 编辑器会把 interrupt/using 报红——这是 C 语法层面绕不开的，真实编译没问题，
     // 忽略这一行的红线即可（其余所有行都正常）。
     //
-    // 若你的 SDCC / Keil 不在默认路径，把 includePath 里的两行改成实际路径。
+    // __SDCC_ROOT__ 由 setup.ps1 部署时自动替换；Keil 的 INC 路径（E:/keilc51v957）仅影响编辑器提示，按本机实际改。
     "version": 4,
     "configurations": [
         {
@@ -17,8 +17,8 @@
             "includePath": [
                 "${workspaceFolder}/src",
                 "E:/keilc51v957/C51/INC",
-                "E:/vscode/tools/sdcc/share/sdcc/include",
-                "E:/vscode/tools/sdcc/share/sdcc/include/mcs51"
+                "__SDCC_ROOT__/share/sdcc/include",
+                "__SDCC_ROOT__/share/sdcc/include/mcs51"
             ],
             "defines": [
                 "VS_CODE_INTELLISENSE",

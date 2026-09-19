@@ -9,7 +9,7 @@
         {
             "name": "ARM GCC (STM32F10x)",
             "cStandard": "c99",
-            "compilerPath": "E:/vscode/tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/arm-none-eabi-gcc.exe",
+            "compilerPath": "__ARM_GCC_ROOT__/bin/arm-none-eabi-gcc.exe",
             "includePath": [
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/lib/cmsis",

@@ -409,7 +409,7 @@ function Install-Extensions {
         $devWizardVsix = Join-Path $RepoRoot "dev-wizard-$((Get-Content (Join-Path $RepoRoot 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version).vsix"
         Pop-Location
     }
-    foreach ($ext in @("cl.eide", "ms-python.python", "marus25.cortex-debug", "ms-vscode.cmake-tools")) {
+    foreach ($ext in @("cl.eide", "ms-python.python", "marus25.cortex-debug", "ms-vscode.cmake-tools", "ms-vscode.cpptools")) {
         & code --install-extension $ext 2>&1 | Out-Null
     }
     if ($devWizardVsix -and (Test-Path $devWizardVsix)) {

@@ -5,7 +5,7 @@
     // SDCC 的 __sfr/__sbit/__at 等 8051 专属关键字不是标准 C，这里把它们映射成
     // 普通 C，让 IntelliSense 能干净地解析 8051.h（P2_2 这些位定义就来自它）。
     //
-    // 若你的 SDCC 不在默认路径，改 includePath 里两行 E:/vscode/tools/sdcc 为实际路径。
+    // __SDCC_ROOT__ 是路径令牌：setup.ps1 部署时自动替换为实际安装路径（手动部署请自行替换）。
     "version": 4,
     "configurations": [
         {
@@ -13,8 +13,8 @@
             "cStandard": "c99",
             "includePath": [
                 "${workspaceFolder}/source",
-                "E:/vscode/tools/sdcc/share/sdcc/include",
-                "E:/vscode/tools/sdcc/share/sdcc/include/mcs51"
+                "__SDCC_ROOT__/share/sdcc/include",
+                "__SDCC_ROOT__/share/sdcc/include/mcs51"
             ],
             "defines": [
                 "VS_CODE_INTELLISENSE",
