@@ -30,6 +30,16 @@ typedef signed long int32_t;
 #define interrupt(x) __interrupt(x)
 #define using(x) __using(x)
 #define at(x) __at(x)
+
+/* ★ 写中断函数请用 ISR(编号) 宏（Keil 与 SDCC 都认，编辑器零报错）：
+ *   void Timer0ISR(void) ISR(1) { ... }
+ *   ⚠ 不要手写 Keil 风格的 `interrupt 1`（数字裸跟在关键字后）——
+ *   那不是标准 C，智能感知映射不了，会报一条假红线（编译不受影响）。 */
+#ifdef __SDCC
+    #define ISR(vec) __interrupt(vec)
+#else
+    #define ISR(vec) interrupt vec
+#endif
 #define _priority_
 #define _task_
 

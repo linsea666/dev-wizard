@@ -105,6 +105,17 @@ __sbit __at(0xA8) EX0;  /**< 外中断0 允许 */
  *   编号 5  T2    定时器2 @ 0x002B（本芯片带 T2，寄存器见官方头文件）
  */
 
+/* ★ 写中断函数请用 ISR(编号) 宏，不要手写 Keil 风格的 `interrupt 编号`：
+ *   后者不是标准 C，编辑器智能感知无法映射，会报一条假红线（编译不受影响）。
+ *   ISR 宏在 SDCC 下展开为 __interrupt(编号)，在 Keil 下展开为 interrupt 编号，
+ *   两边编译产物语义一致，编辑器零报错。
+ *   用法：void timer0_isr(void) ISR(1) { ... }        ← T0 的 1ms 时基中断 */
+#ifdef __SDCC
+    #define ISR(vec) __interrupt(vec)
+#else
+    #define ISR(vec) interrupt vec
+#endif
+
 /* ══════════════ 5. 其它常用寄存器 ══════════════ */
 
 __sfr __at(0x87) PCON;  /**< 电源控制（不可位寻址）：bit7 SMOD=串口波特率加倍(9600→19200)
