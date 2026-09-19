@@ -1,5 +1,86 @@
 # Changelog
 
+## 2.1.2
+
+### Feature: AT89S51 template now defaults to Keil C51 syntax
+
+- `at89s51-base` gains `build-keil.ps1`: builds with the local Keil C51
+  toolchain (C51 → BL51 → OH51) so textbook Keil syntax (`sfr` / `sbit` /
+  `data` / `code` / `interrupt ... using` / `<reg51.h>`) compiles unchanged.
+  Finds Keil via `-KeilRoot` / `KEIL_ROOT` / known install dirs.
+- Keil build is the default `Ctrl+Shift+B` task; SDCC/EIDE tasks kept.
+- `src/main.c` is now Keil-style; the previous SDCC demo lives on as
+  `src/main_sdcc.c.example` (swap the two names to go back to F7/SDCC).
+- `src/board.h` auto-switches headers per compiler (`__SDCC` → `at89x51.h`,
+  otherwise Keil `reg51.h` with `sbit` pin defines).
+- IntelliSense config now maps both Keil and SDCC keywords (known cosmetic
+  limit: the `interrupt 1 using 1` line still squiggles in the editor).
+- Doctor: new check for Keil C51 presence.
+
+## 2.1.1
+
+### Fix: AT89S51 projects could not be opened in EIDE
+
+- **`at89s51-base/.eide/eide.yml` was missing `uploader` / `uploadConfigMap`.**
+  EIDE's project loader runs `target.uploadConfig = target.uploadConfigMap[target.uploader]`,
+  so a project without those keys made `_OpenProject` throw
+  `TypeError: Cannot read properties of undefined (reading 'undefined')` — the
+  whole `.eide` project failed to load (no build, no config tree).
+  The template now ships `uploader: Custom` with an `avrdude -c usbasp -p at89s51`
+  command line, which also gives a working flash button in EIDE (EIDE's own
+  programmers — stcgal / OpenOCD / pyOCD / JLink / STLink — cannot drive an
+  AT89S51, which is SPI-ISP on P1.5/P1.6/P1.7).
+- **Dropped the bogus `-I` / `-L` paths from `misc-controls`.** They were written
+  with a `__SDCC_ROOT__` placeholder that EIDE does not know, plus quotes that
+  would have been passed to `sdcc` verbatim. `sdcc.exe` already knows its own
+  include and library directories, so the flags are gone and the template is now
+  machine-independent.
+- **`build.ps1` now emits the same artifact as EIDE**: `build\Debug\<project>.hex`
+  (the project name is read from `.eide/eide.yml`). Before it wrote
+  `build\main.hex`, so the two build paths disagreed about where the hex was.
+  `-Clean` now deletes only this script's own outputs instead of the whole
+  `build\Debug\` (which also holds EIDE's `.obj` and `ref.json`).
+
+### New: template doctor catches this class of bug
+
+- `inspectTemplate()` now also checks EIDE project templates: every
+  `targets.<name>` block must have `toolchain`, `uploader` and `uploadConfigMap`,
+  and `uploader` must be one EIDE knows (`JLink` / `STLink` / `stcgal` / `STVP` /
+  `pyOCD` / `OpenOCD` / `probe-rs` / `Custom`). Missing keys are reported as
+  errors instead of surfacing later as an unreadable project.
+
+## 2.1.0
+
+### New: AT89S51 (classic 8051) build environment
+
+- **New template `at89s51-base`** — an EIDE `C51` project wired for SDCC's
+  `mcs51` target: 128 B IRAM / 0 XRAM / 4 KB code (AT89S51), `src/main.c` blank
+  entry with an LED-blink demo, `src/board.h` for pins and crystal, and register
+  access through SDCC's own `<at89x51.h>` — no Keil `reg51.h` copy needed.
+- **Standalone build script `build.ps1`** ships with the template, so the project
+  also compiles without EIDE (and without `make`): it locates SDCC
+  (`-SdccRoot` → `SDCC_ROOT` → `PATH` → common install dirs), compiles,
+  converts `.ihx` → `.hex` with `packihx`, and prints Flash/RAM usage out of
+  `main.mem`. `-Clean`, `-Flash` (USBasp + avrdude) and `-CodeSize`
+  (AT89S52 = 8192) are supported; two matching tasks were added to the
+  template's `tasks.json`.
+- **Flash support in `experience.js`**: `AT89*` MCUs are recognised —
+  `buildFlashCommand` now builds an
+  `avrdude -c usbasp -p at89s5x -U flash:w:<hex>:i` invocation (with an explicit
+  hint when avrdude is not installed), and `.dev-wizard/context.md` records the
+  right build/flash command, including the `build.ps1` shortcut for EIDE
+  projects that carry one.
+- **Doctor additions**: `packihx` and `avrdude` are probed (avrdude is optional
+  — missing shows ⚠ instead of ✗), the SDCC version is read from `sdcc -v`, and
+  the EIDE toolchain paths are checked for actual existence (dir + `bin\`).
+
+> EIDE's built-in uploaders (stcgal / openocd / pyocd / jlink / stlink) cannot
+> program AT89S51 — use avrdude + USBasp, or a programmer GUI such as ProgISP.
+> Note that `at89s51-base` is distributed through the repo (`templates/`, not
+> bundled in the .vsix): install it with *Dev Wizard: install template* →
+> `linsea666/dev-wizard:templates/at89s51-base`, or drop the folder into
+> `devWizard.templatesRoot`.
+
 ## 1.2.0
 
 ### New: conda environment picker for Python projects

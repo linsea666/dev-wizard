@@ -3,7 +3,7 @@
     "displayName": "Dev Wizard (开发向导)",
     "description": "A startup wizard for VS Code: continue your last project or scaffold new ones from your own templates. 启动向导：继续上次的工作，或从自定义模板一键新建工程。",
     "publisher": "sea",
-    "version": "2.0.0",
+    "version": "2.1.2",
     "license": "MIT",
     "engines": {
         "vscode": "^1.80.0"
@@ -16,7 +16,10 @@
         "template",
         "scaffold",
         "embedded",
-        "project manager"
+        "project manager",
+        "8051",
+        "at89s51",
+        "stc51"
     ],
     "activationEvents": [
         "onStartupFinished"
@@ -108,7 +111,11 @@
                 },
                 "devWizard.allowAfterCreate": {
                     "type": "string",
-                    "enum": ["ask", "allow", "deny"],
+                    "enum": [
+                        "ask",
+                        "allow",
+                        "deny"
+                    ],
                     "default": "ask",
                     "description": "How to handle afterCreate commands in templates: ask (confirm each), allow (run silently), deny (skip all). 模板中 afterCreate 命令的处理方式。"
                 }

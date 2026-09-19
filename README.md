@@ -3,7 +3,7 @@
 ![platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![vscode](https://img.shields.io/badge/VS%20Code-1.80%2B-007ACC) ![dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
 
 一个 VS Code 启动向导：**每次打开 VSCode 都会问你"今天做什么？"**——回到上次的工作，
-或从模板一键创建新工程（STC51 / STM32 / ESP32 / Python / C / C++ / 你自己的任意类型）。
+或从模板一键创建新工程（STC51 / AT89S51 / STM32 / ESP32 / Python / C / C++ / 你自己的任意类型）。
 配套的 `setup.ps1` 把 SDCC、ARM GCC、OpenOCD、Python 等工具链**全自动配好**，
 让"新芯片的第一个工程"从大半天的环境配置，变成**一条命令 + 一次重启**。
 
@@ -11,7 +11,7 @@
 >
 > 📂 继续上次的工作 / Continue last work
 > ──── 开始新工程 / New project ────
-> 🧩 新建 STC51 工程 … 🔩 STM32 … 📡 ESP32 … 🐍 Python … ✨ 你自己的任意类型
+> 🧩 新建 STC51 工程 … 🔌 新建 AT89S51 工程 … 🔩 STM32 … 📡 ESP32 … 🐍 Python … ✨ 你自己的任意类型
 >
 > 
 ## 目录 / Table of Contents
@@ -200,19 +200,22 @@ Tools install root [C:\dev]:
 
 - **VS Code 版本** 是否 ≥ 1.80
 - **4 个扩展**：EIDE、Cortex-Debug、CMake Tools、Python 是否都已装
-- **8 个工具链是否在 PATH**：`arm-none-eabi-gcc`(STM32)、`sdcc`(STC51)、`openocd`(调试)、
-  `python`、`stcgal`(STC 烧录)、`gcc`/`g++`(C/C++)、`cmake`(C/C++)——
-  这 8 个现在都由 `setup.ps1` 一键装好（嵌入式 5 个 + C/C++ 的 CMake 与 MinGW-w64 gcc/g++）
+- **工具链是否在 PATH**：`arm-none-eabi-gcc`(STM32)、`sdcc`(STC51 / AT89S51 编译)、
+  `packihx`(SDCC 的 ihx→hex)、`openocd`(调试)、`python`、`stcgal`(STC 烧录)、
+  `avrdude`(AT89S51 的 USBasp 下载，**可选**)、`gcc`/`g++`(C/C++)、`cmake`(C/C++)
+- **SDCC 版本**：51 系列直接读 `sdcc -v` 的版本号，装错版本一眼看得出
 - **模板目录** `devWizard.templatesRoot` 是否已配置、并发现了几个模板
-- **EIDE 路径**：`EIDE.ARM.GCC.InstallDirectory` / `EIDE.SDCC.InstallDirectory` 是否填好
+- **EIDE 路径**：`EIDE.ARM.GCC.InstallDirectory` / `EIDE.SDCC.InstallDirectory`
+  是否填好、目录是否真实存在（含 `bin\`）
 
 每项 ✗ 都会给出修复方向（重跑 `setup.ps1`、在 EIDE 设置里指向工具链、或去设置里填
-`templatesRoot`）；⚠ 多半是「还没用到、暂时可忽略」。
+`templatesRoot`）；⚠ 多半是「还没用到、暂时可忽略」（比如没装 avrdude，只是暂时
+不能烧 AT89S51）。
 
 ### 第 5 步：编译你的第一个工程
 
 新工程里已经放好一个可以直接编译的空白入口（STC51 是 `source/main.c`，
-带 STC15 官方库）。打开工程后：
+带 STC15 官方库；AT89S51 是 `src/main.c`）。打开工程后：
 
 - **编译**：按 `F7`（或点底部状态栏的 **Build**），EIDE 开始构建，
   产物在工程的 `build\Debug\` 目录（51 工程是 `.hex`，STM32 是 `.elf/.hex`）；
@@ -236,6 +239,55 @@ Tools install root [C:\dev]:
 - **晶振频率**：模板默认按 16 MHz 配置（`.eide/stc.flash.json` 里的 `oscFreq`），
   与你板子不符就改这个值，否则串口波特率会不准；
 - 换型号：`libraries/stc15_lib/config.h` 里选择芯片与主频。
+
+### 🔌 AT89S51（经典 8051）
+
+- **默认编译器是 Keil C51**（本机装了 `E:\keilc51v957` 就能用）：教材上的
+  Keil 语法——`#include <reg51.h>`、`sfr P1=0x90;`、`sbit k=P1^0;`、
+  `data` / `code`、`interrupt 1 using 1`——**原样编译，不用改一个字**。
+  按 `Ctrl+Shift+B` 跑默认任务，或命令行：
+
+  ```powershell
+  .\build-keil.ps1              # C51 → BL51 → OH51，产物 build\Debug\<工程名>.hex
+  .\build-keil.ps1 -Flash       # 编完顺便用 USBasp + avrdude 下载
+  .\build-keil.ps1 -KeilRoot D:\Keil_v5   # 手动指定 Keil 目录
+  ```
+
+  脚本按 `-KeilRoot` → `KEIL_ROOT` → `E:\keilc51v957` → `C:\Keil_v5` 找 Keil，
+  并打印 `Program Size: data=… code=…` 容量占用；
+- **SDCC / EIDE 那条路还在**：`F7` 用 SDCC 走 `mcs51` 目标，寄存器定义用
+  SDCC 自带的 `<at89x51.h>`（**不用**把 Keil 的 `reg51.h` 拷进工程），
+  引脚与晶振定义在 `src/board.h`（按编译器自动切头文件）。注意两种语法
+  不通用：`sfr`/`sbit` SDCC 编不了，`__sbit __at` Keil 也编不了——
+  模板里 `src/main.c` 是 Keil 风格、`src/main_sdcc.c.example` 是 SDCC
+  风格对照，想走哪条路就把哪个文件名换成 `main.c`；
+- **不装 EIDE 也能用 SDCC 编译**：命令行直接跑
+
+  ```powershell
+  .\build.ps1              # 编译，产物 build\Debug\<工程名>.hex（如 myproj.hex）
+  .\build.ps1 -Clean       # 先删掉上次的产物再编译
+  ```
+
+  脚本会自己找 SDCC（`-SdccRoot` → `SDCC_ROOT` → `PATH` → 常见安装路径），
+  编译参数和产物路径与 EIDE（F7）**完全一致**（都是
+  `build\Debug\<工程名>.hex`），并打印 Flash/RAM 占用；
+- **烧录**：AT89S51 用 SPI 方式 ISP（MOSI/MISO/SCK 就是 P1.5/P1.6/P1.7），
+  主流做法是 **USBasp 编程器 + avrdude**：
+
+  ```powershell
+  avrdude -c usbasp -p at89s51 -U flash:w:build\Debug\myproj.hex:i
+  ```
+
+  这条命令已经写进模板的 `.eide/eide.yml`（`uploadConfigMap.Custom`），
+  EIDE 里显示为 **Custom CLI** 烧录器，所以 EIDE 的烧录按钮也能直接用
+  （前提是 avrdude 在 PATH 里）。用 ProgISP 之类的图形工具直接烧
+  `build\Debug\<工程名>.hex` 也行。
+  ⚠️ AT89S51 用不了 EIDE 的内置烧录器（stcgal / openocd / pyocd /
+  jlink / stlink 都不认），所以才走 `Custom` 自定义命令行；
+- **容量**：AT89S51 是 4 KB Flash / 128 B RAM（AT89S52 是 8 KB），超了会
+  链接报错 `Insufficient ROM/EPROM/FLASH memory`，
+  `build\Debug\<工程名>.mem` 里能看到实际占用。换 AT89S52 时把
+  `.eide/eide.yml` 的 `--code-size` 和 `build.ps1 -CodeSize` 一起改成 `8192`。
 
 ### ⚡ STM32（F103 为例，标准库）
 
@@ -436,6 +488,13 @@ my-templates/
 │   ├── .eide/eide.yml
 │   ├── source/main.c
 │   └── ...
+├── at89s51-base/        ← AT89S51 工程：Keil C51（默认）/ EIDE+SDCC 双编译器
+│                          （独立构建脚本 build-keil.ps1 / build.ps1）
+│   ├── .wizard.json
+│   ├── .eide/eide.yml
+│   ├── src/main.c
+│   ├── build.ps1
+│   └── ...
 ├── python-base/
 │   ├── .wizard.json
 │   └── main.py
@@ -502,6 +561,7 @@ misc-controls: >-
 | Wizard type | Needs |
 |---|---|
 | STC51 | [EIDE](https://marketplace.visualstudio.com/items?itemName=cl.eide) + [SDCC](https://sdcc.sourceforge.net/) + stcgal（setup 自动装） |
+| AT89S51 | 默认 **Keil C51**（本机装 Keil 即可，命令行脚本 `build-keil.ps1`）；也支持 EIDE + SDCC（setup 自动装）；烧录用 [avrdude](https://github.com/avrdudes/avrdude) + USBasp（可选） |
 | STM32 | EIDE + Arm GNU Toolchain + OpenOCD（或 ST-Link 工具） |
 | ESP32 | [ESP-IDF extension](https://marketplace.visualstudio.com/items?itemName=espressif.esp-idf-extension) |
 | Python | [Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) |

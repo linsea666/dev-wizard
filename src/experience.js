@@ -18,6 +18,8 @@
  * Flash/debug:
  *   - STM32: openocd with auto-board-config from MCU prefix
  *   - STC51: stcgal with auto-detected serial port
+ *   - AT89S51/AT89S52: avrdude + USBasp（AT89 的 ISP 走 P1.5/P1.6/P1.7 的 SPI，
+ *                        EIDE 内置的烧录器都不支持它）
  *   - ESP32: idf.py flash (if in PATH)
  *
  * Serial port detection (zero deps):
@@ -91,6 +93,30 @@ function detectSerialPorts() {
     }
 }
 
+/* Locate the built hex for a project: EIDE writes to <outDir>/<target>/,
+ * the standalone build.ps1 writes to build/. Returns a project-relative path
+ * (or a glob) to hand to the flasher. */
+function findHex(projectDir) {
+    const cands = [
+        path.join('build', 'Debug', 'main.hex'),
+        path.join('build', 'main.hex'),
+        path.join('build', 'Debug', 'firmware.hex'),
+        path.join('build', 'firmware.hex')
+    ];
+    for (const c of cands) {
+        if (fs.existsSync(path.join(projectDir, c))) return c.replace(/\\/g, '/');
+    }
+    return 'build/*.hex';
+}
+
+/* AT89 系列（AT89S51 / AT89S52 / AT89C51 …）：8 位 8051 内核，
+ * avrdude 的器件名按 Flash 容量区分。 */
+function at89Part(mcu) {
+    return /S52|C52|S8252|S8253/i.test(mcu) ? 'at89s52' : 'at89s51';
+}
+
+const isAt89 = (mcu) => /^AT89/i.test(String(mcu || ''));
+
 /* Generate .dev-wizard/context.md with project metadata. */
 function generateContextFile(projectDir, opts) {
     opts = opts || {};
@@ -105,8 +131,10 @@ function generateContextFile(projectDir, opts) {
     const serialPort = opts.serialPort || '';
 
     const buildCmd = (() => {
+        // EIDE 工程如果还带了独立构建脚本（模板 at89s51-base 就有），一并写出来
+        const hasScript = fs.existsSync(path.join(projectDir, 'build.ps1'));
         switch (pt.type) {
-            case 'eide': return 'F7（EIDE 扩展）';
+            case 'eide': return 'F7（EIDE 扩展）' + (hasScript ? '；或 .\\build.ps1（SDCC 命令行）' : '');
             case 'cmake': return 'cmake --build build';
             case 'makefile': return 'make';
             case 'platformio': return 'pio run';
@@ -117,6 +145,7 @@ function generateContextFile(projectDir, opts) {
     const flashCmd = (() => {
         if (mcu.startsWith('STM32')) return `openocd -f board/stm32f103c8t6.cfg -c "program build/*.elf verify reset exit"`;
         if (mcu.startsWith('STC')) return `stcgal -p ${serialPort || 'COMx'} build/*.hex`;
+        if (isAt89(mcu)) return `avrdude -c usbasp -p ${at89Part(mcu)} -U flash:w:${findHex(projectDir)}:i`;
         if (mcu.startsWith('ESP32')) return 'idf.py flash';
         return '(未配置)';
     })();
@@ -252,6 +281,24 @@ function buildFlashCommand(projectDir, opts) {
         };
     }
 
+    if (isAt89(mcu)) {
+        // AT89S51/AT89S52 用 SPI-ISP 下载，市面主流做法是 USBasp + avrdude。
+        // EIDE 的内置烧录器（stcgal/openocd/pyocd/jlink/stlink）都不认这系列芯片。
+        const avrdude = which('avrdude');
+        if (!avrdude) {
+            return {
+                ok: false,
+                error: 'avrdude 不在 PATH。AT89S51 需要 USBasp + avrdude 下载（也可用 ProgISP 等图形工具）'
+            };
+        }
+        return {
+            ok: true,
+            command: avrdude,
+            args: ['-c', opts.programmer || 'usbasp', '-p', at89Part(mcu), '-U', `flash:w:${findHex(projectDir)}:i`],
+            cwd: projectDir
+        };
+    }
+
     if (mcu.startsWith('ESP32')) {
         const idfpy = which('idf.py');
         if (!idfpy) return { ok: false, error: 'idf.py 不在 PATH（需 ESP-IDF 环境）' };
@@ -314,5 +361,8 @@ module.exports = {
     registerBuildTask,
     buildFlashCommand,
     executeFlash,
+    isAt89,
+    at89Part,
+    findHex,
     which
 };

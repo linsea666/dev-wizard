@@ -8,6 +8,9 @@
  *   4. unused token definitions (variables never appear in any text file)
  *   5. undefined token usage ({{x}} / <x> with no builtin/variable backing)
  *   6. afterCreate commands resolvable on PATH (where/command -v)
+ *   7. EIDE project config (.eide/eide.yml) structural sanity — a target block
+ *      without `uploader` / `uploadConfigMap` makes EIDE throw
+ *      "Cannot read properties of undefined (reading 'undefined')" on open
  *
  * Returns an array of report objects (one per template), each with a list of
  * { level: 'ok'|'warn'|'error', message } lines, ready to render in a QuickPick
@@ -39,6 +42,92 @@ function listTemplateDirs(root) {
     } catch (e) {
         return [];
     }
+}
+
+/* EIDE 加载工程时会执行（dist/extension.js 的 parse()）：
+ *     target.toolchainConfig = target.toolchainConfigMap[target.toolchain];
+ *     target.uploadConfig    = target.uploadConfigMap[target.uploader];
+ * 一旦 `uploader` / `uploadConfigMap` 缺失，就是
+ *     TypeError: Cannot read properties of undefined (reading 'undefined')
+ * 整个工程打不开（EIDE 的 _OpenProject 会整个失败）。只做浅层结构扫描，
+ * 不引 YAML 依赖：模板里这两个字段永远是 target 下 4 空格缩进的顶层键。
+ */
+const EIDE_UPLOADERS = [
+    'JLink', 'STLink', 'stcgal', 'STVP', 'pyOCD', 'OpenOCD', 'probe-rs', 'Custom'
+];
+
+function scanEideTargets(text) {
+    const lines = text.split(/\r?\n/);
+    const start = lines.findIndex((l) => /^targets:\s*$/.test(l));
+    if (start < 0) return [];
+
+    const targets = [];
+    let cur = null;
+    for (let i = start + 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (/^\S/.test(line) && line.trim()) break;              // 出了 targets 块
+        let mm = /^ {2}([^\s#][^:]*):/.exec(line);               // 目标名（2 空格）
+        if (mm) {
+            cur = { name: mm[1].trim(), keys: {}, indent: 2 };
+            targets.push(cur);
+            continue;
+        }
+        if (!cur) continue;
+        mm = /^ {4}([A-Za-z_][\w-]*):\s*(.*)$/.exec(line);       // 目标下的顶层键
+        if (mm) cur.keys[mm[1]] = mm[2].trim();
+    }
+    return targets;
+}
+
+function checkEideConfig(dir) {
+    const issues = [];
+    const cfg = path.join(dir, '.eide', 'eide.yml');
+    if (!fs.existsSync(cfg)) return issues;                      // 非 EIDE 工程，跳过
+
+    let text;
+    try {
+        text = fs.readFileSync(cfg, 'utf8');
+    } catch (e) {
+        issues.push({ level: 'warn', message: `.eide/eide.yml 读不出来: ${e.message}` });
+        return issues;
+    }
+
+    const targets = scanEideTargets(text);
+    if (!targets.length) {
+        issues.push({ level: 'warn', message: '.eide/eide.yml 里没解析到 targets.* 配置块' });
+        return issues;
+    }
+
+    for (const t of targets) {
+        const where = `targets.${t.name}`;
+        if (!t.keys.toolchain) {
+            issues.push({ level: 'error', message: `${where} 缺 toolchain（EIDE 无法确定工具链）` });
+        }
+        if (!('uploadConfigMap' in t.keys)) {
+            issues.push({
+                level: 'error',
+                message: `${where} 缺 uploadConfigMap —— EIDE 打开工程时会抛 TypeError`
+            });
+        }
+        if (!('uploader' in t.keys)) {
+            issues.push({
+                level: 'error',
+                message: `${where} 缺 uploader —— EIDE 打开工程时会抛 TypeError`
+            });
+        } else if (!t.keys.uploader) {
+            issues.push({ level: 'warn', message: `${where}.uploader 为空` });
+        } else if (!EIDE_UPLOADERS.includes(t.keys.uploader)) {
+            issues.push({
+                level: 'error',
+                message: `${where}.uploader="${t.keys.uploader}" 不是 EIDE 认的名字（会抛 Invalid uploader type）`
+            });
+        }
+    }
+
+    if (!issues.length) {
+        issues.push({ level: 'ok', message: `EIDE 工程配置完整（${targets.length} 个配置：${targets.map((t) => t.name).join(', ')}，uploader=${targets.map((t) => t.keys.uploader).join(', ')}）` });
+    }
+    return issues;
 }
 
 /* Scan one template dir -> report object. */
@@ -117,6 +206,11 @@ function inspectTemplate(dir) {
         }
     }
 
+    // EIDE project config sanity (templates without .eide/ are simply skipped)
+    for (const issue of checkEideConfig(dir)) {
+        add(issue.level, issue.message);
+    }
+
     if (!report.lines.some((l) => l.level !== 'ok')) {
         add('ok', '未发现问题');
     }
@@ -129,4 +223,4 @@ function inspectAll(root) {
     return dirs.map(inspectTemplate);
 }
 
-module.exports = { inspectTemplate, inspectAll, listTemplateDirs };
+module.exports = { inspectTemplate, inspectAll, listTemplateDirs, checkEideConfig };

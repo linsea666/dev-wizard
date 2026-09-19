@@ -1,0 +1,59 @@
+{
+    // VS Code C/C++ 智能感知配置（只影响编辑器内的实时报错/补全，不影响真实编译）
+    //
+    // SDCC 和 Keil 的 8051 专属关键字都不是标准 C，这里把它们映射成普通 C，
+    // 让 IntelliSense 能干净地解析 reg51.h / at89x51.h（已实测零错误）。
+    //
+    // 已知残留：`void t0(void) interrupt 1 using 1` 这种 Keil 中断写法，
+    // 编辑器会把 interrupt/using 报红——这是 C 语法层面绕不开的，真实编译没问题，
+    // 忽略这一行的红线即可（其余所有行都正常）。
+    //
+    // 若你的 SDCC / Keil 不在默认路径，把 includePath 里的两行改成实际路径。
+    "version": 4,
+    "configurations": [
+        {
+            "name": "Keil C51 / SDCC (mcs51)",
+            "cStandard": "c99",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "E:/keilc51v957/C51/INC",
+                "E:/vscode/tools/sdcc/share/sdcc/include",
+                "E:/vscode/tools/sdcc/share/sdcc/include/mcs51"
+            ],
+            "defines": [
+                "VS_CODE_INTELLISENSE",
+                "__SDCC",
+                "__sfr=volatile unsigned char",
+                "__sbit=volatile unsigned char",
+                "__sfr16=volatile unsigned short",
+                "__sfr32=volatile unsigned long",
+                "__xdata=",
+                "__data=",
+                "__idata=",
+                "__pdata=",
+                "__code=",
+                "__at(addr)=",
+                "__interrupt(v)=",
+                "__using(r)=",
+                "sfr=volatile unsigned char",
+                "sbit=volatile unsigned char",
+                "sfr16=volatile unsigned short",
+                "sfr32=volatile unsigned long",
+                "bit=unsigned char",
+                "data=",
+                "idata=",
+                "pdata=",
+                "xdata=",
+                "bdata=",
+                "code=",
+                "reentrant=",
+                "interrupt=",
+                "using="
+            ],
+            "intelliSenseMode": "gcc-x86",
+            "browse": {
+                "path": ["${workspaceFolder}/src"]
+            }
+        }
+    ]
+}

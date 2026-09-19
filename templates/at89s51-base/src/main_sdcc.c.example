@@ -1,0 +1,43 @@
+/*  新工程的代码从这里开始
+ *
+ *  芯片：AT89S51（8051 内核 · 4 KB Flash · 128 B RAM）
+ *  编译器：SDCC（mcs51 目标）
+ *  编译：按 F7（EIDE），或命令行执行 .\build.ps1
+ *  产物：build\Debug\<工程名>.hex（另有 .ihx / .mem）
+ *
+ *  引脚与主频定义在 src/board.h，改板子只改那一个文件。
+ *  寄存器名（P0~P3、TCON、TMOD、SCON……）来自 SDCC 自带的 <at89x51.h>。
+ *
+ *  下面是一个 LED 闪烁示例，用来验证"编译→烧录→运行"整条链路；
+ *  不需要就直接删掉 while(1) 里的内容重新写。
+ */
+
+#include <at89x51.h>
+#include "board.h"
+
+/* 软件延时，约 millisecond 级（11.0592 MHz 晶振下的经验值） */
+static void delay_ms(unsigned int ms)
+{
+    unsigned int i, j;
+
+    for (i = 0; i < ms; i++)
+    {
+        for (j = 0; j < 110; j++)
+        {
+            ;
+        }
+    }
+}
+
+void main(void)
+{
+    P1 = 0xFF; /* P1 全部拉高：LED 熄灭（低电平点亮） */
+
+    while (1)
+    {
+        LED = 0; /* 点亮 */
+        delay_ms(500);
+        LED = 1; /* 熄灭 */
+        delay_ms(500);
+    }
+}

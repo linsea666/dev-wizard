@@ -1,0 +1,99 @@
+{
+    // 构建任务一览：
+    //   build (Keil C51)          ← 默认（Ctrl+Shift+B 直接跑），Keil 语法
+    //   build (SDCC / EIDE)       F7 走的是 EIDE 自己的构建，同一件事
+    //   build (SDCC 脚本)         不开 EIDE 也能编的 SDCC 版
+    // 注意：sfr/sbit 这类 Keil 语法 SDCC 编不了，反之 __sbit __at Keil 也编不了。
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build (Keil C51)",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/build-keil.ps1"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build + flash (Keil + USBasp)",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/build-keil.ps1",
+                "-Flash"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "build (SDCC / EIDE)",
+            "type": "shell",
+            "command": "${command:eide.project.build}",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "rebuild (EIDE)",
+            "type": "shell",
+            "command": "${command:eide.project.rebuild}",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "flash (EIDE)",
+            "type": "shell",
+            "command": "${command:eide.project.uploadToDevice}",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "clean (EIDE)",
+            "type": "shell",
+            "command": "${command:eide.project.clean}",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "build (SDCC 脚本，不依赖 EIDE)",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/build.ps1"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "build + flash (SDCC + USBasp)",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/build.ps1",
+                "-Flash"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}

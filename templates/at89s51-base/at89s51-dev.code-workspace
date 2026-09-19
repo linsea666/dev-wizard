@@ -1,0 +1,49 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.autoGuessEncoding": true,
+        "EIDE.SourceTree.AutoSearchIncludePath": true,
+        "EIDE.SourceTree.AutoSearchObjFile": true,
+        "EIDE.SerialPortMonitor.BaudRate": 9600,
+        // C/C++ 实时报错配置：
+        // 1) configurationProvider 留空 = 不让 EIDE 接管 IntelliSense。
+        //    EIDE 的 provider 只会提供 eide.yml 里的 SDCC 配置，不含 Keil 关键字
+        //    （sfr/sbit/data/code）映射，Keil 风格源码会满屏假红线；
+        //    留空后 cpptools 走 .vscode/c_cpp_properties.json（两种语法都支持）。
+        // 2) errorSquiggles 必须 = "enabled"：EIDE 首次加载新工程时会把
+        //    null/"Disabled" 的值改成 disabled，预置 enabled 可挡住它。
+        "C_Cpp.default.configurationProvider": "",
+        "C_Cpp.errorSquiggles": "enabled",
+        "files.associations": {
+            ".eideignore": "ignore",
+            "*.h": "c",
+            "*.c": "c",
+            "*.a51": "a51",
+            "*.asm": "asm",
+            "*.ihx": "hex",
+            "*.hpp": "cpp",
+            "*.cpp": "cpp"
+        },
+        "[yaml]": {
+            "editor.insertSpaces": true,
+            "editor.tabSize": 4,
+            "editor.autoIndent": "advanced"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "cl.eide",
+            "keroc.hex-fmt",
+            "xiaoyongdong.srecord",
+            "hars.cppsnippets",
+            "redhat.vscode-yaml",
+            "IBM.output-colorizer",
+            "cschlosser.doxdocgen",
+            "ms-vscode.vscode-serial-monitor"
+        ]
+    }
+}

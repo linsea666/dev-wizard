@@ -1,0 +1,64 @@
+version: "4.1"
+name: at89s51-dev
+type: C51
+deviceName: null
+packDir: null
+srcDirs: []
+virtualFolder:
+  name: <virtual_root>
+  files: []
+  folders:
+    - name: Application
+      files:
+        - path: src/main.c
+      folders: []
+dependenceList: []
+outDir: build
+miscInfo:
+  uid: 97044edeeb67363d6b9ab6f3c40529e8
+targets:
+  Debug:
+    cppPreprocessAttrs:
+      defineList: []
+      # AT89S51 自己的头文件放在 src/ 下；8051 的 SFR 定义由 SDCC 自带的
+      # <at89x51.h> 提供（share/sdcc/include/mcs51/），不用把 Keil 的
+      # reg51.h 拷进工程。
+      incList:
+        - src
+      libList: []
+    excludeList: []
+    settings:
+      debugger: unknown
+    toolchain: SDCC
+    toolchainConfigMap:
+      SDCC:
+        options:
+          version: 3
+          afterBuildTasks: []
+          asm-compiler: {}
+          beforeBuildTasks: []
+          c/cpp-compiler:
+            language-c: c99
+          global:
+            # AT89S51 = 8051 内核：128 B 内部 RAM、无 XRAM、4 KB Flash。
+            # 换 AT89S52（8 KB Flash）时把 --code-size 改成 8192。
+            # 不用再加 -I/-L：sdcc.exe 自带编译期写死的头文件/库搜索路径，
+            # 加了反而容易写成机器相关的绝对路径。
+            device: mcs51
+            misc-controls: --iram-size 128 --xram-size 0 --code-size 4096
+            optimize-type: balanced
+          linker:
+            $mainFileName: main
+            output-format: hex
+    # uploader 字段必须有：EIDE 加载工程时会执行
+    #   target.uploadConfig = target.uploadConfigMap[target.uploader]
+    # 两者任一缺失都会抛 TypeError（Cannot read properties of undefined），
+    # 整个工程打不开。AT89S51 走 SPI-ISP（P1.5/P1.6/P1.7），EIDE 内置的
+    # JLink/STLink/stcgal/pyOCD/OpenOCD 都不认，所以用 Custom CLI + avrdude。
+    uploader: Custom
+    uploadConfigMap:
+      Custom:
+        # bin 留空 = 默认 build/Debug/<工程名>.hex（EIDE 自己的构建产物路径）
+        bin: ""
+        commandLine: avrdude -c usbasp -p at89s51 -U flash:w:"${hexFile}":i
+        eraseChipCommand: avrdude -c usbasp -p at89s51 -e

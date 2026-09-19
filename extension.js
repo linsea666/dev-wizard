@@ -2,7 +2,7 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, spawnSync } = require('child_process');
 const mf = require('./src/manifest');
 const registry = require('./src/registry');
 const doc = require('./src/template-doctor');
@@ -543,6 +543,30 @@ function whichCmd(cmd) {
     }
 }
 
+/* `sdcc -v` 把版本信息写在 stderr 上，两个流都读，并且不关心退出码。
+ * 51 系列（STC51 / AT89S51）都靠它编译，所以体检里单独列一行版本。 */
+function sdccVersion() {
+    const p = whichCmd('sdcc');
+    if (!p) return null;
+    try {
+        const r = spawnSync(p, ['-v'], { windowsHide: true, encoding: 'utf8' });
+        const txt = `${(r && r.stdout) || ''}\n${(r && r.stderr) || ''}`;
+        const m = txt.match(/SDCC\s*:\s*\S+\s+([\d.]+ #\d+)/);
+        if (m) return m[1];
+        const first = txt.split(/\r?\n/).find((l) => l.trim());
+        return first ? first.trim().slice(0, 80) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+/* 描述一个安装目录：在不在？里面有没有 bin\？ */
+function dirDetail(p) {
+    if (!p) return '未设置（对应工程会找不到编译器）';
+    if (!fs.existsSync(p)) return `${p}（目录不存在）`;
+    return fs.existsSync(path.join(p, 'bin')) ? p : `${p}（该目录下没有 bin\\）`;
+}
+
 async function runDoctor(ctx) {
     const root = cfg().get('templatesRoot');
     const items = [];
@@ -563,20 +587,37 @@ async function runDoctor(ctx) {
         add(mark(ok), `扩展 ${name}`, ok ? `已安装 (${id})` : `未安装 (${id})`);
     }
 
+    // [命令, 名称, 是否可选] —— 可选工具缺失只提示，不算问题
     const tools = [
         ['arm-none-eabi-gcc', 'ARM GCC (STM32)'],
-        ['sdcc', 'SDCC (STC51)'],
+        ['sdcc', 'SDCC (STC51 / AT89S51 编译)'],
+        ['packihx', 'packihx (SDCC 配套：ihx 转 hex)'],
         ['openocd', 'OpenOCD (调试器)'],
         ['python', 'Python'],
         ['stcgal', 'stcgal (STC 烧录)'],
+        ['avrdude', 'avrdude (AT89S51 的 USBasp 下载)', true],
         ['gcc', 'MinGW gcc (C/C++)'],
         ['g++', 'MinGW g++ (C++)'],
         ['cmake', 'CMake (C/C++)']
     ];
-    for (const [c, name] of tools) {
+    for (const [c, name, optional] of tools) {
         const p = whichCmd(c);
-        add(mark(!!p), `工具链 ${name}`, p ? `在 PATH: ${p}` : `未在 PATH 找到 ${c}`);
+        const icon = p ? '$(pass)' : (optional ? '$(warning)' : '$(error)');
+        const detail = p
+            ? `在 PATH: ${p}`
+            : `未在 PATH 找到 ${c}` + (optional ? '（只在烧录 AT89S51 时需要，可选）' : '');
+        add(icon, `工具链 ${name}`, detail);
     }
+
+    const sdccVer = sdccVersion();
+    add(mark(!!sdccVer), 'SDCC 版本', sdccVer || '未找到 sdcc —— 51 系列（STC51 / AT89S51）编译不了');
+
+    // Keil C51（AT89S51 模板默认编译器，不用 PATH，找安装目录）
+    const keilC51 = ['E:\\keilc51v957', 'C:\\Keil_v5', 'C:\\Keil']
+        .map((d) => `${d}\\C51\\BIN\\C51.exe`)
+        .find((p) => fs.existsSync(p));
+    add(mark(!!keilC51), 'Keil C51 (AT89S51 默认编译器)',
+        keilC51 || '未找到 Keil 安装目录 —— build-keil.ps1 用不了，SDCC/F7 仍可用');
 
     let tOk = false;
     let tDetail = '';
@@ -594,8 +635,8 @@ async function runDoctor(ctx) {
     const eide = vscode.workspace.getConfiguration('EIDE');
     const armDir = eide.get('ARM.GCC.InstallDirectory');
     const sdccDir = eide.get('SDCC.InstallDirectory');
-    add(armDir ? '$(pass)' : '$(warning)', 'EIDE ARM GCC 路径', armDir || '未设置');
-    add(sdccDir ? '$(pass)' : '$(warning)', 'EIDE SDCC 路径', sdccDir || '未设置');
+    add(armDir ? '$(pass)' : '$(warning)', 'EIDE ARM GCC 路径', dirDetail(armDir));
+    add(sdccDir ? '$(pass)' : '$(warning)', 'EIDE SDCC 路径', dirDetail(sdccDir));
 
     await vscode.window.showQuickPick(items, {
         placeHolder: 'Dev Wizard 环境体检（点击一项看详情；按 Esc 退出）',
