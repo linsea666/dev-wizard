@@ -4,9 +4,15 @@
     // SDCC 和 Keil 的 8051 专属关键字都不是标准 C，这里把它们映射成普通 C，
     // 让 IntelliSense 能干净地解析 reg51.h / at89x51.h（已实测零错误）。
     //
-    // 已知残留：`void t0(void) interrupt 1 using 1` 这种 Keil 中断写法，
-    // 编辑器会把 interrupt/using 报红——这是 C 语法层面绕不开的，真实编译没问题，
-    // 忽略这一行的红线即可（其余所有行都正常）。
+    // 中断写法用兼容宏（Keil 与 SDCC 都认，编辑器零报错）：
+    //   #ifdef __SDCC
+    //     #define ISR(vec) __interrupt(vec)   // SDCC / 智能感知走这里
+    //   #else
+    //     #define ISR(vec) interrupt vec      // Keil C51 走这里
+    //   #endif
+    //   用法：void timer0_isr(void) ISR(1)
+    // Keil 风格的 `interrupt 1`（数字裸跟在关键字后）无法用宏映射干净，
+    // 直接写会报红——用上面的 ISR(vec) 宏即可两全。
     //
     // __SDCC_ROOT__ 由 setup.ps1 部署时自动替换；Keil 的 INC 路径（E:/keilc51v957）仅影响编辑器提示，按本机实际改。
     "version": 4,
