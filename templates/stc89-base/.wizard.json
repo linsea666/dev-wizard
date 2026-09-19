@@ -1,0 +1,7 @@
+{
+    "label": "新建 STC89 工程",
+    "description": "SDCC + EIDE，STC89C51RC 点灯示例（板载 LED P2.2），F7 编译后一键烧录",
+    "icon": "chip",
+    "open": "workspace",
+    "defaultName": "stc89-led"
+}
