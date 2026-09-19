@@ -17,6 +17,8 @@
 - **一键建工程**：模板就是"一个能编译的完整工程"，选类型起名字即得；Python 模板还带 conda 环境选择器
 - **一键构建/烧录**：按工程类型自动选 EIDE/CMake/Makefile/PlatformIO；烧录自动识别芯片协议（STC89/STC15/AT89/STM32/ESP32），STC 烧录前提醒冷启动
 - **环境体检 doctor**：扩展、工具链、模板目录一屏检查，缺什么点一下就能修
+- **跳转定义开箱即用**：51/STM32 模板内置 C/C++ 智能感知配置，F12 跳进库函数实现、悬停看签名——**标准库 540 个函数的参数文档已全部汉化**，写错一眼看出来
+- **中文寄存器手册**：STC89 模板自带 `stc89c51rc.h`（每个寄存器/位/中断向量都有中文说明），STM32 工程自带 `docs/参数速查_STM32F103C8T6.md`（时钟树/GPIO 模式表/常见坑）
 - **模板生态**：`installTemplate` 从 git 仓库装模板、`templateDoctor` 校验模板质量
 - **context.md**：建工程自动生成 AI 助手上下文文件（给 Copilot/Claude 用）
 
@@ -38,10 +40,10 @@ powershell -ExecutionPolicy Bypass -File scripts\setup.ps1
 
 | 模板 | 芯片 | 编译 | 烧录 | 内置示例 |
 |---|---|---|---|---|
-| stc51-base | STC15F104W | SDCC | stcgal（串口，冷启动） | 空白入口 + stc15 库 |
-| stc89-base | STC89C51RC | SDCC | stcgal `-P stc89`（串口，冷启动） | 板载 LED @ P2.2 闪烁 |
+| stc51-base | STC15F104W | SDCC | stcgal（串口，冷启动） | 空白入口 + stc15 库（中文 IntelliSense） |
+| stc89-base | STC89C51RC | SDCC | stcgal `-P stc89`（串口，冷启动） | 点灯 + 串口收发（board.h/uart.c，中文寄存器头） |
 | at89s51-base | AT89S51 | Keil C51 / SDCC | USBasp + avrdude（SPI-ISP） | Keil 语法 LED + SDCC 备份 |
-| stm32-base | STM32F103C8T6 等 | ARM GCC | OpenOCD（SWD） | 标准库点灯 |
+| stm32-base | STM32F103C8T6 等 | ARM GCC | OpenOCD（SWD） | PC13 点灯 + 全库中文注释 + 参数速查手册 |
 | esp32-base | ESP32 | ESP-IDF | `idf.py flash` | CMake 骨架 |
 | python-base | — | Python | — | main.py + conda 环境选择 |
 | c-base / cpp-base | — | MinGW / MSVC | — | CMake 控制台工程 |

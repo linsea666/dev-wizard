@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the DMA firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the DMA firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup DMA 
-  * @brief DMA driver modules
-  * @{
+  * @brief  DMA driver modules @{（详见英文原注释）
   */ 
 
 /** @defgroup DMA_Private_TypesDefinitions
@@ -99,10 +97,8 @@
   */
 
 /**
-  * @brief  Deinitializes the DMAy Channelx registers to their default reset
-  *         values.
-  * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and
-  *   x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
+  * @brief  复位D（恢复默认值）
+  * @param  DMAy_Channelx: where y can be 1 or 2 选择 DMA and x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 选择 DMA Channel.
   * @retval None
   */
 void DMA_DeInit(DMA_Channel_TypeDef* DMAy_Channelx)
@@ -191,12 +187,9 @@ void DMA_DeInit(DMA_Channel_TypeDef* DMAy_Channelx)
 }
 
 /**
-  * @brief  Initializes the DMAy Channelx according to the specified
-  *         parameters in the DMA_InitStruct.
-  * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and 
-  *   x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
-  * @param  DMA_InitStruct: pointer to a DMA_InitTypeDef structure that
-  *         contains the configuration information for the specified DMA Channel.
+  * @brief  按 DMA_InitStruct 的配置初始化DMAy Channelx
+  * @param  DMAy_Channelx: where y can be 1 or 2 选择 DMA and x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 选择 DMA Channel.
+  * @param  DMA_InitStruct: 指向 DMA_InitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void DMA_Init(DMA_Channel_TypeDef* DMAy_Channelx, DMA_InitTypeDef* DMA_InitStruct)
@@ -251,9 +244,8 @@ void DMA_Init(DMA_Channel_TypeDef* DMAy_Channelx, DMA_InitTypeDef* DMA_InitStruc
 }
 
 /**
-  * @brief  Fills each DMA_InitStruct member with its default value.
-  * @param  DMA_InitStruct : pointer to a DMA_InitTypeDef structure which will
-  *         be initialized.
+  * @brief  把DMA_InitStruct各字段填成默认值
+  * @param  DMA_InitStruct : pointer to a DMA_InitTypeDef structure which will be initialized.
   * @retval None
   */
 void DMA_StructInit(DMA_InitTypeDef* DMA_InitStruct)
@@ -284,11 +276,9 @@ void DMA_StructInit(DMA_InitTypeDef* DMA_InitStruct)
 }
 
 /**
-  * @brief  Enables or disables the specified DMAy Channelx.
-  * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and 
-  *   x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
-  * @param  NewState: new state of the DMAy Channelx. 
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关DMAy Channelx
+  * @param  DMAy_Channelx: where y can be 1 or 2 选择 DMA and x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 选择 DMA Channel.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void DMA_Cmd(DMA_Channel_TypeDef* DMAy_Channelx, FunctionalState NewState)
@@ -310,17 +300,13 @@ void DMA_Cmd(DMA_Channel_TypeDef* DMAy_Channelx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified DMAy Channelx interrupts.
-  * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and 
-  *   x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
-  * @param  DMA_IT: specifies the DMA interrupts sources to be enabled
-  *   or disabled. 
-  *   This parameter can be any combination of the following values:
+  * @brief  开关DMAy Channelx interrupts
+  * @param  DMAy_Channelx: where y can be 1 or 2 选择 DMA and x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 选择 DMA Channel.
+  * @param  DMA_IT: 指定DMA interrupts sources，将被enabled or disabled。
   *     @arg DMA_IT_TC:  Transfer complete interrupt mask
   *     @arg DMA_IT_HT:  Half transfer interrupt mask
   *     @arg DMA_IT_TE:  Transfer error interrupt mask
-  * @param  NewState: new state of the specified DMA interrupts.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void DMA_ITConfig(DMA_Channel_TypeDef* DMAy_Channelx, uint32_t DMA_IT, FunctionalState NewState)
@@ -342,12 +328,10 @@ void DMA_ITConfig(DMA_Channel_TypeDef* DMAy_Channelx, uint32_t DMA_IT, Functiona
 }
 
 /**
-  * @brief  Sets the number of data units in the current DMAy Channelx transfer.
-  * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and 
-  *         x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
-  * @param  DataNumber: The number of data units in the current DMAy Channelx
-  *         transfer.   
-  * @note   This function can only be used when the DMAy_Channelx is disabled.                 
+  * @brief  设置n
+  * @param  DMAy_Channelx: where y can be 1 or 2 选择 DMA and x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 选择 DMA Channel.
+  * @param  DataNumber: The number of data units in the current DMAy Channelx transfer.
+  * @note  This function can only be used when the DMAy_Channelx is disabled.
   * @retval None.
   */
 void DMA_SetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx, uint16_t DataNumber)
@@ -361,12 +345,9 @@ void DMA_SetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx, uint16_t DataNum
 }
 
 /**
-  * @brief  Returns the number of remaining data units in the current
-  *         DMAy Channelx transfer.
-  * @param  DMAy_Channelx: where y can be 1 or 2 to select the DMA and 
-  *   x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 to select the DMA Channel.
-  * @retval The number of remaining data units in the current DMAy Channelx
-  *         transfer.
+  * @brief  Returns the number of remaining data units in the current DMAy Channelx transfer.（详见英文原注释）
+  * @param  DMAy_Channelx: where y can be 1 or 2 选择 DMA and x can be 1 to 7 for DMA1 and 1 to 5 for DMA2 选择 DMA Channel.
+  * @retval The number of remaining data units in the current DMAy Channelx transfer.
   */
 uint16_t DMA_GetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx)
 {
@@ -377,9 +358,8 @@ uint16_t DMA_GetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx)
 }
 
 /**
-  * @brief  Checks whether the specified DMAy Channelx flag is set or not.
-  * @param  DMAy_FLAG: specifies the flag to check.
-  *   This parameter can be one of the following values:
+  * @brief  检查DMAy Channelx标志是否置位
+  * @param  DMAy_FLAG: 指定flag to check。
   *     @arg DMA1_FLAG_GL1: DMA1 Channel1 global flag.
   *     @arg DMA1_FLAG_TC1: DMA1 Channel1 transfer complete flag.
   *     @arg DMA1_FLAG_HT1: DMA1 Channel1 half transfer flag.
@@ -467,9 +447,8 @@ FlagStatus DMA_GetFlagStatus(uint32_t DMAy_FLAG)
 }
 
 /**
-  * @brief  Clears the DMAy Channelx's pending flags.
-  * @param  DMAy_FLAG: specifies the flag to clear.
-  *   This parameter can be any combination (for the same DMA) of the following values:
+  * @brief  Clears the DMAy Channelx's pending flags.（详见英文原注释）
+  * @param  DMAy_FLAG: 指定flag to clear。
   *     @arg DMA1_FLAG_GL1: DMA1 Channel1 global flag.
   *     @arg DMA1_FLAG_TC1: DMA1 Channel1 transfer complete flag.
   *     @arg DMA1_FLAG_HT1: DMA1 Channel1 half transfer flag.
@@ -539,9 +518,8 @@ void DMA_ClearFlag(uint32_t DMAy_FLAG)
 }
 
 /**
-  * @brief  Checks whether the specified DMAy Channelx interrupt has occurred or not.
-  * @param  DMAy_IT: specifies the DMAy interrupt source to check. 
-  *   This parameter can be one of the following values:
+  * @brief  检查specified DMAy Channelx中断是否已发生
+  * @param  DMAy_IT: 指定DMAy interrupt source to check。
   *     @arg DMA1_IT_GL1: DMA1 Channel1 global interrupt.
   *     @arg DMA1_IT_TC1: DMA1 Channel1 transfer complete interrupt.
   *     @arg DMA1_IT_HT1: DMA1 Channel1 half transfer interrupt.
@@ -628,9 +606,8 @@ ITStatus DMA_GetITStatus(uint32_t DMAy_IT)
 }
 
 /**
-  * @brief  Clears the DMAy Channelx's interrupt pending bits.
-  * @param  DMAy_IT: specifies the DMAy interrupt pending bit to clear.
-  *   This parameter can be any combination (for the same DMA) of the following values:
+  * @brief  清除DMAy Channelx的中断挂起标志
+  * @param  DMAy_IT: 指定DMAy interrupt pending bit to clear。
   *     @arg DMA1_IT_GL1: DMA1 Channel1 global interrupt.
   *     @arg DMA1_IT_TC1: DMA1 Channel1 transfer complete interrupt.
   *     @arg DMA1_IT_HT1: DMA1 Channel1 half transfer interrupt.

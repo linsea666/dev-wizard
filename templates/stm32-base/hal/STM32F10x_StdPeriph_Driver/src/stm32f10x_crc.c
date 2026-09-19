@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the CRC firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the CRC firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -27,8 +26,7 @@
   */
 
 /** @defgroup CRC 
-  * @brief CRC driver modules
-  * @{
+  * @brief  CRC driver modules @{（详见英文原注释）
   */
 
 /** @defgroup CRC_Private_TypesDefinitions
@@ -76,7 +74,7 @@
   */
 
 /**
-  * @brief  Resets the CRC Data register (DR).
+  * @brief  Resets the CRC Data register (DR).（详见英文原注释）
   * @param  None
   * @retval None
   */
@@ -87,7 +85,7 @@ void CRC_ResetDR(void)
 }
 
 /**
-  * @brief  Computes the 32-bit CRC of a given data word(32-bit).
+  * @brief  Computes the 32-bit CRC of a given data word(32-bit).（详见英文原注释）
   * @param  Data: data word(32-bit) to compute its CRC
   * @retval 32-bit CRC
   */
@@ -99,9 +97,9 @@ uint32_t CRC_CalcCRC(uint32_t Data)
 }
 
 /**
-  * @brief  Computes the 32-bit CRC of a given buffer of data word(32-bit).
+  * @brief  Computes the 32-bit CRC of a given buffer of data word(32-bit).（详见英文原注释）
   * @param  pBuffer: pointer to the buffer containing the data to be computed
-  * @param  BufferLength: length of the buffer to be computed					
+  * @param  BufferLength: length of the buffer to be computed
   * @retval 32-bit CRC
   */
 uint32_t CRC_CalcBlockCRC(uint32_t pBuffer[], uint32_t BufferLength)
@@ -116,7 +114,7 @@ uint32_t CRC_CalcBlockCRC(uint32_t pBuffer[], uint32_t BufferLength)
 }
 
 /**
-  * @brief  Returns the current CRC value.
+  * @brief  Returns the current CRC value.（详见英文原注释）
   * @param  None
   * @retval 32-bit CRC
   */
@@ -126,8 +124,8 @@ uint32_t CRC_GetCRC(void)
 }
 
 /**
-  * @brief  Stores a 8-bit data in the Independent Data(ID) register.
-  * @param  IDValue: 8-bit value to be stored in the ID register 					
+  * @brief  Stores a 8-bit data in the Independent Data(ID) register.（详见英文原注释）
+  * @param  IDValue: 8-bit value to be stored in the ID register
   * @retval None
   */
 void CRC_SetIDRegister(uint8_t IDValue)
@@ -136,9 +134,9 @@ void CRC_SetIDRegister(uint8_t IDValue)
 }
 
 /**
-  * @brief  Returns the 8-bit data stored in the Independent Data(ID) register
+  * @brief  Returns the 8-bit data stored in the Independent Data(ID) register（详见英文原注释）
   * @param  None
-  * @retval 8-bit value of the ID register 
+  * @retval 8-bit value of the ID register
   */
 uint8_t CRC_GetIDRegister(void)
 {

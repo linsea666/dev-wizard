@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the RTC firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the RTC firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -27,8 +26,7 @@
   */
 
 /** @defgroup RTC 
-  * @brief RTC driver modules
-  * @{
+  * @brief  RTC driver modules @{（详见英文原注释）
   */
 
 /** @defgroup RTC_Private_TypesDefinitions
@@ -77,14 +75,12 @@
   */
 
 /**
-  * @brief  Enables or disables the specified RTC interrupts.
-  * @param  RTC_IT: specifies the RTC interrupts sources to be enabled or disabled.
-  *   This parameter can be any combination of the following values:
+  * @brief  开关RTC interrupts
+  * @param  RTC_IT: 指定RTC interrupts sources，将被enabled or disabled。
   *     @arg RTC_IT_OW: Overflow interrupt
   *     @arg RTC_IT_ALR: Alarm interrupt
   *     @arg RTC_IT_SEC: Second interrupt
-  * @param  NewState: new state of the specified RTC interrupts.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void RTC_ITConfig(uint16_t RTC_IT, FunctionalState NewState)
@@ -104,7 +100,7 @@ void RTC_ITConfig(uint16_t RTC_IT, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enters the RTC configuration mode.
+  * @brief  Enters the RTC configuration mode.（详见英文原注释）
   * @param  None
   * @retval None
   */
@@ -115,7 +111,7 @@ void RTC_EnterConfigMode(void)
 }
 
 /**
-  * @brief  Exits from the RTC configuration mode.
+  * @brief  Exits from the RTC configuration mode.（详见英文原注释）
   * @param  None
   * @retval None
   */
@@ -126,7 +122,7 @@ void RTC_ExitConfigMode(void)
 }
 
 /**
-  * @brief  Gets the RTC counter value.
+  * @brief  获取R
   * @param  None
   * @retval RTC counter value.
   */
@@ -138,7 +134,7 @@ uint32_t RTC_GetCounter(void)
 }
 
 /**
-  * @brief  Sets the RTC counter value.
+  * @brief  设置R
   * @param  CounterValue: RTC counter new value.
   * @retval None
   */
@@ -153,7 +149,7 @@ void RTC_SetCounter(uint32_t CounterValue)
 }
 
 /**
-  * @brief  Sets the RTC prescaler value.
+  * @brief  设置R
   * @param  PrescalerValue: RTC prescaler new value.
   * @retval None
   */
@@ -171,7 +167,7 @@ void RTC_SetPrescaler(uint32_t PrescalerValue)
 }
 
 /**
-  * @brief  Sets the RTC alarm value.
+  * @brief  设置R
   * @param  AlarmValue: RTC alarm new value.
   * @retval None
   */
@@ -186,7 +182,7 @@ void RTC_SetAlarm(uint32_t AlarmValue)
 }
 
 /**
-  * @brief  Gets the RTC divider value.
+  * @brief  获取R
   * @param  None
   * @retval RTC Divider value.
   */
@@ -199,8 +195,8 @@ uint32_t RTC_GetDivider(void)
 }
 
 /**
-  * @brief  Waits until last write operation on RTC registers has finished.
-  * @note   This function must be called before any write to RTC registers.
+  * @brief  Waits until last write operation on RTC registers has finished.（详见英文原注释）
+  * @note  This function must be called before any write to RTC registers.
   * @param  None
   * @retval None
   */
@@ -213,10 +209,8 @@ void RTC_WaitForLastTask(void)
 }
 
 /**
-  * @brief  Waits until the RTC registers (RTC_CNT, RTC_ALR and RTC_PRL)
-  *   are synchronized with RTC APB clock.
-  * @note   This function must be called before any read operation after an APB reset
-  *   or an APB clock stop.
+  * @brief  Waits until the RTC registers (RTC_CNT, RTC_ALR and RTC_PRL) are synchronized with RTC APB 时钟.（详见英文原注释）
+  * @note  This function must be called before any read operation after an APB reset or an APB 时钟 stop.
   * @param  None
   * @retval None
   */
@@ -231,9 +225,8 @@ void RTC_WaitForSynchro(void)
 }
 
 /**
-  * @brief  Checks whether the specified RTC flag is set or not.
-  * @param  RTC_FLAG: specifies the flag to check.
-  *   This parameter can be one the following values:
+  * @brief  检查RTC标志是否置位
+  * @param  RTC_FLAG: 指定flag to check。
   *     @arg RTC_FLAG_RTOFF: RTC Operation OFF flag
   *     @arg RTC_FLAG_RSF: Registers Synchronized flag
   *     @arg RTC_FLAG_OW: Overflow flag
@@ -260,9 +253,8 @@ FlagStatus RTC_GetFlagStatus(uint16_t RTC_FLAG)
 }
 
 /**
-  * @brief  Clears the RTC's pending flags.
-  * @param  RTC_FLAG: specifies the flag to clear.
-  *   This parameter can be any combination of the following values:
+  * @brief  Clears the RTC's pending flags.（详见英文原注释）
+  * @param  RTC_FLAG: 指定flag to clear。
   *     @arg RTC_FLAG_RSF: Registers Synchronized flag. This flag is cleared only after
   *                        an APB reset or an APB Clock stop.
   *     @arg RTC_FLAG_OW: Overflow flag
@@ -280,9 +272,8 @@ void RTC_ClearFlag(uint16_t RTC_FLAG)
 }
 
 /**
-  * @brief  Checks whether the specified RTC interrupt has occurred or not.
-  * @param  RTC_IT: specifies the RTC interrupts sources to check.
-  *   This parameter can be one of the following values:
+  * @brief  检查specified RTC中断是否已发生
+  * @param  RTC_IT: 指定RTC interrupts sources to check。
   *     @arg RTC_IT_OW: Overflow interrupt
   *     @arg RTC_IT_ALR: Alarm interrupt
   *     @arg RTC_IT_SEC: Second interrupt
@@ -307,9 +298,8 @@ ITStatus RTC_GetITStatus(uint16_t RTC_IT)
 }
 
 /**
-  * @brief  Clears the RTC's interrupt pending bits.
-  * @param  RTC_IT: specifies the interrupt pending bit to clear.
-  *   This parameter can be any combination of the following values:
+  * @brief  清除RTC的中断挂起标志
+  * @param  RTC_IT: 指定interrupt pending bit to clear。
   *     @arg RTC_IT_OW: Overflow interrupt
   *     @arg RTC_IT_ALR: Alarm interrupt
   *     @arg RTC_IT_SEC: Second interrupt

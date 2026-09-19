@@ -42,6 +42,27 @@
   (build / flash / doctor / context.md / git init) instead of hardwiring build.
   Also fixed: an empty window no longer pops "请先打开一个工程文件夹" on
   every startup (status bar detection is silent now).
+- **Jump-to-definition out of the box**: `stc51-base` / `stc89-base` now ship
+  `.vscode/c_cpp_properties.json` (same battle-tested SDCC/8051 keyword
+  mapping as `at89s51-base`), so F12 / hover on stc15_lib and 8051.h symbols
+  works immediately; the doctor also checks the C/C++ extension now.
+- **StdPeriph function docs fully translated to Chinese**: all 540
+  documentation blocks across the 23 library source modules (GPIO / RCC /
+  USART / TIM / ADC / SPI / I2C / DMA / EXTI / CAN / RTC / ...) are Chinese
+  now — hover on any library call reads natively (done with a rule-based
+  translator; the 21 most-used functions were hand-polished with ★ tips).
+- `stc89-base` gains `stc89c51rc.h` — a Chinese-annotated full register
+  header (every SFR / bit / interrupt vector, addresses cross-checked with
+  Keil reg51.h) replacing SDCC's bare `8051.h`; and its demo is upgraded to
+  LED + UART (`board.h` / `uart.c`: 9600,8,N,1 on T1, cold-boot notes,
+  11.0592MHz vs 12MHz crystal pitfalls). `stm32-base` ships
+  `docs/参数速查_STM32F103C8T6.md` — a Chinese quick-reference covering the
+  clock tree, GPIO mode table, USART setup, NVIC, and the five classic
+  beginner traps.
+- Workspace files of stc51/stc89/stm32 templates now keep
+  `C_Cpp.default.configurationProvider` empty (EIDE's provider strips the
+  8051 keyword mappings and caused full-screen fake red squiggles) and pin
+  `C_Cpp.errorSquiggles: enabled` — same proven pattern as `at89s51-base`.
 
 ### Template fixes
 

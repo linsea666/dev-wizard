@@ -471,7 +471,8 @@ async function startCreate(ctx, tpl) {
 
 /* 分组入口的展示名 —— 未知分组回退为分组 id 本身 */
 const GROUP_LABELS = {
-    embedded: { label: '$(chip) 嵌入式工程 / Embedded', desc: '51 / STM32 / ESP32 —— 点进去选芯片' }
+    embedded: { label: '$(chip) 嵌入式工程 / Embedded', desc: '51 / STM32 / ESP32 —— 点进去选芯片' },
+    native: { label: '$(code) C / C++ 工程 / Desktop', desc: 'CMake 控制台工程 —— 点进去选 C 或 C++' }
 };
 
 async function showWizardOnce(ctx, templates) {
@@ -639,7 +640,8 @@ async function runDoctor(ctx) {
         ['cl.eide', 'EIDE (嵌入式构建/烧录)'],
         ['marus25.cortex-debug', 'Cortex-Debug (ARM 调试)'],
         ['ms-vscode.cmake-tools', 'CMake Tools (C/C++ 构建)'],
-        ['ms-python.python', 'Python']
+        ['ms-python.python', 'Python'],
+        ['ms-vscode.cpptools', 'C/C++ (F12 跳转定义 / 智能感知)']
     ];
     const have = vscode.extensions.all.map((e) => e.id);
     for (const [id, name] of wantExt) {

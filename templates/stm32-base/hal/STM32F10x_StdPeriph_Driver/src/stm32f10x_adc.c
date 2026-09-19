@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the ADC firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the ADC firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup ADC 
-  * @brief ADC driver modules
-  * @{
+  * @brief  ADC driver modules @{（详见英文原注释）
   */
 
 /** @defgroup ADC_Private_TypesDefinitions
@@ -172,8 +170,8 @@
   */
 
 /**
-  * @brief  Deinitializes the ADCx peripheral registers to their default reset values.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
+  * @brief  复位ADCx外设（恢复默认值）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
   * @retval None
   */
 void ADC_DeInit(ADC_TypeDef* ADCx)
@@ -208,11 +206,9 @@ void ADC_DeInit(ADC_TypeDef* ADCx)
 }
 
 /**
-  * @brief  Initializes the ADCx peripheral according to the specified parameters
-  *         in the ADC_InitStruct.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_InitStruct: pointer to an ADC_InitTypeDef structure that contains
-  *         the configuration information for the specified ADC peripheral.
+  * @brief  按 ADC_InitStruct 的配置初始化 ADCx 外设
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_InitStruct: pointer to an ADC_InitTypeDef structure that contains the configuration information for 指定的 ADC 外设.
   * @retval None
   */
 void ADC_Init(ADC_TypeDef* ADCx, ADC_InitTypeDef* ADC_InitStruct)
@@ -268,7 +264,7 @@ void ADC_Init(ADC_TypeDef* ADCx, ADC_InitTypeDef* ADC_InitStruct)
 }
 
 /**
-  * @brief  Fills each ADC_InitStruct member with its default value.
+  * @brief  把ADC_InitStruct各字段填成默认值
   * @param  ADC_InitStruct : pointer to an ADC_InitTypeDef structure which will be initialized.
   * @retval None
   */
@@ -290,10 +286,9 @@ void ADC_StructInit(ADC_InitTypeDef* ADC_InitStruct)
 }
 
 /**
-  * @brief  Enables or disables the specified ADC peripheral.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  NewState: new state of the ADCx peripheral.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关ADC外设（ENABLE=开 / DISABLE=关）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
@@ -314,11 +309,9 @@ void ADC_Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified ADC DMA request.
-  * @param  ADCx: where x can be 1 or 3 to select the ADC peripheral.
-  *   Note: ADC2 hasn't a DMA capability.
-  * @param  NewState: new state of the selected ADC DMA transfer.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关ADC DMA request
+  * @param  ADCx: 取值 1 or 3 选择 ADC 外设. Note: ADC2 hasn't a DMA capability.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
@@ -339,15 +332,13 @@ void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified ADC interrupts.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_IT: specifies the ADC interrupt sources to be enabled or disabled. 
-  *   This parameter can be any combination of the following values:
+  * @brief  开关ADC interrupts
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_IT: 指定ADC interrupt sources，将被enabled or disabled。
   *     @arg ADC_IT_EOC: End of conversion interrupt mask
   *     @arg ADC_IT_AWD: Analog watchdog interrupt mask
   *     @arg ADC_IT_JEOC: End of injected conversion interrupt mask
-  * @param  NewState: new state of the specified ADC interrupts.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_ITConfig(ADC_TypeDef* ADCx, uint16_t ADC_IT, FunctionalState NewState)
@@ -372,8 +363,8 @@ void ADC_ITConfig(ADC_TypeDef* ADCx, uint16_t ADC_IT, FunctionalState NewState)
 }
 
 /**
-  * @brief  Resets the selected ADC calibration registers.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
+  * @brief  Resets the selected ADC calibration registers.（详见英文原注释）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
   * @retval None
   */
 void ADC_ResetCalibration(ADC_TypeDef* ADCx)
@@ -385,8 +376,8 @@ void ADC_ResetCalibration(ADC_TypeDef* ADCx)
 }
 
 /**
-  * @brief  Gets the selected ADC reset calibration registers status.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
+  * @brief  获取s
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
   * @retval The new state of ADC reset calibration registers (SET or RESET).
   */
 FlagStatus ADC_GetResetCalibrationStatus(ADC_TypeDef* ADCx)
@@ -410,8 +401,8 @@ FlagStatus ADC_GetResetCalibrationStatus(ADC_TypeDef* ADCx)
 }
 
 /**
-  * @brief  Starts the selected ADC calibration process.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
+  * @brief  Starts the selected ADC calibration process.（详见英文原注释）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
   * @retval None
   */
 void ADC_StartCalibration(ADC_TypeDef* ADCx)
@@ -423,8 +414,8 @@ void ADC_StartCalibration(ADC_TypeDef* ADCx)
 }
 
 /**
-  * @brief  Gets the selected ADC calibration status.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
+  * @brief  获取s
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
   * @retval The new state of ADC calibration (SET or RESET).
   */
 FlagStatus ADC_GetCalibrationStatus(ADC_TypeDef* ADCx)
@@ -448,10 +439,9 @@ FlagStatus ADC_GetCalibrationStatus(ADC_TypeDef* ADCx)
 }
 
 /**
-  * @brief  Enables or disables the selected ADC software start conversion .
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  NewState: new state of the selected ADC software start conversion.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关selected ADC software start conversion （ENABLE=开 / DISABLE=关）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_SoftwareStartConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
@@ -474,8 +464,8 @@ void ADC_SoftwareStartConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Gets the selected ADC Software start conversion Status.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
+  * @brief  获取s
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
   * @retval The new state of ADC software start conversion (SET or RESET).
   */
 FlagStatus ADC_GetSoftwareStartConvStatus(ADC_TypeDef* ADCx)
@@ -499,11 +489,9 @@ FlagStatus ADC_GetSoftwareStartConvStatus(ADC_TypeDef* ADCx)
 }
 
 /**
-  * @brief  Configures the discontinuous mode for the selected ADC regular
-  *         group channel.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  Number: specifies the discontinuous mode regular channel
-  *         count value. This number must be between 1 and 8.
+  * @brief  配置d
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  Number: 指定discontinuous mode regular channel count value。
   * @retval None
   */
 void ADC_DiscModeChannelCountConfig(ADC_TypeDef* ADCx, uint8_t Number)
@@ -525,12 +513,9 @@ void ADC_DiscModeChannelCountConfig(ADC_TypeDef* ADCx, uint8_t Number)
 }
 
 /**
-  * @brief  Enables or disables the discontinuous mode on regular group
-  *         channel for the specified ADC
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  NewState: new state of the selected ADC discontinuous mode
-  *         on regular group channel.
-  *         This parameter can be: ENABLE or DISABLE.
+  * @brief  开关the discontinuous mode on regular group channel for the specified ADC
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_DiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
@@ -551,11 +536,9 @@ void ADC_DiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Configures for the selected ADC regular channel its corresponding
-  *         rank in the sequencer and its sample time.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_Channel: the ADC channel to configure. 
-  *   This parameter can be one of the following values:
+  * @brief  Configures for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.（详见英文原注释）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_Channel: the ADC channel to configure. This parameter can be one of the following values:
   *     @arg ADC_Channel_0: ADC Channel0 selected
   *     @arg ADC_Channel_1: ADC Channel1 selected
   *     @arg ADC_Channel_2: ADC Channel2 selected
@@ -575,8 +558,7 @@ void ADC_DiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *     @arg ADC_Channel_16: ADC Channel16 selected
   *     @arg ADC_Channel_17: ADC Channel17 selected
   * @param  Rank: The rank in the regular group sequencer. This parameter must be between 1 to 16.
-  * @param  ADC_SampleTime: The sample time value to be set for the selected channel. 
-  *   This parameter can be one of the following values:
+  * @param  ADC_SampleTime: The sample time value to be set for the selected channel. This parameter can be one of the following values:
   *     @arg ADC_SampleTime_1Cycles5: Sample time equal to 1.5 cycles
   *     @arg ADC_SampleTime_7Cycles5: Sample time equal to 7.5 cycles
   *     @arg ADC_SampleTime_13Cycles5: Sample time equal to 13.5 cycles
@@ -677,10 +659,9 @@ void ADC_RegularChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint8_t Ra
 }
 
 /**
-  * @brief  Enables or disables the ADCx conversion through external trigger.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  NewState: new state of the selected ADC external trigger start of conversion.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关ADCx conversion through external trigger（ENABLE=开 / DISABLE=关）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_ExternalTrigConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
@@ -701,8 +682,8 @@ void ADC_ExternalTrigConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Returns the last ADCx conversion result data for regular channel.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
+  * @brief  Returns the last ADCx conversion result data for regular channel.（详见英文原注释）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
   * @retval The Data conversion value.
   */
 uint16_t ADC_GetConversionValue(ADC_TypeDef* ADCx)
@@ -714,7 +695,7 @@ uint16_t ADC_GetConversionValue(ADC_TypeDef* ADCx)
 }
 
 /**
-  * @brief  Returns the last ADC1 and ADC2 conversion result data in dual mode.
+  * @brief  Returns the last ADC1 and ADC2 conversion result data in dual mode.（详见英文原注释）
   * @retval The Data conversion value.
   */
 uint32_t ADC_GetDualModeConversionValue(void)
@@ -724,11 +705,9 @@ uint32_t ADC_GetDualModeConversionValue(void)
 }
 
 /**
-  * @brief  Enables or disables the selected ADC automatic injected group
-  *         conversion after regular one.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  NewState: new state of the selected ADC auto injected conversion
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关selected ADC automatic injected group conversion after regular one（ENABLE=开 / DISABLE=关）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_AutoInjectedConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
@@ -749,12 +728,9 @@ void ADC_AutoInjectedConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the discontinuous mode for injected group
-  *         channel for the specified ADC
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  NewState: new state of the selected ADC discontinuous mode
-  *         on injected group channel.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关the discontinuous mode for injected group channel for the specified ADC
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_InjectedDiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
@@ -775,10 +751,9 @@ void ADC_InjectedDiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Configures the ADCx external trigger for injected channels conversion.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_ExternalTrigInjecConv: specifies the ADC trigger to start injected conversion. 
-  *   This parameter can be one of the following values:
+  * @brief  配置A
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_ExternalTrigInjecConv: 指定ADC trigger to start injected conversion。
   *     @arg ADC_ExternalTrigInjecConv_T1_TRGO: Timer1 TRGO event selected (for ADC1, ADC2 and ADC3)
   *     @arg ADC_ExternalTrigInjecConv_T1_CC4: Timer1 capture compare4 selected (for ADC1, ADC2 and ADC3)
   *     @arg ADC_ExternalTrigInjecConv_T2_TRGO: Timer2 TRGO event selected (for ADC1 and ADC2)
@@ -813,12 +788,9 @@ void ADC_ExternalTrigInjectedConvConfig(ADC_TypeDef* ADCx, uint32_t ADC_External
 }
 
 /**
-  * @brief  Enables or disables the ADCx injected channels conversion through
-  *         external trigger
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  NewState: new state of the selected ADC external trigger start of
-  *         injected conversion.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关the ADCx injected channels conversion through external trigger
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_ExternalTrigInjectedConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
@@ -839,11 +811,9 @@ void ADC_ExternalTrigInjectedConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState
 }
 
 /**
-  * @brief  Enables or disables the selected ADC start of the injected 
-  *         channels conversion.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  NewState: new state of the selected ADC software start injected conversion.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关selected ADC start of the injected channels conversion（ENABLE=开 / DISABLE=关）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_SoftwareStartInjectedConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
@@ -866,8 +836,8 @@ void ADC_SoftwareStartInjectedConvCmd(ADC_TypeDef* ADCx, FunctionalState NewStat
 }
 
 /**
-  * @brief  Gets the selected ADC Software start injected conversion Status.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
+  * @brief  获取s
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
   * @retval The new state of ADC software start injected conversion (SET or RESET).
   */
 FlagStatus ADC_GetSoftwareStartInjectedConvCmdStatus(ADC_TypeDef* ADCx)
@@ -891,11 +861,9 @@ FlagStatus ADC_GetSoftwareStartInjectedConvCmdStatus(ADC_TypeDef* ADCx)
 }
 
 /**
-  * @brief  Configures for the selected ADC injected channel its corresponding
-  *         rank in the sequencer and its sample time.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_Channel: the ADC channel to configure. 
-  *   This parameter can be one of the following values:
+  * @brief  Configures for the selected ADC injected channel its corresponding rank in the sequencer and its sample time.（详见英文原注释）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_Channel: the ADC channel to configure. This parameter can be one of the following values:
   *     @arg ADC_Channel_0: ADC Channel0 selected
   *     @arg ADC_Channel_1: ADC Channel1 selected
   *     @arg ADC_Channel_2: ADC Channel2 selected
@@ -915,8 +883,7 @@ FlagStatus ADC_GetSoftwareStartInjectedConvCmdStatus(ADC_TypeDef* ADCx)
   *     @arg ADC_Channel_16: ADC Channel16 selected
   *     @arg ADC_Channel_17: ADC Channel17 selected
   * @param  Rank: The rank in the injected group sequencer. This parameter must be between 1 and 4.
-  * @param  ADC_SampleTime: The sample time value to be set for the selected channel. 
-  *   This parameter can be one of the following values:
+  * @param  ADC_SampleTime: The sample time value to be set for the selected channel. This parameter can be one of the following values:
   *     @arg ADC_SampleTime_1Cycles5: Sample time equal to 1.5 cycles
   *     @arg ADC_SampleTime_7Cycles5: Sample time equal to 7.5 cycles
   *     @arg ADC_SampleTime_13Cycles5: Sample time equal to 13.5 cycles
@@ -984,10 +951,9 @@ void ADC_InjectedChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint8_t R
 }
 
 /**
-  * @brief  Configures the sequencer length for injected channels
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  Length: The sequencer length. 
-  *   This parameter must be a number between 1 to 4.
+  * @brief  配置s
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  Length: The sequencer length. This parameter must be a number between 1 to 4.
   * @retval None
   */
 void ADC_InjectedSequencerLengthConfig(ADC_TypeDef* ADCx, uint8_t Length)
@@ -1010,16 +976,14 @@ void ADC_InjectedSequencerLengthConfig(ADC_TypeDef* ADCx, uint8_t Length)
 }
 
 /**
-  * @brief  Set the injected channels conversion value offset
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_InjectedChannel: the ADC injected channel to set its offset. 
-  *   This parameter can be one of the following values:
+  * @brief  Set the injected channels conversion value offset（详见英文原注释）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_InjectedChannel: the ADC injected channel to set its offset. This parameter can be one of the following values:
   *     @arg ADC_InjectedChannel_1: Injected Channel1 selected
   *     @arg ADC_InjectedChannel_2: Injected Channel2 selected
   *     @arg ADC_InjectedChannel_3: Injected Channel3 selected
   *     @arg ADC_InjectedChannel_4: Injected Channel4 selected
-  * @param  Offset: the offset value for the selected ADC injected channel
-  *   This parameter must be a 12bit value.
+  * @param  Offset: the offset value for the selected ADC injected channel This parameter must be a 12bit value.
   * @retval None
   */
 void ADC_SetInjectedOffset(ADC_TypeDef* ADCx, uint8_t ADC_InjectedChannel, uint16_t Offset)
@@ -1039,10 +1003,9 @@ void ADC_SetInjectedOffset(ADC_TypeDef* ADCx, uint8_t ADC_InjectedChannel, uint1
 }
 
 /**
-  * @brief  Returns the ADC injected channel conversion result
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_InjectedChannel: the converted ADC injected channel.
-  *   This parameter can be one of the following values:
+  * @brief  Returns the ADC injected channel conversion result（详见英文原注释）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_InjectedChannel: the converted ADC injected channel. This parameter can be one of the following values:
   *     @arg ADC_InjectedChannel_1: Injected Channel1 selected
   *     @arg ADC_InjectedChannel_2: Injected Channel2 selected
   *     @arg ADC_InjectedChannel_3: Injected Channel3 selected
@@ -1065,11 +1028,9 @@ uint16_t ADC_GetInjectedConversionValue(ADC_TypeDef* ADCx, uint8_t ADC_InjectedC
 }
 
 /**
-  * @brief  Enables or disables the analog watchdog on single/all regular
-  *         or injected channels
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_AnalogWatchdog: the ADC analog watchdog configuration.
-  *   This parameter can be one of the following values:
+  * @brief  开关the analog watchdog on single/all regular or injected channels
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_AnalogWatchdog: the ADC analog watchdog configuration. This parameter can be one of the following values:
   *     @arg ADC_AnalogWatchdog_SingleRegEnable: Analog watchdog on a single regular channel
   *     @arg ADC_AnalogWatchdog_SingleInjecEnable: Analog watchdog on a single injected channel
   *     @arg ADC_AnalogWatchdog_SingleRegOrInjecEnable: Analog watchdog on a single regular or injected channel
@@ -1077,7 +1038,7 @@ uint16_t ADC_GetInjectedConversionValue(ADC_TypeDef* ADCx, uint8_t ADC_InjectedC
   *     @arg ADC_AnalogWatchdog_AllInjecEnable: Analog watchdog on  all injected channel
   *     @arg ADC_AnalogWatchdog_AllRegAllInjecEnable: Analog watchdog on all regular and injected channels
   *     @arg ADC_AnalogWatchdog_None: No channel guarded by the analog watchdog
-  * @retval None	  
+  * @retval None
   */
 void ADC_AnalogWatchdogCmd(ADC_TypeDef* ADCx, uint32_t ADC_AnalogWatchdog)
 {
@@ -1096,12 +1057,10 @@ void ADC_AnalogWatchdogCmd(ADC_TypeDef* ADCx, uint32_t ADC_AnalogWatchdog)
 }
 
 /**
-  * @brief  Configures the high and low thresholds of the analog watchdog.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  HighThreshold: the ADC analog watchdog High threshold value.
-  *   This parameter must be a 12bit value.
-  * @param  LowThreshold: the ADC analog watchdog Low threshold value.
-  *   This parameter must be a 12bit value.
+  * @brief  配置h
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  HighThreshold: the ADC analog watchdog High threshold value. This parameter must be a 12bit value.
+  * @param  LowThreshold: the ADC analog watchdog Low threshold value. This parameter must be a 12bit value.
   * @retval None
   */
 void ADC_AnalogWatchdogThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThreshold,
@@ -1118,10 +1077,9 @@ void ADC_AnalogWatchdogThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThreshol
 }
 
 /**
-  * @brief  Configures the analog watchdog guarded single channel
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_Channel: the ADC channel to configure for the analog watchdog. 
-  *   This parameter can be one of the following values:
+  * @brief  配置a
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_Channel: the ADC channel to configure for the analog watchdog. This parameter can be one of the following values:
   *     @arg ADC_Channel_0: ADC Channel0 selected
   *     @arg ADC_Channel_1: ADC Channel1 selected
   *     @arg ADC_Channel_2: ADC Channel2 selected
@@ -1159,9 +1117,8 @@ void ADC_AnalogWatchdogSingleChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channe
 }
 
 /**
-  * @brief  Enables or disables the temperature sensor and Vrefint channel.
-  * @param  NewState: new state of the temperature sensor.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关temperature sensor and Vrefint channel（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void ADC_TempSensorVrefintCmd(FunctionalState NewState)
@@ -1181,10 +1138,9 @@ void ADC_TempSensorVrefintCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Checks whether the specified ADC flag is set or not.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_FLAG: specifies the flag to check. 
-  *   This parameter can be one of the following values:
+  * @brief  检查ADC标志是否置位
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_FLAG: 指定flag to check。
   *     @arg ADC_FLAG_AWD: Analog watchdog flag
   *     @arg ADC_FLAG_EOC: End of conversion flag
   *     @arg ADC_FLAG_JEOC: End of injected group conversion flag
@@ -1214,10 +1170,9 @@ FlagStatus ADC_GetFlagStatus(ADC_TypeDef* ADCx, uint8_t ADC_FLAG)
 }
 
 /**
-  * @brief  Clears the ADCx's pending flags.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_FLAG: specifies the flag to clear. 
-  *   This parameter can be any combination of the following values:
+  * @brief  Clears the ADCx's pending flags.（详见英文原注释）
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_FLAG: 指定flag to clear。
   *     @arg ADC_FLAG_AWD: Analog watchdog flag
   *     @arg ADC_FLAG_EOC: End of conversion flag
   *     @arg ADC_FLAG_JEOC: End of injected group conversion flag
@@ -1235,10 +1190,9 @@ void ADC_ClearFlag(ADC_TypeDef* ADCx, uint8_t ADC_FLAG)
 }
 
 /**
-  * @brief  Checks whether the specified ADC interrupt has occurred or not.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_IT: specifies the ADC interrupt source to check. 
-  *   This parameter can be one of the following values:
+  * @brief  检查specified ADC中断是否已发生
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_IT: 指定ADC interrupt source to check。
   *     @arg ADC_IT_EOC: End of conversion interrupt mask
   *     @arg ADC_IT_AWD: Analog watchdog interrupt mask
   *     @arg ADC_IT_JEOC: End of injected conversion interrupt mask
@@ -1271,10 +1225,9 @@ ITStatus ADC_GetITStatus(ADC_TypeDef* ADCx, uint16_t ADC_IT)
 }
 
 /**
-  * @brief  Clears the ADCx's interrupt pending bits.
-  * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
-  * @param  ADC_IT: specifies the ADC interrupt pending bit to clear.
-  *   This parameter can be any combination of the following values:
+  * @brief  清除ADCx的中断挂起标志
+  * @param  ADCx: 取值 1, 2 or 3 选择 ADC 外设.
+  * @param  ADC_IT: 指定ADC interrupt pending bit to clear。
   *     @arg ADC_IT_EOC: End of conversion interrupt mask
   *     @arg ADC_IT_AWD: Analog watchdog interrupt mask
   *     @arg ADC_IT_JEOC: End of injected conversion interrupt mask

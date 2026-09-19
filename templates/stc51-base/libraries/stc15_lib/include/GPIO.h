@@ -29,10 +29,23 @@
 
 typedef struct
 {
-	u8	Mode;		//IO模式,  		GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
-	u8	Pin;		//要设置的端口	
+	u8	Mode;		/**< 工作模式: GPIO_PullUp(上拉准双向,复位默认,读引脚前先写1) / GPIO_HighZ(浮空输入) / GPIO_OUT_OD(开漏,需外接上拉) / GPIO_OUT_PP(推挽,驱动LED/蜂鸣器用) */
+	u8	Pin;		/**< 引脚掩码: GPIO_Pin_0 ~ GPIO_Pin_7 可用 | 组合多个，GPIO_Pin_All=整组 8 个 */
 } GPIO_InitTypeDef;
 
+/**
+ * @brief 把一组端口（P0~P5）中选定的引脚设置为指定工作模式
+ *
+ * @param GPIO  端口号：GPIO_P0 ~ GPIO_P5
+ * @param GPIOx 配置结构体：Mode（工作模式）+ Pin（引脚掩码，可 | 组合）
+ * @return 0=配置成功；1=参数无效（未做任何操作）；2=Mode 非法
+ * @note 例：把 P2.2 配成推挽输出驱动 LED——
+ *       GPIO_InitTypeDef g;
+ *       g.Mode = GPIO_OUT_PP;
+ *       g.Pin  = GPIO_Pin_2;
+ *       GPIO_Inilize(GPIO_P2, &g);
+ *       注意 GPIO_Pin_x 的 x 是位号：GPIO_Pin_2 即 Px.2。
+ */
 u8	GPIO_Inilize(u8 GPIO, GPIO_InitTypeDef *GPIOx);
 
 #endif

@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the TIM firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the TIM firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup TIM 
-  * @brief TIM driver modules
-  * @{
+  * @brief  TIM driver modules @{（详见英文原注释）
   */
 
 /** @defgroup TIM_Private_TypesDefinitions
@@ -115,8 +113,8 @@ static void TI4_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_
   */
 
 /**
-  * @brief  Deinitializes the TIMx peripheral registers to their default reset values.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
+  * @brief  复位TIMx外设（恢复默认值）
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
   * @retval None
   */
 void TIM_DeInit(TIM_TypeDef* TIMx)
@@ -215,12 +213,9 @@ void TIM_DeInit(TIM_TypeDef* TIMx)
 }
 
 /**
-  * @brief  Initializes the TIMx Time Base Unit peripheral according to 
-  *         the specified parameters in the TIM_TimeBaseInitStruct.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_TimeBaseInitStruct: pointer to a TIM_TimeBaseInitTypeDef
-  *         structure that contains the configuration information for the 
-  *         specified TIM peripheral.
+  * @brief  按 TIM_TimeBaseInitStruct 的配置初始化 TIMx Time Base Unit 外设
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  TIM_TimeBaseInitStruct: 指向 TIM_TimeBaseInitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)
@@ -269,11 +264,9 @@ void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseIn
 }
 
 /**
-  * @brief  Initializes the TIMx Channel1 according to the specified
-  *         parameters in the TIM_OCInitStruct.
-  * @param  TIMx: where x can be  1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  TIM_OCInitStruct: pointer to a TIM_OCInitTypeDef structure
-  *         that contains the configuration information for the specified TIM peripheral.
+  * @brief  按 TIM_OCInitStruct 的配置初始化TIMx Channel1
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_OCInitStruct: 指向 TIM_OCInitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void TIM_OC1Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
@@ -351,12 +344,9 @@ void TIM_OC1Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
 }
 
 /**
-  * @brief  Initializes the TIMx Channel2 according to the specified
-  *         parameters in the TIM_OCInitStruct.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 8, 9, 12 or 15 to select 
-  *         the TIM peripheral.
-  * @param  TIM_OCInitStruct: pointer to a TIM_OCInitTypeDef structure
-  *         that contains the configuration information for the specified TIM peripheral.
+  * @brief  按 TIM_OCInitStruct 的配置初始化TIMx Channel2
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_OCInitStruct: 指向 TIM_OCInitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void TIM_OC2Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
@@ -434,11 +424,9 @@ void TIM_OC2Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
 }
 
 /**
-  * @brief  Initializes the TIMx Channel3 according to the specified
-  *         parameters in the TIM_OCInitStruct.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCInitStruct: pointer to a TIM_OCInitTypeDef structure
-  *         that contains the configuration information for the specified TIM peripheral.
+  * @brief  按 TIM_OCInitStruct 的配置初始化TIMx Channel3
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCInitStruct: 指向 TIM_OCInitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void TIM_OC3Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
@@ -513,11 +501,9 @@ void TIM_OC3Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
 }
 
 /**
-  * @brief  Initializes the TIMx Channel4 according to the specified
-  *         parameters in the TIM_OCInitStruct.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCInitStruct: pointer to a TIM_OCInitTypeDef structure
-  *         that contains the configuration information for the specified TIM peripheral.
+  * @brief  按 TIM_OCInitStruct 的配置初始化TIMx Channel4
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCInitStruct: 指向 TIM_OCInitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void TIM_OC4Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
@@ -577,11 +563,9 @@ void TIM_OC4Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
 }
 
 /**
-  * @brief  Initializes the TIM peripheral according to the specified
-  *         parameters in the TIM_ICInitStruct.
-  * @param  TIMx: where x can be  1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  TIM_ICInitStruct: pointer to a TIM_ICInitTypeDef structure
-  *         that contains the configuration information for the specified TIM peripheral.
+  * @brief  按 TIM_ICInitStruct 的配置初始化 TIM 外设
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_ICInitStruct: 指向 TIM_ICInitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void TIM_ICInit(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct)
@@ -644,11 +628,9 @@ void TIM_ICInit(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct)
 }
 
 /**
-  * @brief  Configures the TIM peripheral according to the specified
-  *         parameters in the TIM_ICInitStruct to measure an external PWM signal.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 8, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_ICInitStruct: pointer to a TIM_ICInitTypeDef structure
-  *         that contains the configuration information for the specified TIM peripheral.
+  * @brief  按 TIM_ICInitStruct to measure an external PWM signal 的配置设置TIM peripheral
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_ICInitStruct: 指向 TIM_ICInitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void TIM_PWMIConfig(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct)
@@ -702,11 +684,9 @@ void TIM_PWMIConfig(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct)
 }
 
 /**
-  * @brief  Configures the: Break feature, dead time, Lock level, the OSSI,
-  *         the OSSR State and the AOE(automatic output enable).
-  * @param  TIMx: where x can be  1 or 8 to select the TIM 
-  * @param  TIM_BDTRInitStruct: pointer to a TIM_BDTRInitTypeDef structure that
-  *         contains the BDTR Register configuration  information for the TIM peripheral.
+  * @brief  Configures the: Break feature, dead time, Lock level, the OSSI, the OSSR State and the AOE(automatic output enable).（详见英文原注释）
+  * @param  TIMx: 取值 1 or 8 选择 TIM
+  * @param  TIM_BDTRInitStruct: 指向 TIM_BDTRInitTypeDef 结构体
   * @retval None
   */
 void TIM_BDTRConfig(TIM_TypeDef* TIMx, TIM_BDTRInitTypeDef *TIM_BDTRInitStruct)
@@ -728,9 +708,8 @@ void TIM_BDTRConfig(TIM_TypeDef* TIMx, TIM_BDTRInitTypeDef *TIM_BDTRInitStruct)
 }
 
 /**
-  * @brief  Fills each TIM_TimeBaseInitStruct member with its default value.
-  * @param  TIM_TimeBaseInitStruct : pointer to a TIM_TimeBaseInitTypeDef
-  *         structure which will be initialized.
+  * @brief  把TIM_TimeBaseInitStruct各字段填成默认值
+  * @param  TIM_TimeBaseInitStruct : pointer to a TIM_TimeBaseInitTypeDef structure which will be initialized.
   * @retval None
   */
 void TIM_TimeBaseStructInit(TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)
@@ -744,9 +723,8 @@ void TIM_TimeBaseStructInit(TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct)
 }
 
 /**
-  * @brief  Fills each TIM_OCInitStruct member with its default value.
-  * @param  TIM_OCInitStruct : pointer to a TIM_OCInitTypeDef structure which will
-  *         be initialized.
+  * @brief  把TIM_OCInitStruct各字段填成默认值
+  * @param  TIM_OCInitStruct : pointer to a TIM_OCInitTypeDef structure which will be initialized.
   * @retval None
   */
 void TIM_OCStructInit(TIM_OCInitTypeDef* TIM_OCInitStruct)
@@ -763,9 +741,8 @@ void TIM_OCStructInit(TIM_OCInitTypeDef* TIM_OCInitStruct)
 }
 
 /**
-  * @brief  Fills each TIM_ICInitStruct member with its default value.
-  * @param  TIM_ICInitStruct: pointer to a TIM_ICInitTypeDef structure which will
-  *         be initialized.
+  * @brief  把TIM_ICInitStruct各字段填成默认值
+  * @param  TIM_ICInitStruct: 指向待初始化的 TIM_ICInitTypeDef 结构体
   * @retval None
   */
 void TIM_ICStructInit(TIM_ICInitTypeDef* TIM_ICInitStruct)
@@ -779,9 +756,8 @@ void TIM_ICStructInit(TIM_ICInitTypeDef* TIM_ICInitStruct)
 }
 
 /**
-  * @brief  Fills each TIM_BDTRInitStruct member with its default value.
-  * @param  TIM_BDTRInitStruct: pointer to a TIM_BDTRInitTypeDef structure which
-  *         will be initialized.
+  * @brief  把TIM_BDTRInitStruct各字段填成默认值
+  * @param  TIM_BDTRInitStruct: 指向待初始化的 TIM_BDTRInitTypeDef 结构体
   * @retval None
   */
 void TIM_BDTRStructInit(TIM_BDTRInitTypeDef* TIM_BDTRInitStruct)
@@ -797,11 +773,10 @@ void TIM_BDTRStructInit(TIM_BDTRInitTypeDef* TIM_BDTRInitStruct)
 }
 
 /**
-  * @brief  Enables or disables the specified TIM peripheral.
-  * @param  TIMx: where x can be 1 to 17 to select the TIMx peripheral.
-  * @param  NewState: new state of the TIMx peripheral.
-  *   This parameter can be: ENABLE or DISABLE.
-  * @retval None
+  * @brief  打开/关闭定时器外设（TIM_TimeBaseInit 之后调用）
+  * @param  TIMx: 定时器号，TIM1 ~ TIM17（F103C8T6 实际有 TIM1~TIM4）
+  * @param  NewState: ENABLE=启动计数 / DISABLE=停止
+  * @retval 无
   */
 void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)
 {
@@ -822,10 +797,9 @@ void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the TIM peripheral Main Outputs.
-  * @param  TIMx: where x can be 1, 8, 15, 16 or 17 to select the TIMx peripheral.
-  * @param  NewState: new state of the TIM peripheral Main Outputs.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关TIM peripheral Main Outputs（ENABLE=开 / DISABLE=关）
+  * @param  TIMx: 取值 1, 8, 15, 16 or 17 选择 TIMx 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void TIM_CtrlPWMOutputs(TIM_TypeDef* TIMx, FunctionalState NewState)
@@ -846,10 +820,9 @@ void TIM_CtrlPWMOutputs(TIM_TypeDef* TIMx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified TIM interrupts.
-  * @param  TIMx: where x can be 1 to 17 to select the TIMx peripheral.
-  * @param  TIM_IT: specifies the TIM interrupts sources to be enabled or disabled.
-  *   This parameter can be any combination of the following values:
+  * @brief  开关TIM interrupts
+  * @param  TIMx: 取值 1 to 17 选择 TIMx 外设.
+  * @param  TIM_IT: 指定TIM interrupts sources，将被enabled or disabled。
   *     @arg TIM_IT_Update: TIM update Interrupt source
   *     @arg TIM_IT_CC1: TIM Capture Compare 1 Interrupt source
   *     @arg TIM_IT_CC2: TIM Capture Compare 2 Interrupt source
@@ -858,15 +831,8 @@ void TIM_CtrlPWMOutputs(TIM_TypeDef* TIMx, FunctionalState NewState)
   *     @arg TIM_IT_COM: TIM Commutation Interrupt source
   *     @arg TIM_IT_Trigger: TIM Trigger Interrupt source
   *     @arg TIM_IT_Break: TIM Break Interrupt source
-  * @note 
-  *   - TIM6 and TIM7 can only generate an update interrupt.
-  *   - TIM9, TIM12 and TIM15 can have only TIM_IT_Update, TIM_IT_CC1,
-  *      TIM_IT_CC2 or TIM_IT_Trigger. 
-  *   - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_IT_Update or TIM_IT_CC1.   
-  *   - TIM_IT_Break is used only with TIM1, TIM8 and TIM15. 
-  *   - TIM_IT_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.    
-  * @param  NewState: new state of the TIM interrupts.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @note  - TIM6 and TIM7 can only generate an update 中断. - TIM9, TIM12 and TIM15 can have only TIM_IT_Update, TIM_IT_CC1, TIM_IT_CC2 or TIM_IT_Trigger. - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_IT_Update or TIM_IT_CC1. - TIM_IT_Break is used only with TIM1, TIM8 and TIM15. - TIM_IT_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)
@@ -889,10 +855,9 @@ void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)
 }
 
 /**
-  * @brief  Configures the TIMx event to be generate by software.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_EventSource: specifies the event source.
-  *   This parameter can be one or more of the following values:	   
+  * @brief  配置T
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  TIM_EventSource: 指定event source。
   *     @arg TIM_EventSource_Update: Timer update Event source
   *     @arg TIM_EventSource_CC1: Timer Capture Compare 1 Event source
   *     @arg TIM_EventSource_CC2: Timer Capture Compare 2 Event source
@@ -901,9 +866,7 @@ void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)
   *     @arg TIM_EventSource_COM: Timer COM event source  
   *     @arg TIM_EventSource_Trigger: Timer Trigger Event source
   *     @arg TIM_EventSource_Break: Timer Break event source
-  * @note 
-  *   - TIM6 and TIM7 can only generate an update event. 
-  *   - TIM_EventSource_COM and TIM_EventSource_Break are used only with TIM1 and TIM8.      
+  * @note  - TIM6 and TIM7 can only generate an update event. - TIM_EventSource_COM and TIM_EventSource_Break are used only with TIM1 and TIM8.
   * @retval None
   */
 void TIM_GenerateEvent(TIM_TypeDef* TIMx, uint16_t TIM_EventSource)
@@ -917,11 +880,9 @@ void TIM_GenerateEvent(TIM_TypeDef* TIMx, uint16_t TIM_EventSource)
 }
 
 /**
-  * @brief  Configures the TIMx's DMA interface.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 8, 15, 16 or 17 to select 
-  *   the TIM peripheral.
-  * @param  TIM_DMABase: DMA Base address.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 15, 16 or 17 选择 TIM 外设.
+  * @param  TIM_DMABase: DMA Base address. This parameter can be one of the following values:
   *     @arg TIM_DMABase_CR, TIM_DMABase_CR2, TIM_DMABase_SMCR,
   *          TIM_DMABase_DIER, TIM1_DMABase_SR, TIM_DMABase_EGR,
   *          TIM_DMABase_CCMR1, TIM_DMABase_CCMR2, TIM_DMABase_CCER,
@@ -929,9 +890,7 @@ void TIM_GenerateEvent(TIM_TypeDef* TIMx, uint16_t TIM_EventSource)
   *          TIM_DMABase_RCR, TIM_DMABase_CCR1, TIM_DMABase_CCR2,
   *          TIM_DMABase_CCR3, TIM_DMABase_CCR4, TIM_DMABase_BDTR,
   *          TIM_DMABase_DCR.
-  * @param  TIM_DMABurstLength: DMA Burst length.
-  *   This parameter can be one value between:
-  *   TIM_DMABurstLength_1Transfer and TIM_DMABurstLength_18Transfers.
+  * @param  TIM_DMABurstLength: DMA Burst length. This parameter can be one value between: TIM_DMABurstLength_1Transfer and TIM_DMABurstLength_18Transfers.
   * @retval None
   */
 void TIM_DMAConfig(TIM_TypeDef* TIMx, uint16_t TIM_DMABase, uint16_t TIM_DMABurstLength)
@@ -945,11 +904,9 @@ void TIM_DMAConfig(TIM_TypeDef* TIMx, uint16_t TIM_DMABase, uint16_t TIM_DMABurs
 }
 
 /**
-  * @brief  Enables or disables the TIMx's DMA Requests.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 6, 7, 8, 15, 16 or 17 
-  *   to select the TIM peripheral. 
-  * @param  TIM_DMASource: specifies the DMA Request sources.
-  *   This parameter can be any combination of the following values:
+  * @brief  开关TIMx's DMA Requests（ENABLE=开 / DISABLE=关）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 6, 7, 8, 15, 16 or 17 选择 TIM 外设.
+  * @param  TIM_DMASource: 指定DMA Request sources。
   *     @arg TIM_DMA_Update: TIM update Interrupt source
   *     @arg TIM_DMA_CC1: TIM Capture Compare 1 DMA source
   *     @arg TIM_DMA_CC2: TIM Capture Compare 2 DMA source
@@ -957,8 +914,7 @@ void TIM_DMAConfig(TIM_TypeDef* TIMx, uint16_t TIM_DMABase, uint16_t TIM_DMABurs
   *     @arg TIM_DMA_CC4: TIM Capture Compare 4 DMA source
   *     @arg TIM_DMA_COM: TIM Commutation DMA source
   *     @arg TIM_DMA_Trigger: TIM Trigger DMA source
-  * @param  NewState: new state of the DMA Request sources.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void TIM_DMACmd(TIM_TypeDef* TIMx, uint16_t TIM_DMASource, FunctionalState NewState)
@@ -981,9 +937,8 @@ void TIM_DMACmd(TIM_TypeDef* TIMx, uint16_t TIM_DMASource, FunctionalState NewSt
 }
 
 /**
-  * @brief  Configures the TIMx internal Clock
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 8, 9, 12 or 15
-  *         to select the TIM peripheral.
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
   * @retval None
   */
 void TIM_InternalClockConfig(TIM_TypeDef* TIMx)
@@ -995,10 +950,9 @@ void TIM_InternalClockConfig(TIM_TypeDef* TIMx)
 }
 
 /**
-  * @brief  Configures the TIMx Internal Trigger as External Clock
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_ITRSource: Trigger source.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_ITRSource: Trigger source. This parameter can be one of the following values:
   * @param  TIM_TS_ITR0: Internal Trigger 0
   * @param  TIM_TS_ITR1: Internal Trigger 1
   * @param  TIM_TS_ITR2: Internal Trigger 2
@@ -1017,19 +971,16 @@ void TIM_ITRxExternalClockConfig(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSou
 }
 
 /**
-  * @brief  Configures the TIMx Trigger as External Clock
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_TIxExternalCLKSource: Trigger source.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_TIxExternalCLKSource: Trigger source. This parameter can be one of the following values:
   *     @arg TIM_TIxExternalCLK1Source_TI1ED: TI1 Edge Detector
   *     @arg TIM_TIxExternalCLK1Source_TI1: Filtered Timer Input 1
   *     @arg TIM_TIxExternalCLK1Source_TI2: Filtered Timer Input 2
-  * @param  TIM_ICPolarity: specifies the TIx Polarity.
-  *   This parameter can be one of the following values:
+  * @param  TIM_ICPolarity: 指定TIx Polarity。
   *     @arg TIM_ICPolarity_Rising
   *     @arg TIM_ICPolarity_Falling
-  * @param  ICFilter : specifies the filter value.
-  *   This parameter must be a value between 0x0 and 0xF.
+  * @param  ICFilter : 指定 the filter value. This parameter must be a value between 0x0 and 0xF.
   * @retval None
   */
 void TIM_TIxExternalClockConfig(TIM_TypeDef* TIMx, uint16_t TIM_TIxExternalCLKSource,
@@ -1056,20 +1007,17 @@ void TIM_TIxExternalClockConfig(TIM_TypeDef* TIMx, uint16_t TIM_TIxExternalCLKSo
 }
 
 /**
-  * @brief  Configures the External clock Mode1
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ExtTRGPrescaler: The external Trigger Prescaler.
-  *   This parameter can be one of the following values:
+  * @brief  配置E
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_ExtTRGPrescaler: The external Trigger Prescaler. This parameter can be one of the following values:
   *     @arg TIM_ExtTRGPSC_OFF: ETRP Prescaler OFF.
   *     @arg TIM_ExtTRGPSC_DIV2: ETRP frequency divided by 2.
   *     @arg TIM_ExtTRGPSC_DIV4: ETRP frequency divided by 4.
   *     @arg TIM_ExtTRGPSC_DIV8: ETRP frequency divided by 8.
-  * @param  TIM_ExtTRGPolarity: The external Trigger Polarity.
-  *   This parameter can be one of the following values:
+  * @param  TIM_ExtTRGPolarity: The external Trigger Polarity. This parameter can be one of the following values:
   *     @arg TIM_ExtTRGPolarity_Inverted: active low or falling edge active.
   *     @arg TIM_ExtTRGPolarity_NonInverted: active high or rising edge active.
-  * @param  ExtTRGFilter: External Trigger Filter.
-  *   This parameter must be a value between 0x00 and 0x0F
+  * @param  ExtTRGFilter: External Trigger Filter. This parameter must be a value between 0x00 and 0x0F
   * @retval None
   */
 void TIM_ETRClockMode1Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
@@ -1098,20 +1046,17 @@ void TIM_ETRClockMode1Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, ui
 }
 
 /**
-  * @brief  Configures the External clock Mode2
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ExtTRGPrescaler: The external Trigger Prescaler.
-  *   This parameter can be one of the following values:
+  * @brief  配置E
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_ExtTRGPrescaler: The external Trigger Prescaler. This parameter can be one of the following values:
   *     @arg TIM_ExtTRGPSC_OFF: ETRP Prescaler OFF.
   *     @arg TIM_ExtTRGPSC_DIV2: ETRP frequency divided by 2.
   *     @arg TIM_ExtTRGPSC_DIV4: ETRP frequency divided by 4.
   *     @arg TIM_ExtTRGPSC_DIV8: ETRP frequency divided by 8.
-  * @param  TIM_ExtTRGPolarity: The external Trigger Polarity.
-  *   This parameter can be one of the following values:
+  * @param  TIM_ExtTRGPolarity: The external Trigger Polarity. This parameter can be one of the following values:
   *     @arg TIM_ExtTRGPolarity_Inverted: active low or falling edge active.
   *     @arg TIM_ExtTRGPolarity_NonInverted: active high or rising edge active.
-  * @param  ExtTRGFilter: External Trigger Filter.
-  *   This parameter must be a value between 0x00 and 0x0F
+  * @param  ExtTRGFilter: External Trigger Filter. This parameter must be a value between 0x00 and 0x0F
   * @retval None
   */
 void TIM_ETRClockMode2Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, 
@@ -1129,20 +1074,17 @@ void TIM_ETRClockMode2Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler,
 }
 
 /**
-  * @brief  Configures the TIMx External Trigger (ETR).
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ExtTRGPrescaler: The external Trigger Prescaler.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_ExtTRGPrescaler: The external Trigger Prescaler. This parameter can be one of the following values:
   *     @arg TIM_ExtTRGPSC_OFF: ETRP Prescaler OFF.
   *     @arg TIM_ExtTRGPSC_DIV2: ETRP frequency divided by 2.
   *     @arg TIM_ExtTRGPSC_DIV4: ETRP frequency divided by 4.
   *     @arg TIM_ExtTRGPSC_DIV8: ETRP frequency divided by 8.
-  * @param  TIM_ExtTRGPolarity: The external Trigger Polarity.
-  *   This parameter can be one of the following values:
+  * @param  TIM_ExtTRGPolarity: The external Trigger Polarity. This parameter can be one of the following values:
   *     @arg TIM_ExtTRGPolarity_Inverted: active low or falling edge active.
   *     @arg TIM_ExtTRGPolarity_NonInverted: active high or rising edge active.
-  * @param  ExtTRGFilter: External Trigger Filter.
-  *   This parameter must be a value between 0x00 and 0x0F
+  * @param  ExtTRGFilter: External Trigger Filter. This parameter must be a value between 0x00 and 0x0F
   * @retval None
   */
 void TIM_ETRConfig(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
@@ -1164,11 +1106,10 @@ void TIM_ETRConfig(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM
 }
 
 /**
-  * @brief  Configures the TIMx Prescaler.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  Prescaler: specifies the Prescaler Register value
-  * @param  TIM_PSCReloadMode: specifies the TIM Prescaler Reload mode
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  Prescaler: 指定the Prescaler Register value
+  * @param  TIM_PSCReloadMode: 指定the TIM Prescaler Reload mode This parameter can be one of the following values:
   *     @arg TIM_PSCReloadMode_Update: The Prescaler is loaded at the update event.
   *     @arg TIM_PSCReloadMode_Immediate: The Prescaler is loaded immediately.
   * @retval None
@@ -1185,10 +1126,9 @@ void TIM_PrescalerConfig(TIM_TypeDef* TIMx, uint16_t Prescaler, uint16_t TIM_PSC
 }
 
 /**
-  * @brief  Specifies the TIMx Counter Mode to be used.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_CounterMode: specifies the Counter Mode to be used
-  *   This parameter can be one of the following values:
+  * @brief  Specifies the TIMx Counter Mode to be used.（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_CounterMode: 指定the Counter Mode to be used This parameter can be one of the following values:
   *     @arg TIM_CounterMode_Up: TIM Up Counting Mode
   *     @arg TIM_CounterMode_Down: TIM Down Counting Mode
   *     @arg TIM_CounterMode_CenterAligned1: TIM Center Aligned Mode1
@@ -1212,10 +1152,9 @@ void TIM_CounterModeConfig(TIM_TypeDef* TIMx, uint16_t TIM_CounterMode)
 }
 
 /**
-  * @brief  Selects the Input Trigger source
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 8, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_InputTriggerSource: The Input Trigger source.
-  *   This parameter can be one of the following values:
+  * @brief  选择I
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_InputTriggerSource: The Input Trigger source. This parameter can be one of the following values:
   *     @arg TIM_TS_ITR0: Internal Trigger 0
   *     @arg TIM_TS_ITR1: Internal Trigger 1
   *     @arg TIM_TS_ITR2: Internal Trigger 2
@@ -1243,20 +1182,17 @@ void TIM_SelectInputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource)
 }
 
 /**
-  * @brief  Configures the TIMx Encoder Interface.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_EncoderMode: specifies the TIMx Encoder Mode.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_EncoderMode: 指定TIMx Encoder Mode。
   *     @arg TIM_EncoderMode_TI1: Counter counts on TI1FP1 edge depending on TI2FP2 level.
   *     @arg TIM_EncoderMode_TI2: Counter counts on TI2FP2 edge depending on TI1FP1 level.
   *     @arg TIM_EncoderMode_TI12: Counter counts on both TI1FP1 and TI2FP2 edges depending
   *                                on the level of the other input.
-  * @param  TIM_IC1Polarity: specifies the IC1 Polarity
-  *   This parameter can be one of the following values:
+  * @param  TIM_IC1Polarity: 指定the IC1 Polarity This parameter can be one of the following values:
   *     @arg TIM_ICPolarity_Falling: IC Falling edge.
   *     @arg TIM_ICPolarity_Rising: IC Rising edge.
-  * @param  TIM_IC2Polarity: specifies the IC2 Polarity
-  *   This parameter can be one of the following values:
+  * @param  TIM_IC2Polarity: 指定the IC2 Polarity This parameter can be one of the following values:
   *     @arg TIM_ICPolarity_Falling: IC Falling edge.
   *     @arg TIM_ICPolarity_Rising: IC Rising edge.
   * @retval None
@@ -1304,10 +1240,9 @@ void TIM_EncoderInterfaceConfig(TIM_TypeDef* TIMx, uint16_t TIM_EncoderMode,
 }
 
 /**
-  * @brief  Forces the TIMx output 1 waveform to active or inactive level.
-  * @param  TIMx: where x can be  1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  TIM_ForcedAction: specifies the forced Action to be set to the output waveform.
-  *   This parameter can be one of the following values:
+  * @brief  Forces the TIMx output 1 waveform to active or inactive level.（详见英文原注释）
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_ForcedAction: 指定forced Action，将被set to the output waveform。
   *     @arg TIM_ForcedAction_Active: Force active level on OC1REF
   *     @arg TIM_ForcedAction_InActive: Force inactive level on OC1REF.
   * @retval None
@@ -1328,10 +1263,9 @@ void TIM_ForcedOC1Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction)
 }
 
 /**
-  * @brief  Forces the TIMx output 2 waveform to active or inactive level.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 8, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_ForcedAction: specifies the forced Action to be set to the output waveform.
-  *   This parameter can be one of the following values:
+  * @brief  Forces the TIMx output 2 waveform to active or inactive level.（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_ForcedAction: 指定forced Action，将被set to the output waveform。
   *     @arg TIM_ForcedAction_Active: Force active level on OC2REF
   *     @arg TIM_ForcedAction_InActive: Force inactive level on OC2REF.
   * @retval None
@@ -1352,10 +1286,9 @@ void TIM_ForcedOC2Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction)
 }
 
 /**
-  * @brief  Forces the TIMx output 3 waveform to active or inactive level.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ForcedAction: specifies the forced Action to be set to the output waveform.
-  *   This parameter can be one of the following values:
+  * @brief  Forces the TIMx output 3 waveform to active or inactive level.（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_ForcedAction: 指定forced Action，将被set to the output waveform。
   *     @arg TIM_ForcedAction_Active: Force active level on OC3REF
   *     @arg TIM_ForcedAction_InActive: Force inactive level on OC3REF.
   * @retval None
@@ -1376,10 +1309,9 @@ void TIM_ForcedOC3Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction)
 }
 
 /**
-  * @brief  Forces the TIMx output 4 waveform to active or inactive level.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ForcedAction: specifies the forced Action to be set to the output waveform.
-  *   This parameter can be one of the following values:
+  * @brief  Forces the TIMx output 4 waveform to active or inactive level.（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_ForcedAction: 指定forced Action，将被set to the output waveform。
   *     @arg TIM_ForcedAction_Active: Force active level on OC4REF
   *     @arg TIM_ForcedAction_InActive: Force inactive level on OC4REF.
   * @retval None
@@ -1400,10 +1332,9 @@ void TIM_ForcedOC4Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction)
 }
 
 /**
-  * @brief  Enables or disables TIMx peripheral Preload register on ARR.
-  * @param  TIMx: where x can be  1 to 17 to select the TIM peripheral.
-  * @param  NewState: new state of the TIMx peripheral Preload register
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关TIMx peripheral Preload register on ARR.
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void TIM_ARRPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState)
@@ -1424,10 +1355,9 @@ void TIM_ARRPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Selects the TIM peripheral Commutation event.
-  * @param  TIMx: where x can be  1, 8, 15, 16 or 17 to select the TIMx peripheral
-  * @param  NewState: new state of the Commutation event.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  选择T
+  * @param  TIMx: 取值 1, 8, 15, 16 or 17 选择 TIMx 外设
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void TIM_SelectCOM(TIM_TypeDef* TIMx, FunctionalState NewState)
@@ -1448,11 +1378,9 @@ void TIM_SelectCOM(TIM_TypeDef* TIMx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Selects the TIMx peripheral Capture Compare DMA source.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 8, 15, 16 or 17 to select 
-  *         the TIM peripheral.
-  * @param  NewState: new state of the Capture Compare DMA source
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  选择T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 15, 16 or 17 选择 TIM 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void TIM_SelectCCDMA(TIM_TypeDef* TIMx, FunctionalState NewState)
@@ -1473,11 +1401,9 @@ void TIM_SelectCCDMA(TIM_TypeDef* TIMx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Sets or Resets the TIM peripheral Capture Compare Preload Control bit.
-  * @param  TIMx: where x can be   1, 2, 3, 4, 5, 8 or 15 
-  *         to select the TIMx peripheral
-  * @param  NewState: new state of the Capture Compare Preload Control bit
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  Sets or Resets the TIM 外设 Capture Compare Preload Control bit.（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8 or 15 选择 TIMx 外设
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void TIM_CCPreloadControl(TIM_TypeDef* TIMx, FunctionalState NewState)
@@ -1498,10 +1424,9 @@ void TIM_CCPreloadControl(TIM_TypeDef* TIMx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the TIMx peripheral Preload register on CCR1.
-  * @param  TIMx: where x can be  1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  TIM_OCPreload: new state of the TIMx peripheral Preload register
-  *   This parameter can be one of the following values:
+  * @brief  开关TIMx peripheral Preload register on CCR1（ENABLE=开 / DISABLE=关）
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_OCPreload: new state of the TIMx 外设 Preload register This parameter can be one of the following values:
   *     @arg TIM_OCPreload_Enable
   *     @arg TIM_OCPreload_Disable
   * @retval None
@@ -1522,11 +1447,9 @@ void TIM_OC1PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload)
 }
 
 /**
-  * @brief  Enables or disables the TIMx peripheral Preload register on CCR2.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 8, 9, 12 or 15 to select 
-  *         the TIM peripheral.
-  * @param  TIM_OCPreload: new state of the TIMx peripheral Preload register
-  *   This parameter can be one of the following values:
+  * @brief  开关TIMx peripheral Preload register on CCR2（ENABLE=开 / DISABLE=关）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_OCPreload: new state of the TIMx 外设 Preload register This parameter can be one of the following values:
   *     @arg TIM_OCPreload_Enable
   *     @arg TIM_OCPreload_Disable
   * @retval None
@@ -1547,10 +1470,9 @@ void TIM_OC2PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload)
 }
 
 /**
-  * @brief  Enables or disables the TIMx peripheral Preload register on CCR3.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCPreload: new state of the TIMx peripheral Preload register
-  *   This parameter can be one of the following values:
+  * @brief  开关TIMx peripheral Preload register on CCR3（ENABLE=开 / DISABLE=关）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCPreload: new state of the TIMx 外设 Preload register This parameter can be one of the following values:
   *     @arg TIM_OCPreload_Enable
   *     @arg TIM_OCPreload_Disable
   * @retval None
@@ -1571,10 +1493,9 @@ void TIM_OC3PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload)
 }
 
 /**
-  * @brief  Enables or disables the TIMx peripheral Preload register on CCR4.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCPreload: new state of the TIMx peripheral Preload register
-  *   This parameter can be one of the following values:
+  * @brief  开关TIMx peripheral Preload register on CCR4（ENABLE=开 / DISABLE=关）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCPreload: new state of the TIMx 外设 Preload register This parameter can be one of the following values:
   *     @arg TIM_OCPreload_Enable
   *     @arg TIM_OCPreload_Disable
   * @retval None
@@ -1595,10 +1516,9 @@ void TIM_OC4PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload)
 }
 
 /**
-  * @brief  Configures the TIMx Output Compare 1 Fast feature.
-  * @param  TIMx: where x can be  1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  TIM_OCFast: new state of the Output Compare Fast Enable Bit.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_OCFast: new state of the Output Compare Fast Enable Bit. This parameter can be one of the following values:
   *     @arg TIM_OCFast_Enable: TIM output compare fast enable
   *     @arg TIM_OCFast_Disable: TIM output compare fast disable
   * @retval None
@@ -1620,11 +1540,9 @@ void TIM_OC1FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast)
 }
 
 /**
-  * @brief  Configures the TIMx Output Compare 2 Fast feature.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 8, 9, 12 or 15 to select 
-  *         the TIM peripheral.
-  * @param  TIM_OCFast: new state of the Output Compare Fast Enable Bit.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_OCFast: new state of the Output Compare Fast Enable Bit. This parameter can be one of the following values:
   *     @arg TIM_OCFast_Enable: TIM output compare fast enable
   *     @arg TIM_OCFast_Disable: TIM output compare fast disable
   * @retval None
@@ -1646,10 +1564,9 @@ void TIM_OC2FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast)
 }
 
 /**
-  * @brief  Configures the TIMx Output Compare 3 Fast feature.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCFast: new state of the Output Compare Fast Enable Bit.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCFast: new state of the Output Compare Fast Enable Bit. This parameter can be one of the following values:
   *     @arg TIM_OCFast_Enable: TIM output compare fast enable
   *     @arg TIM_OCFast_Disable: TIM output compare fast disable
   * @retval None
@@ -1671,10 +1588,9 @@ void TIM_OC3FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast)
 }
 
 /**
-  * @brief  Configures the TIMx Output Compare 4 Fast feature.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCFast: new state of the Output Compare Fast Enable Bit.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCFast: new state of the Output Compare Fast Enable Bit. This parameter can be one of the following values:
   *     @arg TIM_OCFast_Enable: TIM output compare fast enable
   *     @arg TIM_OCFast_Disable: TIM output compare fast disable
   * @retval None
@@ -1696,10 +1612,9 @@ void TIM_OC4FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast)
 }
 
 /**
-  * @brief  Clears or safeguards the OCREF1 signal on an external event
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCClear: new state of the Output Compare Clear Enable Bit.
-  *   This parameter can be one of the following values:
+  * @brief  Clears or safeguards the OCREF1 signal on an external event（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCClear: new state of the Output Compare Clear Enable Bit. This parameter can be one of the following values:
   *     @arg TIM_OCClear_Enable: TIM Output clear enable
   *     @arg TIM_OCClear_Disable: TIM Output clear disable
   * @retval None
@@ -1722,10 +1637,9 @@ void TIM_ClearOC1Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear)
 }
 
 /**
-  * @brief  Clears or safeguards the OCREF2 signal on an external event
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCClear: new state of the Output Compare Clear Enable Bit.
-  *   This parameter can be one of the following values:
+  * @brief  Clears or safeguards the OCREF2 signal on an external event（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCClear: new state of the Output Compare Clear Enable Bit. This parameter can be one of the following values:
   *     @arg TIM_OCClear_Enable: TIM Output clear enable
   *     @arg TIM_OCClear_Disable: TIM Output clear disable
   * @retval None
@@ -1746,10 +1660,9 @@ void TIM_ClearOC2Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear)
 }
 
 /**
-  * @brief  Clears or safeguards the OCREF3 signal on an external event
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCClear: new state of the Output Compare Clear Enable Bit.
-  *   This parameter can be one of the following values:
+  * @brief  Clears or safeguards the OCREF3 signal on an external event（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCClear: new state of the Output Compare Clear Enable Bit. This parameter can be one of the following values:
   *     @arg TIM_OCClear_Enable: TIM Output clear enable
   *     @arg TIM_OCClear_Disable: TIM Output clear disable
   * @retval None
@@ -1770,10 +1683,9 @@ void TIM_ClearOC3Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear)
 }
 
 /**
-  * @brief  Clears or safeguards the OCREF4 signal on an external event
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCClear: new state of the Output Compare Clear Enable Bit.
-  *   This parameter can be one of the following values:
+  * @brief  Clears or safeguards the OCREF4 signal on an external event（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCClear: new state of the Output Compare Clear Enable Bit. This parameter can be one of the following values:
   *     @arg TIM_OCClear_Enable: TIM Output clear enable
   *     @arg TIM_OCClear_Disable: TIM Output clear disable
   * @retval None
@@ -1794,10 +1706,9 @@ void TIM_ClearOC4Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear)
 }
 
 /**
-  * @brief  Configures the TIMx channel 1 polarity.
-  * @param  TIMx: where x can be 1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  TIM_OCPolarity: specifies the OC1 Polarity
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_OCPolarity: 指定the OC1 Polarity This parameter can be one of the following values:
   *     @arg TIM_OCPolarity_High: Output Compare active high
   *     @arg TIM_OCPolarity_Low: Output Compare active low
   * @retval None
@@ -1817,10 +1728,9 @@ void TIM_OC1PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity)
 }
 
 /**
-  * @brief  Configures the TIMx Channel 1N polarity.
-  * @param  TIMx: where x can be 1, 8, 15, 16 or 17 to select the TIM peripheral.
-  * @param  TIM_OCNPolarity: specifies the OC1N Polarity
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 8, 15, 16 or 17 选择 TIM 外设.
+  * @param  TIM_OCNPolarity: 指定the OC1N Polarity This parameter can be one of the following values:
   *     @arg TIM_OCNPolarity_High: Output Compare active high
   *     @arg TIM_OCNPolarity_Low: Output Compare active low
   * @retval None
@@ -1841,10 +1751,9 @@ void TIM_OC1NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity)
 }
 
 /**
-  * @brief  Configures the TIMx channel 2 polarity.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5, 8, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_OCPolarity: specifies the OC2 Polarity
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_OCPolarity: 指定the OC2 Polarity This parameter can be one of the following values:
   *     @arg TIM_OCPolarity_High: Output Compare active high
   *     @arg TIM_OCPolarity_Low: Output Compare active low
   * @retval None
@@ -1864,10 +1773,9 @@ void TIM_OC2PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity)
 }
 
 /**
-  * @brief  Configures the TIMx Channel 2N polarity.
-  * @param  TIMx: where x can be 1 or 8 to select the TIM peripheral.
-  * @param  TIM_OCNPolarity: specifies the OC2N Polarity
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1 or 8 选择 TIM 外设.
+  * @param  TIM_OCNPolarity: 指定the OC2N Polarity This parameter can be one of the following values:
   *     @arg TIM_OCNPolarity_High: Output Compare active high
   *     @arg TIM_OCNPolarity_Low: Output Compare active low
   * @retval None
@@ -1888,10 +1796,9 @@ void TIM_OC2NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity)
 }
 
 /**
-  * @brief  Configures the TIMx channel 3 polarity.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCPolarity: specifies the OC3 Polarity
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCPolarity: 指定the OC3 Polarity This parameter can be one of the following values:
   *     @arg TIM_OCPolarity_High: Output Compare active high
   *     @arg TIM_OCPolarity_Low: Output Compare active low
   * @retval None
@@ -1911,10 +1818,9 @@ void TIM_OC3PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity)
 }
 
 /**
-  * @brief  Configures the TIMx Channel 3N polarity.
-  * @param  TIMx: where x can be 1 or 8 to select the TIM peripheral.
-  * @param  TIM_OCNPolarity: specifies the OC3N Polarity
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1 or 8 选择 TIM 外设.
+  * @param  TIM_OCNPolarity: 指定the OC3N Polarity This parameter can be one of the following values:
   *     @arg TIM_OCNPolarity_High: Output Compare active high
   *     @arg TIM_OCNPolarity_Low: Output Compare active low
   * @retval None
@@ -1936,10 +1842,9 @@ void TIM_OC3NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity)
 }
 
 /**
-  * @brief  Configures the TIMx channel 4 polarity.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_OCPolarity: specifies the OC4 Polarity
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_OCPolarity: 指定the OC4 Polarity This parameter can be one of the following values:
   *     @arg TIM_OCPolarity_High: Output Compare active high
   *     @arg TIM_OCPolarity_Low: Output Compare active low
   * @retval None
@@ -1959,16 +1864,14 @@ void TIM_OC4PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity)
 }
 
 /**
-  * @brief  Enables or disables the TIM Capture Compare Channel x.
-  * @param  TIMx: where x can be 1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  TIM_Channel: specifies the TIM Channel
-  *   This parameter can be one of the following values:
+  * @brief  开关TIM Capture Compare Channel x（ENABLE=开 / DISABLE=关）
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_Channel: 指定the TIM Channel This parameter can be one of the following values:
   *     @arg TIM_Channel_1: TIM Channel 1
   *     @arg TIM_Channel_2: TIM Channel 2
   *     @arg TIM_Channel_3: TIM Channel 3
   *     @arg TIM_Channel_4: TIM Channel 4
-  * @param  TIM_CCx: specifies the TIM Channel CCxE bit new state.
-  *   This parameter can be: TIM_CCx_Enable or TIM_CCx_Disable. 
+  * @param  TIM_CCx: 指定TIM Channel CCxE bit new state。
   * @retval None
   */
 void TIM_CCxCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx)
@@ -1990,15 +1893,13 @@ void TIM_CCxCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx)
 }
 
 /**
-  * @brief  Enables or disables the TIM Capture Compare Channel xN.
-  * @param  TIMx: where x can be 1, 8, 15, 16 or 17 to select the TIM peripheral.
-  * @param  TIM_Channel: specifies the TIM Channel
-  *   This parameter can be one of the following values:
+  * @brief  开关TIM Capture Compare Channel xN（ENABLE=开 / DISABLE=关）
+  * @param  TIMx: 取值 1, 8, 15, 16 or 17 选择 TIM 外设.
+  * @param  TIM_Channel: 指定the TIM Channel This parameter can be one of the following values:
   *     @arg TIM_Channel_1: TIM Channel 1
   *     @arg TIM_Channel_2: TIM Channel 2
   *     @arg TIM_Channel_3: TIM Channel 3
-  * @param  TIM_CCxN: specifies the TIM Channel CCxNE bit new state.
-  *   This parameter can be: TIM_CCxN_Enable or TIM_CCxN_Disable. 
+  * @param  TIM_CCxN: 指定TIM Channel CCxNE bit new state。
   * @retval None
   */
 void TIM_CCxNCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN)
@@ -2020,19 +1921,15 @@ void TIM_CCxNCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN)
 }
 
 /**
-  * @brief  Selects the TIM Output Compare Mode.
-  * @note   This function disables the selected channel before changing the Output
-  *         Compare Mode.
-  *         User has to enable this channel using TIM_CCxCmd and TIM_CCxNCmd functions.
-  * @param  TIMx: where x can be 1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  TIM_Channel: specifies the TIM Channel
-  *   This parameter can be one of the following values:
+  * @brief  选择T
+  * @note  This function disables the selected channel before changing the Output Compare Mode. User has to enable this channel using TIM_CCxCmd and TIM_CCxNCmd functions.
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_Channel: 指定the TIM Channel This parameter can be one of the following values:
   *     @arg TIM_Channel_1: TIM Channel 1
   *     @arg TIM_Channel_2: TIM Channel 2
   *     @arg TIM_Channel_3: TIM Channel 3
   *     @arg TIM_Channel_4: TIM Channel 4
-  * @param  TIM_OCMode: specifies the TIM Output Compare Mode.
-  *   This parameter can be one of the following values:
+  * @param  TIM_OCMode: 指定TIM Output Compare Mode。
   *     @arg TIM_OCMode_Timing
   *     @arg TIM_OCMode_Active
   *     @arg TIM_OCMode_Toggle
@@ -2083,10 +1980,9 @@ void TIM_SelectOCxM(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_OCMode
 }
 
 /**
-  * @brief  Enables or Disables the TIMx Update event.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  NewState: new state of the TIMx UDIS bit
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关TIMx Update event（ENABLE=开 / DISABLE=关）
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void TIM_UpdateDisableConfig(TIM_TypeDef* TIMx, FunctionalState NewState)
@@ -2107,10 +2003,9 @@ void TIM_UpdateDisableConfig(TIM_TypeDef* TIMx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Configures the TIMx Update Request Interrupt source.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_UpdateSource: specifies the Update source.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  TIM_UpdateSource: 指定Update source。
   *     @arg TIM_UpdateSource_Regular: Source of update is the counter overflow/underflow
                                        or the setting of UG bit, or an update generation
                                        through the slave mode controller.
@@ -2135,10 +2030,9 @@ void TIM_UpdateRequestConfig(TIM_TypeDef* TIMx, uint16_t TIM_UpdateSource)
 }
 
 /**
-  * @brief  Enables or disables the TIMx's Hall sensor interface.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  NewState: new state of the TIMx Hall sensor interface.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关TIMx's Hall sensor interface（ENABLE=开 / DISABLE=关）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void TIM_SelectHallSensor(TIM_TypeDef* TIMx, FunctionalState NewState)
@@ -2159,10 +2053,9 @@ void TIM_SelectHallSensor(TIM_TypeDef* TIMx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Selects the TIMx's One Pulse Mode.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_OPMode: specifies the OPM Mode to be used.
-  *   This parameter can be one of the following values:
+  * @brief  选择T
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  TIM_OPMode: 指定OPM Mode，将被used。
   *     @arg TIM_OPMode_Single
   *     @arg TIM_OPMode_Repetitive
   * @retval None
@@ -2179,12 +2072,9 @@ void TIM_SelectOnePulseMode(TIM_TypeDef* TIMx, uint16_t TIM_OPMode)
 }
 
 /**
-  * @brief  Selects the TIMx Trigger Output Mode.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5, 6, 7, 8, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_TRGOSource: specifies the Trigger Output source.
-  *   This paramter can be one of the following values:
-  *
-  *  - For all TIMx
+  * @brief  选择T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 6, 7, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_TRGOSource: 指定Trigger Output source。
   *     @arg TIM_TRGOSource_Reset:  The UG bit in the TIM_EGR register is used as the trigger output (TRGO).
   *     @arg TIM_TRGOSource_Enable: The Counter Enable CEN is used as the trigger output (TRGO).
   *     @arg TIM_TRGOSource_Update: The update event is selected as the trigger output (TRGO).
@@ -2211,10 +2101,9 @@ void TIM_SelectOutputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_TRGOSource)
 }
 
 /**
-  * @brief  Selects the TIMx Slave Mode.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5, 8, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_SlaveMode: specifies the Timer Slave Mode.
-  *   This parameter can be one of the following values:
+  * @brief  选择T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_SlaveMode: 指定Timer Slave Mode。
   *     @arg TIM_SlaveMode_Reset: Rising edge of the selected trigger signal (TRGI) re-initializes
   *                               the counter and triggers an update of the registers.
   *     @arg TIM_SlaveMode_Gated:     The counter clock is enabled when the trigger signal (TRGI) is high.
@@ -2234,10 +2123,9 @@ void TIM_SelectSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_SlaveMode)
 }
 
 /**
-  * @brief  Sets or Resets the TIMx Master/Slave Mode.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5, 8, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_MasterSlaveMode: specifies the Timer Master Slave Mode.
-  *   This parameter can be one of the following values:
+  * @brief  Sets or Resets the TIMx Master/Slave Mode.（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_MasterSlaveMode: 指定Timer Master Slave Mode。
   *     @arg TIM_MasterSlaveMode_Enable: synchronization between the current timer
   *                                      and its slaves (through TRGO).
   *     @arg TIM_MasterSlaveMode_Disable: No action
@@ -2256,9 +2144,9 @@ void TIM_SelectMasterSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_MasterSlaveMode)
 }
 
 /**
-  * @brief  Sets the TIMx Counter Register value
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  Counter: specifies the Counter register new value.
+  * @brief  设置TIMx Counter寄存器的值
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  Counter: 指定Counter register new value。
   * @retval None
   */
 void TIM_SetCounter(TIM_TypeDef* TIMx, uint16_t Counter)
@@ -2270,9 +2158,9 @@ void TIM_SetCounter(TIM_TypeDef* TIMx, uint16_t Counter)
 }
 
 /**
-  * @brief  Sets the TIMx Autoreload Register value
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  Autoreload: specifies the Autoreload register new value.
+  * @brief  设置TIMx Autoreload寄存器的值
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  Autoreload: 指定Autoreload register new value。
   * @retval None
   */
 void TIM_SetAutoreload(TIM_TypeDef* TIMx, uint16_t Autoreload)
@@ -2284,10 +2172,11 @@ void TIM_SetAutoreload(TIM_TypeDef* TIMx, uint16_t Autoreload)
 }
 
 /**
-  * @brief  Sets the TIMx Capture Compare1 Register value
-  * @param  TIMx: where x can be 1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  Compare1: specifies the Capture Compare1 register new value.
-  * @retval None
+  * @brief  设置 PWM 比较值 CCR1（PWM 输出的"占空比"就改这里）★
+  * @param  TIMx: 定时器号（1~17，6/7 除外；F103C8T6 用 TIM1~TIM4）
+  * @param  Compare1: CCR1 新值。占空比 = CCR / (ARR+1)，
+  *         例 ARR=999、CCR=500 → 50% 占空比；运行中随时调用即可调速
+  * @retval 无
   */
 void TIM_SetCompare1(TIM_TypeDef* TIMx, uint16_t Compare1)
 {
@@ -2298,10 +2187,10 @@ void TIM_SetCompare1(TIM_TypeDef* TIMx, uint16_t Compare1)
 }
 
 /**
-  * @brief  Sets the TIMx Capture Compare2 Register value
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5, 8, 9, 12 or 15 to select the TIM peripheral.
-  * @param  Compare2: specifies the Capture Compare2 register new value.
-  * @retval None
+  * @brief  设置 PWM 比较值 CCR2（通道 2 的占空比）
+  * @param  TIMx: 定时器号（限 1/2/3/4/5/8/9/12/15）
+  * @param  Compare2: CCR2 新值，占空比 = CCR / (ARR+1)
+  * @retval 无
   */
 void TIM_SetCompare2(TIM_TypeDef* TIMx, uint16_t Compare2)
 {
@@ -2312,10 +2201,10 @@ void TIM_SetCompare2(TIM_TypeDef* TIMx, uint16_t Compare2)
 }
 
 /**
-  * @brief  Sets the TIMx Capture Compare3 Register value
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  Compare3: specifies the Capture Compare3 register new value.
-  * @retval None
+  * @brief  设置 PWM 比较值 CCR3（通道 3 的占空比）
+  * @param  TIMx: 定时器号（限 1/2/3/4/5/8）
+  * @param  Compare3: CCR3 新值，占空比 = CCR / (ARR+1)
+  * @retval 无
   */
 void TIM_SetCompare3(TIM_TypeDef* TIMx, uint16_t Compare3)
 {
@@ -2326,10 +2215,10 @@ void TIM_SetCompare3(TIM_TypeDef* TIMx, uint16_t Compare3)
 }
 
 /**
-  * @brief  Sets the TIMx Capture Compare4 Register value
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  Compare4: specifies the Capture Compare4 register new value.
-  * @retval None
+  * @brief  设置 PWM 比较值 CCR4（通道 4 的占空比）
+  * @param  TIMx: 定时器号（限 1/2/3/4/5/8）
+  * @param  Compare4: CCR4 新值，占空比 = CCR / (ARR+1)
+  * @retval 无
   */
 void TIM_SetCompare4(TIM_TypeDef* TIMx, uint16_t Compare4)
 {
@@ -2340,10 +2229,9 @@ void TIM_SetCompare4(TIM_TypeDef* TIMx, uint16_t Compare4)
 }
 
 /**
-  * @brief  Sets the TIMx Input Capture 1 prescaler.
-  * @param  TIMx: where x can be 1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  TIM_ICPSC: specifies the Input Capture1 prescaler new value.
-  *   This parameter can be one of the following values:
+  * @brief  设置T
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_ICPSC: 指定Input Capture1 prescaler new value。
   *     @arg TIM_ICPSC_DIV1: no prescaler
   *     @arg TIM_ICPSC_DIV2: capture is done once every 2 events
   *     @arg TIM_ICPSC_DIV4: capture is done once every 4 events
@@ -2362,10 +2250,9 @@ void TIM_SetIC1Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC)
 }
 
 /**
-  * @brief  Sets the TIMx Input Capture 2 prescaler.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5, 8, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_ICPSC: specifies the Input Capture2 prescaler new value.
-  *   This parameter can be one of the following values:
+  * @brief  设置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_ICPSC: 指定Input Capture2 prescaler new value。
   *     @arg TIM_ICPSC_DIV1: no prescaler
   *     @arg TIM_ICPSC_DIV2: capture is done once every 2 events
   *     @arg TIM_ICPSC_DIV4: capture is done once every 4 events
@@ -2384,10 +2271,9 @@ void TIM_SetIC2Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC)
 }
 
 /**
-  * @brief  Sets the TIMx Input Capture 3 prescaler.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ICPSC: specifies the Input Capture3 prescaler new value.
-  *   This parameter can be one of the following values:
+  * @brief  设置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_ICPSC: 指定Input Capture3 prescaler new value。
   *     @arg TIM_ICPSC_DIV1: no prescaler
   *     @arg TIM_ICPSC_DIV2: capture is done once every 2 events
   *     @arg TIM_ICPSC_DIV4: capture is done once every 4 events
@@ -2406,10 +2292,9 @@ void TIM_SetIC3Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC)
 }
 
 /**
-  * @brief  Sets the TIMx Input Capture 4 prescaler.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ICPSC: specifies the Input Capture4 prescaler new value.
-  *   This parameter can be one of the following values:
+  * @brief  设置T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_ICPSC: 指定Input Capture4 prescaler new value。
   *     @arg TIM_ICPSC_DIV1: no prescaler
   *     @arg TIM_ICPSC_DIV2: capture is done once every 2 events
   *     @arg TIM_ICPSC_DIV4: capture is done once every 4 events
@@ -2428,11 +2313,9 @@ void TIM_SetIC4Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC)
 }
 
 /**
-  * @brief  Sets the TIMx Clock Division value.
-  * @param  TIMx: where x can be  1 to 17 except 6 and 7 to select 
-  *   the TIM peripheral.
-  * @param  TIM_CKD: specifies the clock division value.
-  *   This parameter can be one of the following value:
+  * @brief  设置T
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_CKD: 指定clock division value。
   *     @arg TIM_CKD_DIV1: TDTS = Tck_tim
   *     @arg TIM_CKD_DIV2: TDTS = 2*Tck_tim
   *     @arg TIM_CKD_DIV4: TDTS = 4*Tck_tim
@@ -2450,8 +2333,8 @@ void TIM_SetClockDivision(TIM_TypeDef* TIMx, uint16_t TIM_CKD)
 }
 
 /**
-  * @brief  Gets the TIMx Input Capture 1 value.
-  * @param  TIMx: where x can be 1 to 17 except 6 and 7 to select the TIM peripheral.
+  * @brief  获取T
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
   * @retval Capture Compare 1 Register value.
   */
 uint16_t TIM_GetCapture1(TIM_TypeDef* TIMx)
@@ -2463,8 +2346,8 @@ uint16_t TIM_GetCapture1(TIM_TypeDef* TIMx)
 }
 
 /**
-  * @brief  Gets the TIMx Input Capture 2 value.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5, 8, 9, 12 or 15 to select the TIM peripheral.
+  * @brief  获取T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
   * @retval Capture Compare 2 Register value.
   */
 uint16_t TIM_GetCapture2(TIM_TypeDef* TIMx)
@@ -2476,8 +2359,8 @@ uint16_t TIM_GetCapture2(TIM_TypeDef* TIMx)
 }
 
 /**
-  * @brief  Gets the TIMx Input Capture 3 value.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
+  * @brief  获取T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
   * @retval Capture Compare 3 Register value.
   */
 uint16_t TIM_GetCapture3(TIM_TypeDef* TIMx)
@@ -2489,8 +2372,8 @@ uint16_t TIM_GetCapture3(TIM_TypeDef* TIMx)
 }
 
 /**
-  * @brief  Gets the TIMx Input Capture 4 value.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
+  * @brief  获取T
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
   * @retval Capture Compare 4 Register value.
   */
 uint16_t TIM_GetCapture4(TIM_TypeDef* TIMx)
@@ -2502,8 +2385,8 @@ uint16_t TIM_GetCapture4(TIM_TypeDef* TIMx)
 }
 
 /**
-  * @brief  Gets the TIMx Counter value.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
+  * @brief  获取T
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
   * @retval Counter Register value.
   */
 uint16_t TIM_GetCounter(TIM_TypeDef* TIMx)
@@ -2515,8 +2398,8 @@ uint16_t TIM_GetCounter(TIM_TypeDef* TIMx)
 }
 
 /**
-  * @brief  Gets the TIMx Prescaler value.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
+  * @brief  获取T
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
   * @retval Prescaler Register value.
   */
 uint16_t TIM_GetPrescaler(TIM_TypeDef* TIMx)
@@ -2528,10 +2411,9 @@ uint16_t TIM_GetPrescaler(TIM_TypeDef* TIMx)
 }
 
 /**
-  * @brief  Checks whether the specified TIM flag is set or not.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_FLAG: specifies the flag to check.
-  *   This parameter can be one of the following values:
+  * @brief  检查TIM标志是否置位
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  TIM_FLAG: 指定flag to check。
   *     @arg TIM_FLAG_Update: TIM update Flag
   *     @arg TIM_FLAG_CC1: TIM Capture Compare 1 Flag
   *     @arg TIM_FLAG_CC2: TIM Capture Compare 2 Flag
@@ -2544,13 +2426,7 @@ uint16_t TIM_GetPrescaler(TIM_TypeDef* TIMx)
   *     @arg TIM_FLAG_CC2OF: TIM Capture Compare 2 overcapture Flag
   *     @arg TIM_FLAG_CC3OF: TIM Capture Compare 3 overcapture Flag
   *     @arg TIM_FLAG_CC4OF: TIM Capture Compare 4 overcapture Flag
-  * @note
-  *   - TIM6 and TIM7 can have only one update flag. 
-  *   - TIM9, TIM12 and TIM15 can have only TIM_FLAG_Update, TIM_FLAG_CC1,
-  *      TIM_FLAG_CC2 or TIM_FLAG_Trigger. 
-  *   - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_FLAG_Update or TIM_FLAG_CC1.   
-  *   - TIM_FLAG_Break is used only with TIM1, TIM8 and TIM15. 
-  *   - TIM_FLAG_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.    
+  * @note  - TIM6 and TIM7 can have only one update 标志. - TIM9, TIM12 and TIM15 can have only TIM_FLAG_Update, TIM_FLAG_CC1, TIM_FLAG_CC2 or TIM_FLAG_Trigger. - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_FLAG_Update or TIM_FLAG_CC1. - TIM_FLAG_Break is used only with TIM1, TIM8 and TIM15. - TIM_FLAG_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.
   * @retval The new state of TIM_FLAG (SET or RESET).
   */
 FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
@@ -2572,10 +2448,9 @@ FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
 }
 
 /**
-  * @brief  Clears the TIMx's pending flags.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_FLAG: specifies the flag bit to clear.
-  *   This parameter can be any combination of the following values:
+  * @brief  Clears the TIMx's pending flags.（详见英文原注释）
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  TIM_FLAG: 指定flag bit to clear。
   *     @arg TIM_FLAG_Update: TIM update Flag
   *     @arg TIM_FLAG_CC1: TIM Capture Compare 1 Flag
   *     @arg TIM_FLAG_CC2: TIM Capture Compare 2 Flag
@@ -2588,13 +2463,7 @@ FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
   *     @arg TIM_FLAG_CC2OF: TIM Capture Compare 2 overcapture Flag
   *     @arg TIM_FLAG_CC3OF: TIM Capture Compare 3 overcapture Flag
   *     @arg TIM_FLAG_CC4OF: TIM Capture Compare 4 overcapture Flag
-  * @note
-  *   - TIM6 and TIM7 can have only one update flag. 
-  *   - TIM9, TIM12 and TIM15 can have only TIM_FLAG_Update, TIM_FLAG_CC1,
-  *      TIM_FLAG_CC2 or TIM_FLAG_Trigger. 
-  *   - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_FLAG_Update or TIM_FLAG_CC1.   
-  *   - TIM_FLAG_Break is used only with TIM1, TIM8 and TIM15. 
-  *   - TIM_FLAG_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.   
+  * @note  - TIM6 and TIM7 can have only one update 标志. - TIM9, TIM12 and TIM15 can have only TIM_FLAG_Update, TIM_FLAG_CC1, TIM_FLAG_CC2 or TIM_FLAG_Trigger. - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_FLAG_Update or TIM_FLAG_CC1. - TIM_FLAG_Break is used only with TIM1, TIM8 and TIM15. - TIM_FLAG_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.
   * @retval None
   */
 void TIM_ClearFlag(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
@@ -2608,10 +2477,9 @@ void TIM_ClearFlag(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
 }
 
 /**
-  * @brief  Checks whether the TIM interrupt has occurred or not.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_IT: specifies the TIM interrupt source to check.
-  *   This parameter can be one of the following values:
+  * @brief  检查TIM中断是否已发生
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  TIM_IT: 指定TIM interrupt source to check。
   *     @arg TIM_IT_Update: TIM update Interrupt source
   *     @arg TIM_IT_CC1: TIM Capture Compare 1 Interrupt source
   *     @arg TIM_IT_CC2: TIM Capture Compare 2 Interrupt source
@@ -2620,13 +2488,7 @@ void TIM_ClearFlag(TIM_TypeDef* TIMx, uint16_t TIM_FLAG)
   *     @arg TIM_IT_COM: TIM Commutation Interrupt source
   *     @arg TIM_IT_Trigger: TIM Trigger Interrupt source
   *     @arg TIM_IT_Break: TIM Break Interrupt source
-  * @note
-  *   - TIM6 and TIM7 can generate only an update interrupt.
-  *   - TIM9, TIM12 and TIM15 can have only TIM_IT_Update, TIM_IT_CC1,
-  *      TIM_IT_CC2 or TIM_IT_Trigger. 
-  *   - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_IT_Update or TIM_IT_CC1.   
-  *   - TIM_IT_Break is used only with TIM1, TIM8 and TIM15. 
-  *   - TIM_IT_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.  
+  * @note  - TIM6 and TIM7 can generate only an update 中断. - TIM9, TIM12 and TIM15 can have only TIM_IT_Update, TIM_IT_CC1, TIM_IT_CC2 or TIM_IT_Trigger. - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_IT_Update or TIM_IT_CC1. - TIM_IT_Break is used only with TIM1, TIM8 and TIM15. - TIM_IT_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.
   * @retval The new state of the TIM_IT(SET or RESET).
   */
 ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT)
@@ -2652,10 +2514,9 @@ ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT)
 }
 
 /**
-  * @brief  Clears the TIMx's interrupt pending bits.
-  * @param  TIMx: where x can be 1 to 17 to select the TIM peripheral.
-  * @param  TIM_IT: specifies the pending bit to clear.
-  *   This parameter can be any combination of the following values:
+  * @brief  清除TIMx的中断挂起标志
+  * @param  TIMx: 取值 1 to 17 选择 TIM 外设.
+  * @param  TIM_IT: 指定pending bit to clear。
   *     @arg TIM_IT_Update: TIM1 update Interrupt source
   *     @arg TIM_IT_CC1: TIM Capture Compare 1 Interrupt source
   *     @arg TIM_IT_CC2: TIM Capture Compare 2 Interrupt source
@@ -2664,13 +2525,7 @@ ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT)
   *     @arg TIM_IT_COM: TIM Commutation Interrupt source
   *     @arg TIM_IT_Trigger: TIM Trigger Interrupt source
   *     @arg TIM_IT_Break: TIM Break Interrupt source
-  * @note
-  *   - TIM6 and TIM7 can generate only an update interrupt.
-  *   - TIM9, TIM12 and TIM15 can have only TIM_IT_Update, TIM_IT_CC1,
-  *      TIM_IT_CC2 or TIM_IT_Trigger. 
-  *   - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_IT_Update or TIM_IT_CC1.   
-  *   - TIM_IT_Break is used only with TIM1, TIM8 and TIM15. 
-  *   - TIM_IT_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.    
+  * @note  - TIM6 and TIM7 can generate only an update 中断. - TIM9, TIM12 and TIM15 can have only TIM_IT_Update, TIM_IT_CC1, TIM_IT_CC2 or TIM_IT_Trigger. - TIM10, TIM11, TIM13, TIM14, TIM16 and TIM17 can have TIM_IT_Update or TIM_IT_CC1. - TIM_IT_Break is used only with TIM1, TIM8 and TIM15. - TIM_IT_COM is used only with TIM1, TIM8, TIM15, TIM16 and TIM17.
   * @retval None
   */
 void TIM_ClearITPendingBit(TIM_TypeDef* TIMx, uint16_t TIM_IT)
@@ -2683,19 +2538,16 @@ void TIM_ClearITPendingBit(TIM_TypeDef* TIMx, uint16_t TIM_IT)
 }
 
 /**
-  * @brief  Configure the TI1 as Input.
-  * @param  TIMx: where x can be 1 to 17 except 6 and 7 to select the TIM peripheral.
-  * @param  TIM_ICPolarity : The Input Polarity.
-  *   This parameter can be one of the following values:
+  * @brief  Configure the TI1 as Input.（详见英文原注释）
+  * @param  TIMx: 取值 1 to 17 except 6 and 7 选择 TIM 外设.
+  * @param  TIM_ICPolarity : The Input Polarity. This parameter can be one of the following values:
   *     @arg TIM_ICPolarity_Rising
   *     @arg TIM_ICPolarity_Falling
-  * @param  TIM_ICSelection: specifies the input to be used.
-  *   This parameter can be one of the following values:
+  * @param  TIM_ICSelection: 指定input，将被used。
   *     @arg TIM_ICSelection_DirectTI: TIM Input 1 is selected to be connected to IC1.
   *     @arg TIM_ICSelection_IndirectTI: TIM Input 1 is selected to be connected to IC2.
   *     @arg TIM_ICSelection_TRC: TIM Input 1 is selected to be connected to TRC.
-  * @param  TIM_ICFilter: Specifies the Input Capture Filter.
-  *   This parameter must be a value between 0x00 and 0x0F.
+  * @param  TIM_ICFilter: Specifies the Input Capture Filter. This parameter must be a value between 0x00 and 0x0F.
   * @retval None
   */
 static void TI1_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
@@ -2730,19 +2582,16 @@ static void TI1_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_
 }
 
 /**
-  * @brief  Configure the TI2 as Input.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5, 8, 9, 12 or 15 to select the TIM peripheral.
-  * @param  TIM_ICPolarity : The Input Polarity.
-  *   This parameter can be one of the following values:
+  * @brief  Configure the TI2 as Input.（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5, 8, 9, 12 or 15 选择 TIM 外设.
+  * @param  TIM_ICPolarity : The Input Polarity. This parameter can be one of the following values:
   *     @arg TIM_ICPolarity_Rising
   *     @arg TIM_ICPolarity_Falling
-  * @param  TIM_ICSelection: specifies the input to be used.
-  *   This parameter can be one of the following values:
+  * @param  TIM_ICSelection: 指定input，将被used。
   *     @arg TIM_ICSelection_DirectTI: TIM Input 2 is selected to be connected to IC2.
   *     @arg TIM_ICSelection_IndirectTI: TIM Input 2 is selected to be connected to IC1.
   *     @arg TIM_ICSelection_TRC: TIM Input 2 is selected to be connected to TRC.
-  * @param  TIM_ICFilter: Specifies the Input Capture Filter.
-  *   This parameter must be a value between 0x00 and 0x0F.
+  * @param  TIM_ICFilter: Specifies the Input Capture Filter. This parameter must be a value between 0x00 and 0x0F.
   * @retval None
   */
 static void TI2_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
@@ -2779,19 +2628,16 @@ static void TI2_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_
 }
 
 /**
-  * @brief  Configure the TI3 as Input.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ICPolarity : The Input Polarity.
-  *   This parameter can be one of the following values:
+  * @brief  Configure the TI3 as Input.（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_ICPolarity : The Input Polarity. This parameter can be one of the following values:
   *     @arg TIM_ICPolarity_Rising
   *     @arg TIM_ICPolarity_Falling
-  * @param  TIM_ICSelection: specifies the input to be used.
-  *   This parameter can be one of the following values:
+  * @param  TIM_ICSelection: 指定input，将被used。
   *     @arg TIM_ICSelection_DirectTI: TIM Input 3 is selected to be connected to IC3.
   *     @arg TIM_ICSelection_IndirectTI: TIM Input 3 is selected to be connected to IC4.
   *     @arg TIM_ICSelection_TRC: TIM Input 3 is selected to be connected to TRC.
-  * @param  TIM_ICFilter: Specifies the Input Capture Filter.
-  *   This parameter must be a value between 0x00 and 0x0F.
+  * @param  TIM_ICFilter: Specifies the Input Capture Filter. This parameter must be a value between 0x00 and 0x0F.
   * @retval None
   */
 static void TI3_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
@@ -2827,19 +2673,16 @@ static void TI3_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_
 }
 
 /**
-  * @brief  Configure the TI4 as Input.
-  * @param  TIMx: where x can be 1, 2, 3, 4, 5 or 8 to select the TIM peripheral.
-  * @param  TIM_ICPolarity : The Input Polarity.
-  *   This parameter can be one of the following values:
+  * @brief  Configure the TI4 as Input.（详见英文原注释）
+  * @param  TIMx: 取值 1, 2, 3, 4, 5 or 8 选择 TIM 外设.
+  * @param  TIM_ICPolarity : The Input Polarity. This parameter can be one of the following values:
   *     @arg TIM_ICPolarity_Rising
   *     @arg TIM_ICPolarity_Falling
-  * @param  TIM_ICSelection: specifies the input to be used.
-  *   This parameter can be one of the following values:
+  * @param  TIM_ICSelection: 指定input，将被used。
   *     @arg TIM_ICSelection_DirectTI: TIM Input 4 is selected to be connected to IC4.
   *     @arg TIM_ICSelection_IndirectTI: TIM Input 4 is selected to be connected to IC3.
   *     @arg TIM_ICSelection_TRC: TIM Input 4 is selected to be connected to TRC.
-  * @param  TIM_ICFilter: Specifies the Input Capture Filter.
-  *   This parameter must be a value between 0x00 and 0x0F.
+  * @param  TIM_ICFilter: Specifies the Input Capture Filter. This parameter must be a value between 0x00 and 0x0F.
   * @retval None
   */
 static void TI4_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,

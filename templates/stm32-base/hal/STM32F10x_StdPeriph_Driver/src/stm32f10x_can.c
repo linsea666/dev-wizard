@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the CAN firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the CAN firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup CAN 
-  * @brief CAN driver modules
-  * @{
+  * @brief  CAN driver modules @{（详见英文原注释）
   */ 
 
 /** @defgroup CAN_Private_TypesDefinitions
@@ -115,8 +113,8 @@ static ITStatus CheckITStatus(uint32_t CAN_Reg, uint32_t It_Bit);
   */
 
 /**
-  * @brief  Deinitializes the CAN peripheral registers to their default reset values.
-  * @param  CANx: where x can be 1 or 2 to select the CAN peripheral.
+  * @brief  复位CAN外设（恢复默认值）
+  * @param  CANx: 取值 1 or 2 选择 CAN 外设.
   * @retval None.
   */
 void CAN_DeInit(CAN_TypeDef* CANx)
@@ -141,15 +139,10 @@ void CAN_DeInit(CAN_TypeDef* CANx)
 }
 
 /**
-  * @brief  Initializes the CAN peripheral according to the specified
-  *         parameters in the CAN_InitStruct.
-  * @param  CANx:           where x can be 1 or 2 to to select the CAN 
-  *                         peripheral.
-  * @param  CAN_InitStruct: pointer to a CAN_InitTypeDef structure that
-  *                         contains the configuration information for the 
-  *                         CAN peripheral.
-  * @retval Constant indicates initialization succeed which will be 
-  *         CAN_InitStatus_Failed or CAN_InitStatus_Success.
+  * @brief  按 CAN_InitStruct 的配置初始化 CAN 外设
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @param  CAN_InitStruct: 指向 CAN_InitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
+  * @retval Constant indicates initialization succeed which will be CAN_InitStatus_Failed or CAN_InitStatus_Success.
   */
 uint8_t CAN_Init(CAN_TypeDef* CANx, CAN_InitTypeDef* CAN_InitStruct)
 {
@@ -282,11 +275,8 @@ uint8_t CAN_Init(CAN_TypeDef* CANx, CAN_InitTypeDef* CAN_InitStruct)
 }
 
 /**
-  * @brief  Initializes the CAN peripheral according to the specified
-  *         parameters in the CAN_FilterInitStruct.
-  * @param  CAN_FilterInitStruct: pointer to a CAN_FilterInitTypeDef
-  *                               structure that contains the configuration 
-  *                               information.
+  * @brief  按 CAN_FilterInitStruct 的配置初始化 CAN 外设
+  * @param  CAN_FilterInitStruct: 指向 CAN_FilterInitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None.
   */
 void CAN_FilterInit(CAN_FilterInitTypeDef* CAN_FilterInitStruct)
@@ -376,9 +366,8 @@ void CAN_FilterInit(CAN_FilterInitTypeDef* CAN_FilterInitStruct)
 }
 
 /**
-  * @brief  Fills each CAN_InitStruct member with its default value.
-  * @param  CAN_InitStruct: pointer to a CAN_InitTypeDef structure which
-  *                         will be initialized.
+  * @brief  把CAN_InitStruct各字段填成默认值
+  * @param  CAN_InitStruct: 指向待初始化的 CAN_InitTypeDef 结构体
   * @retval None.
   */
 void CAN_StructInit(CAN_InitTypeDef* CAN_InitStruct)
@@ -420,8 +409,8 @@ void CAN_StructInit(CAN_InitTypeDef* CAN_InitStruct)
 }
 
 /**
-  * @brief  Select the start bank filter for slave CAN.
-  * @note   This function applies only to STM32 Connectivity line devices.
+  * @brief  Select the start bank filter for slave CAN.（详见英文原注释）
+  * @note  This function applies only to STM32 Connectivity line devices.
   * @param  CAN_BankNumber: Select the start slave bank filter from 1..27.
   * @retval None.
   */
@@ -442,10 +431,9 @@ void CAN_SlaveStartBank(uint8_t CAN_BankNumber)
 }
 
 /**
-  * @brief  Enables or disables the DBG Freeze for CAN.
-  * @param  CANx:     where x can be 1 or 2 to to select the CAN peripheral.
-  * @param  NewState: new state of the CAN peripheral. This parameter can 
-  *                   be: ENABLE or DISABLE.
+  * @brief  开关DBG Freeze for CAN（ENABLE=开 / DISABLE=关）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None.
   */
 void CAN_DBGFreeze(CAN_TypeDef* CANx, FunctionalState NewState)
@@ -468,14 +456,11 @@ void CAN_DBGFreeze(CAN_TypeDef* CANx, FunctionalState NewState)
 
 
 /**
-  * @brief  Enables or disabes the CAN Time TriggerOperation communication mode.
-  * @param  CANx:      where x can be 1 or 2 to to select the CAN peripheral.
+  * @brief  使能 or disabes the CAN Time TriggerOperation communication mode.（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
   * @param  NewState : Mode new state , can be one of @ref FunctionalState.
-  * @note   when enabled, Time stamp (TIME[15:0]) value is sent in the last 
-  *         two data bytes of the 8-byte message: TIME[7:0] in data byte 6 
-  *         and TIME[15:8] in data byte 7 
-  * @note   DLC must be programmed as 8 in order Time Stamp (2 bytes) to be 
-  *         sent over the CAN bus.  
+  * @note  when enabled, Time stamp (TIME[15:0]) value is sent in the last two data bytes of the 8-byte message: TIME[7:0] in data byte 6 and TIME[15:8] in data byte 7
+  * @note  DLC must be programmed as 8 in order Time Stamp (2 bytes) to be sent over the CAN bus.
   * @retval None
   */
 void CAN_TTComModeCmd(CAN_TypeDef* CANx, FunctionalState NewState)
@@ -505,12 +490,10 @@ void CAN_TTComModeCmd(CAN_TypeDef* CANx, FunctionalState NewState)
   }
 }
 /**
-  * @brief  Initiates the transmission of a message.
-  * @param  CANx:      where x can be 1 or 2 to to select the CAN peripheral.
-  * @param  TxMessage: pointer to a structure which contains CAN Id, CAN
-  *                    DLC and CAN data.
-  * @retval The number of the mailbox that is used for transmission
-  *                    or CAN_TxStatus_NoMailBox if there is no empty mailbox.
+  * @brief  Initiates the transmission of a message.（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @param  TxMessage: pointer to a structure which contains CAN Id, CAN DLC and CAN data.
+  * @retval The number of the mailbox that is used for transmission or CAN_TxStatus_NoMailBox if there is no empty mailbox.
   */
 uint8_t CAN_Transmit(CAN_TypeDef* CANx, CanTxMsg* TxMessage)
 {
@@ -578,13 +561,10 @@ uint8_t CAN_Transmit(CAN_TypeDef* CANx, CanTxMsg* TxMessage)
 }
 
 /**
-  * @brief  Checks the transmission of a message.
-  * @param  CANx:            where x can be 1 or 2 to to select the 
-  *                          CAN peripheral.
-  * @param  TransmitMailbox: the number of the mailbox that is used for 
-  *                          transmission.
-  * @retval CAN_TxStatus_Ok if the CAN driver transmits the message, CAN_TxStatus_Failed 
-  *         in an other case.
+  * @brief  Checks the transmission of a message.（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @param  TransmitMailbox: the number of the mailbox that is used for transmission.
+  * @retval CAN_TxStatus_Ok if the CAN driver transmits the message, CAN_TxStatus_Failed in an other case.
   */
 uint8_t CAN_TransmitStatus(CAN_TypeDef* CANx, uint8_t TransmitMailbox)
 {
@@ -635,9 +615,9 @@ uint8_t CAN_TransmitStatus(CAN_TypeDef* CANx, uint8_t TransmitMailbox)
 }
 
 /**
-  * @brief  Cancels a transmit request.
-  * @param  CANx:     where x can be 1 or 2 to to select the CAN peripheral. 
-  * @param  Mailbox:  Mailbox number.
+  * @brief  Cancels a transmit request.（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @param  Mailbox: Mailbox number.
   * @retval None.
   */
 void CAN_CancelTransmit(CAN_TypeDef* CANx, uint8_t Mailbox)
@@ -661,11 +641,10 @@ void CAN_CancelTransmit(CAN_TypeDef* CANx, uint8_t Mailbox)
 
 
 /**
-  * @brief  Receives a message.
-  * @param  CANx:       where x can be 1 or 2 to to select the CAN peripheral.
+  * @brief  Receives a message.（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
   * @param  FIFONumber: Receive FIFO number, CAN_FIFO0 or CAN_FIFO1.
-  * @param  RxMessage:  pointer to a structure receive message which contains 
-  *                     CAN Id, CAN DLC, CAN datas and FMI number.
+  * @param  RxMessage: pointer to a structure receive message which contains CAN Id, CAN DLC, CAN datas and FMI number.
   * @retval None.
   */
 void CAN_Receive(CAN_TypeDef* CANx, uint8_t FIFONumber, CanRxMsg* RxMessage)
@@ -712,8 +691,8 @@ void CAN_Receive(CAN_TypeDef* CANx, uint8_t FIFONumber, CanRxMsg* RxMessage)
 }
 
 /**
-  * @brief  Releases the specified FIFO.
-  * @param  CANx:       where x can be 1 or 2 to to select the CAN peripheral. 
+  * @brief  Releases 指定的 FIFO.（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
   * @param  FIFONumber: FIFO to release, CAN_FIFO0 or CAN_FIFO1.
   * @retval None.
   */
@@ -735,8 +714,8 @@ void CAN_FIFORelease(CAN_TypeDef* CANx, uint8_t FIFONumber)
 }
 
 /**
-  * @brief  Returns the number of pending messages.
-  * @param  CANx:       where x can be 1 or 2 to to select the CAN peripheral.
+  * @brief  Returns the number of pending messages.（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
   * @param  FIFONumber: Receive FIFO number, CAN_FIFO0 or CAN_FIFO1.
   * @retval NbMessage : which is the number of pending message.
   */
@@ -763,13 +742,10 @@ uint8_t CAN_MessagePending(CAN_TypeDef* CANx, uint8_t FIFONumber)
 
 
 /**
-  * @brief   Select the CAN Operation mode.
-  * @param CAN_OperatingMode : CAN Operating Mode. This parameter can be one 
+  * @brief  Select the CAN Operation mode.（详见英文原注释）
+  * @param  CAN_OperatingMode : CAN Operating Mode. This parameter can be one
   *                            of @ref CAN_OperatingMode_TypeDef enumeration.
-  * @retval status of the requested mode which can be 
-  *         - CAN_ModeStatus_Failed    CAN failed entering the specific mode 
-  *         - CAN_ModeStatus_Success   CAN Succeed entering the specific mode 
-
+  * @retval status of the requested mode which can be - CAN_ModeStatus_Failed CAN failed entering the specific mode - CAN_ModeStatus_Success CAN Succeed entering the specific mode
   */
 uint8_t CAN_OperatingModeRequest(CAN_TypeDef* CANx, uint8_t CAN_OperatingMode)
 {
@@ -848,10 +824,9 @@ uint8_t CAN_OperatingModeRequest(CAN_TypeDef* CANx, uint8_t CAN_OperatingMode)
 }
 
 /**
-  * @brief  Enters the low power mode.
-  * @param  CANx:   where x can be 1 or 2 to to select the CAN peripheral.
-  * @retval status: CAN_Sleep_Ok if sleep entered, CAN_Sleep_Failed in an 
-  *                 other case.
+  * @brief  Enters the low power mode.（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @retval status: CAN_Sleep_Ok if sleep entered, CAN_Sleep_Failed in an other case.
   */
 uint8_t CAN_Sleep(CAN_TypeDef* CANx)
 {
@@ -874,10 +849,9 @@ uint8_t CAN_Sleep(CAN_TypeDef* CANx)
 }
 
 /**
-  * @brief  Wakes the CAN up.
-  * @param  CANx:    where x can be 1 or 2 to to select the CAN peripheral.
-  * @retval status:  CAN_WakeUp_Ok if sleep mode left, CAN_WakeUp_Failed in an 
-  *                  other case.
+  * @brief  Wakes the CAN up.（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @retval status: CAN_WakeUp_Ok if sleep mode left, CAN_WakeUp_Failed in an other case.
   */
 uint8_t CAN_WakeUp(CAN_TypeDef* CANx)
 {
@@ -906,17 +880,9 @@ uint8_t CAN_WakeUp(CAN_TypeDef* CANx)
 
 
 /**
-  * @brief  Returns the CANx's last error code (LEC).
-  * @param  CANx:          where x can be 1 or 2 to to select the CAN peripheral.  
-  * @retval CAN_ErrorCode: specifies the Error code : 
-  *                        - CAN_ERRORCODE_NoErr            No Error  
-  *                        - CAN_ERRORCODE_StuffErr         Stuff Error
-  *                        - CAN_ERRORCODE_FormErr          Form Error
-  *                        - CAN_ERRORCODE_ACKErr           Acknowledgment Error
-  *                        - CAN_ERRORCODE_BitRecessiveErr  Bit Recessive Error
-  *                        - CAN_ERRORCODE_BitDominantErr   Bit Dominant Error
-  *                        - CAN_ERRORCODE_CRCErr           CRC Error
-  *                        - CAN_ERRORCODE_SoftwareSetErr   Software Set Error  
+  * @brief  Returns the CANx's last error code (LEC).（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @retval CAN_ErrorCode: 指定 the Error code : - CAN_ERRORCODE_NoErr No Error - CAN_ERRORCODE_StuffErr Stuff Error - CAN_ERRORCODE_FormErr Form Error - CAN_ERRORCODE_ACKErr Acknowledgment Error - CAN_ERRORCODE_BitRecessiveErr Bit Recessive Error - CAN_ERRORCODE_BitDominantErr Bit Dominant Error - CAN_ERRORCODE_CRCErr CRC Error - CAN_ERRORCODE_SoftwareSetErr Software Set Error
   */
  
 uint8_t CAN_GetLastErrorCode(CAN_TypeDef* CANx)
@@ -933,15 +899,10 @@ uint8_t CAN_GetLastErrorCode(CAN_TypeDef* CANx)
   return errorcode;
 }
 /**
-  * @brief  Returns the CANx Receive Error Counter (REC).
-  * @note   In case of an error during reception, this counter is incremented 
-  *         by 1 or by 8 depending on the error condition as defined by the CAN 
-  *         standard. After every successful reception, the counter is 
-  *         decremented by 1 or reset to 120 if its value was higher than 128. 
-  *         When the counter value exceeds 127, the CAN controller enters the 
-  *         error passive state.  
-  * @param  CANx: where x can be 1 or 2 to to select the CAN peripheral.  
-  * @retval CAN Receive Error Counter. 
+  * @brief  Returns the CANx Receive Error Counter (REC).（详见英文原注释）
+  * @note  In case of an error during reception, this counter is incremented by 1 or by 8 depending on the error condition as defined by the CAN standard. After every successful reception, the counter is decremented by 1 or reset to 120 if its value was higher than 128. When the counter value exceeds 127, the CAN controller enters the error passive state.
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @retval CAN Receive Error Counter.
   */
 uint8_t CAN_GetReceiveErrorCounter(CAN_TypeDef* CANx)
 {
@@ -959,9 +920,9 @@ uint8_t CAN_GetReceiveErrorCounter(CAN_TypeDef* CANx)
 
 
 /**
-  * @brief  Returns the LSB of the 9-bit CANx Transmit Error Counter(TEC).
-  * @param  CANx:   where x can be 1 or 2 to to select the CAN peripheral.  
-  * @retval LSB of the 9-bit CAN Transmit Error Counter. 
+  * @brief  Returns the LSB of the 9-bit CANx Transmit Error Counter(TEC).（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @retval LSB of the 9-bit CAN Transmit Error Counter.
   */
 uint8_t CAN_GetLSBTransmitErrorCounter(CAN_TypeDef* CANx)
 {
@@ -979,25 +940,10 @@ uint8_t CAN_GetLSBTransmitErrorCounter(CAN_TypeDef* CANx)
 
 
 /**
-  * @brief  Enables or disables the specified CANx interrupts.
-  * @param  CANx:   where x can be 1 or 2 to to select the CAN peripheral.
-  * @param  CAN_IT: specifies the CAN interrupt sources to be enabled or disabled.
-  *                 This parameter can be: 
-  *                 - CAN_IT_TME, 
-  *                 - CAN_IT_FMP0, 
-  *                 - CAN_IT_FF0,
-  *                 - CAN_IT_FOV0, 
-  *                 - CAN_IT_FMP1, 
-  *                 - CAN_IT_FF1,
-  *                 - CAN_IT_FOV1, 
-  *                 - CAN_IT_EWG, 
-  *                 - CAN_IT_EPV,
-  *                 - CAN_IT_LEC, 
-  *                 - CAN_IT_ERR, 
-  *                 - CAN_IT_WKU or 
-  *                 - CAN_IT_SLK.
-  * @param  NewState: new state of the CAN interrupts.
-  *                   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关CANx interrupts
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @param  CAN_IT: 指定CAN interrupt sources，将被enabled or disabled。
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None.
   */
 void CAN_ITConfig(CAN_TypeDef* CANx, uint32_t CAN_IT, FunctionalState NewState)
@@ -1019,25 +965,9 @@ void CAN_ITConfig(CAN_TypeDef* CANx, uint32_t CAN_IT, FunctionalState NewState)
   }
 }
 /**
-  * @brief  Checks whether the specified CAN flag is set or not.
-  * @param  CANx:     where x can be 1 or 2 to to select the CAN peripheral.
-  * @param  CAN_FLAG: specifies the flag to check.
-  *                   This parameter can be one of the following flags: 
-  *                  - CAN_FLAG_EWG
-  *                  - CAN_FLAG_EPV 
-  *                  - CAN_FLAG_BOF
-  *                  - CAN_FLAG_RQCP0
-  *                  - CAN_FLAG_RQCP1
-  *                  - CAN_FLAG_RQCP2
-  *                  - CAN_FLAG_FMP1   
-  *                  - CAN_FLAG_FF1       
-  *                  - CAN_FLAG_FOV1   
-  *                  - CAN_FLAG_FMP0   
-  *                  - CAN_FLAG_FF0       
-  *                  - CAN_FLAG_FOV0   
-  *                  - CAN_FLAG_WKU 
-  *                  - CAN_FLAG_SLAK  
-  *                  - CAN_FLAG_LEC       
+  * @brief  检查CAN标志是否置位
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @param  CAN_FLAG: 指定flag to check。
   * @retval The new state of CAN_FLAG (SET or RESET).
   */
 FlagStatus CAN_GetFlagStatus(CAN_TypeDef* CANx, uint32_t CAN_FLAG)
@@ -1124,20 +1054,9 @@ FlagStatus CAN_GetFlagStatus(CAN_TypeDef* CANx, uint32_t CAN_FLAG)
 }
 
 /**
-  * @brief  Clears the CAN's pending flags.
-  * @param  CANx:     where x can be 1 or 2 to to select the CAN peripheral.
-  * @param  CAN_FLAG: specifies the flag to clear.
-  *                   This parameter can be one of the following flags: 
-  *                    - CAN_FLAG_RQCP0
-  *                    - CAN_FLAG_RQCP1
-  *                    - CAN_FLAG_RQCP2
-  *                    - CAN_FLAG_FF1       
-  *                    - CAN_FLAG_FOV1   
-  *                    - CAN_FLAG_FF0       
-  *                    - CAN_FLAG_FOV0   
-  *                    - CAN_FLAG_WKU   
-  *                    - CAN_FLAG_SLAK    
-  *                    - CAN_FLAG_LEC       
+  * @brief  Clears the CAN's pending flags.（详见英文原注释）
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @param  CAN_FLAG: 指定flag to clear。
   * @retval None.
   */
 void CAN_ClearFlag(CAN_TypeDef* CANx, uint32_t CAN_FLAG)
@@ -1180,24 +1099,9 @@ void CAN_ClearFlag(CAN_TypeDef* CANx, uint32_t CAN_FLAG)
 }
 
 /**
-  * @brief  Checks whether the specified CANx interrupt has occurred or not.
-  * @param  CANx:    where x can be 1 or 2 to to select the CAN peripheral.
-  * @param  CAN_IT:  specifies the CAN interrupt source to check.
-  *                  This parameter can be one of the following flags: 
-  *                 -  CAN_IT_TME               
-  *                 -  CAN_IT_FMP0              
-  *                 -  CAN_IT_FF0               
-  *                 -  CAN_IT_FOV0              
-  *                 -  CAN_IT_FMP1              
-  *                 -  CAN_IT_FF1               
-  *                 -  CAN_IT_FOV1              
-  *                 -  CAN_IT_WKU  
-  *                 -  CAN_IT_SLK  
-  *                 -  CAN_IT_EWG    
-  *                 -  CAN_IT_EPV    
-  *                 -  CAN_IT_BOF    
-  *                 -  CAN_IT_LEC    
-  *                 -  CAN_IT_ERR 
+  * @brief  检查specified CANx中断是否已发生
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @param  CAN_IT: 指定CAN interrupt source to check。
   * @retval The current state of CAN_IT (SET or RESET).
   */
 ITStatus CAN_GetITStatus(CAN_TypeDef* CANx, uint32_t CAN_IT)
@@ -1286,21 +1190,9 @@ ITStatus CAN_GetITStatus(CAN_TypeDef* CANx, uint32_t CAN_IT)
 }
 
 /**
-  * @brief  Clears the CANx's interrupt pending bits.
-  * @param  CANx:    where x can be 1 or 2 to to select the CAN peripheral.
-  * @param  CAN_IT: specifies the interrupt pending bit to clear.
-  *                  -  CAN_IT_TME                     
-  *                  -  CAN_IT_FF0               
-  *                  -  CAN_IT_FOV0                     
-  *                  -  CAN_IT_FF1               
-  *                  -  CAN_IT_FOV1              
-  *                  -  CAN_IT_WKU  
-  *                  -  CAN_IT_SLK  
-  *                  -  CAN_IT_EWG    
-  *                  -  CAN_IT_EPV    
-  *                  -  CAN_IT_BOF    
-  *                  -  CAN_IT_LEC    
-  *                  -  CAN_IT_ERR 
+  * @brief  清除CANx的中断挂起标志
+  * @param  CANx: 取值 1 or 2 to 选择 CAN 外设.
+  * @param  CAN_IT: 指定interrupt pending bit to clear。
   * @retval None.
   */
 void CAN_ClearITPendingBit(CAN_TypeDef* CANx, uint32_t CAN_IT)
@@ -1377,9 +1269,9 @@ void CAN_ClearITPendingBit(CAN_TypeDef* CANx, uint32_t CAN_IT)
 }
 
 /**
-  * @brief  Checks whether the CAN interrupt has occurred or not.
-  * @param  CAN_Reg: specifies the CAN interrupt register to check.
-  * @param  It_Bit:  specifies the interrupt source bit to check.
+  * @brief  检查CAN中断是否已发生
+  * @param  CAN_Reg: 指定CAN interrupt register to check。
+  * @param  It_Bit: 指定interrupt source bit to check。
   * @retval The new state of the CAN Interrupt (SET or RESET).
   */
 static ITStatus CheckITStatus(uint32_t CAN_Reg, uint32_t It_Bit)

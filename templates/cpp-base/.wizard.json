@@ -3,7 +3,15 @@
     "description": "CMake 控制台工程（C/C++ 编译环境由 setup.ps1 自动部署 MinGW + CMake）",
     "icon": "code",
     "open": "folder",
+    "group": "native",
+    "pick": "C++ — CMake 控制台工程（main.cpp 入口，含 std::thread 多线程示例）· MinGW g++ 或 MSVC 编译 · F7 构建",
     "replace": [
-        { "files": ["CMakeLists.txt"], "find": "cpp-base" }
-    ]
+        {
+            "files": [
+                "CMakeLists.txt"
+            ],
+            "find": "cpp-base"
+        }
+    ],
+    "sort": 11
 }

@@ -1,6 +1,11 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
+/* ⚠ MAIN_Fosc 是全库的时间基准：delay 延时、模拟串口 9600 波特率、
+ * 硬件串口波特率计算全部按它校准——换晶振/主频必须同步改这里，
+ * 可选值见文件末尾 MAIN_Fosc 段（11.0592/12/16/22.1184/24 MHz）。
+ * 模拟串口 print() 只支持列出的几个频率。 */
+
 typedef unsigned char uint8_t;
 typedef unsigned int uint16_t;
 typedef unsigned long uint32_t;

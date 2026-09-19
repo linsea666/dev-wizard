@@ -4,9 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the miscellaneous firmware functions (add-on
-  *          to CMSIS functions).
-  ******************************************************************************
+  * @brief  This file provides all the miscellaneous firmware functions (add-on to CMSIS functions). *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +26,7 @@
   */
 
 /** @defgroup MISC 
-  * @brief MISC driver modules
-  * @{
+  * @brief  MISC driver modules @{（详见英文原注释）
   */
 
 /** @defgroup MISC_Private_TypesDefinitions
@@ -78,9 +75,8 @@
   */
 
 /**
-  * @brief  Configures the priority grouping: pre-emption priority and subpriority.
-  * @param  NVIC_PriorityGroup: specifies the priority grouping bits length. 
-  *   This parameter can be one of the following values:
+  * @brief  配置p
+  * @param  NVIC_PriorityGroup: 指定priority grouping bits length。
   *     @arg NVIC_PriorityGroup_0: 0 bits for pre-emption priority
   *                                4 bits for subpriority
   *     @arg NVIC_PriorityGroup_1: 1 bits for pre-emption priority
@@ -103,11 +99,14 @@ void NVIC_PriorityGroupConfig(uint32_t NVIC_PriorityGroup)
 }
 
 /**
-  * @brief  Initializes the NVIC peripheral according to the specified
-  *         parameters in the NVIC_InitStruct.
-  * @param  NVIC_InitStruct: pointer to a NVIC_InitTypeDef structure that contains
-  *         the configuration information for the specified NVIC peripheral.
-  * @retval None
+  * @brief  配置一路中断的优先级并开关它 ★ 用中断必经此函数
+  * @param  NVIC_InitStruct: 指向 NVIC_InitTypeDef 结构体，四个字段：
+  *         NVIC_IRQChannel(中断通道号，如 USART1_IRQn/TIM3_IRQHandler 对应的通道)、
+  *         NVIC_IRQChannelPreemptionPriority(抢占优先级 0~3，数字越小越优先)、
+  *         NVIC_IRQChannelSubPriority(子优先级 0~3)、NVIC_IRQChannelCmd(ENABLE/DISABLE)
+  * @retval 无
+  * @note   先在 USART_Configuration/TIM 配置里把对应中断源允许(如 USART_ITConfig)，
+  *         再用本函数放行，最后别忘了总开关 __enable_irq()/EA 类比。
   */
 void NVIC_Init(NVIC_InitTypeDef* NVIC_InitStruct)
 {
@@ -144,13 +143,11 @@ void NVIC_Init(NVIC_InitTypeDef* NVIC_InitStruct)
 }
 
 /**
-  * @brief  Sets the vector table location and Offset.
-  * @param  NVIC_VectTab: specifies if the vector table is in RAM or FLASH memory.
-  *   This parameter can be one of the following values:
+  * @brief  设置v
+  * @param  NVIC_VectTab: 指定if the vector table is in RAM or FLASH memory. This parameter can be one of the following values:
   *     @arg NVIC_VectTab_RAM
   *     @arg NVIC_VectTab_FLASH
-  * @param  Offset: Vector Table base offset field. This value must be a multiple 
-  *         of 0x200.
+  * @param  Offset: Vector Table base offset field. This value must be a multiple of 0x200.
   * @retval None
   */
 void NVIC_SetVectorTable(uint32_t NVIC_VectTab, uint32_t Offset)
@@ -163,9 +160,8 @@ void NVIC_SetVectorTable(uint32_t NVIC_VectTab, uint32_t Offset)
 }
 
 /**
-  * @brief  Selects the condition for the system to enter low power mode.
-  * @param  LowPowerMode: Specifies the new mode for the system to enter low power mode.
-  *   This parameter can be one of the following values:
+  * @brief  选择c
+  * @param  LowPowerMode: Specifies the new mode for the system to enter low power mode. This parameter can be one of the following values:
   *     @arg NVIC_LP_SEVONPEND
   *     @arg NVIC_LP_SLEEPDEEP
   *     @arg NVIC_LP_SLEEPONEXIT
@@ -189,9 +185,8 @@ void NVIC_SystemLPConfig(uint8_t LowPowerMode, FunctionalState NewState)
 }
 
 /**
-  * @brief  Configures the SysTick clock source.
-  * @param  SysTick_CLKSource: specifies the SysTick clock source.
-  *   This parameter can be one of the following values:
+  * @brief  配置S
+  * @param  SysTick_CLKSource: 指定SysTick clock source。
   *     @arg SysTick_CLKSource_HCLK_Div8: AHB clock divided by 8 selected as SysTick clock source.
   *     @arg SysTick_CLKSource_HCLK: AHB clock selected as SysTick clock source.
   * @retval None

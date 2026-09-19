@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the I2C firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the I2C firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -29,8 +28,7 @@
   */
 
 /** @defgroup I2C 
-  * @brief I2C driver modules
-  * @{
+  * @brief  I2C driver modules @{（详见英文原注释）
   */ 
 
 /** @defgroup I2C_Private_TypesDefinitions
@@ -155,8 +153,8 @@
   */
 
 /**
-  * @brief  Deinitializes the I2Cx peripheral registers to their default reset values.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @brief  复位I2Cx外设（恢复默认值）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
   * @retval None
   */
 void I2C_DeInit(I2C_TypeDef* I2Cx)
@@ -181,11 +179,9 @@ void I2C_DeInit(I2C_TypeDef* I2Cx)
 }
 
 /**
-  * @brief  Initializes the I2Cx peripheral according to the specified 
-  *   parameters in the I2C_InitStruct.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_InitStruct: pointer to a I2C_InitTypeDef structure that
-  *   contains the configuration information for the specified I2C peripheral.
+  * @brief  按 I2C_InitStruct 的配置初始化 I2Cx 外设
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_InitStruct: 指向 I2C_InitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void I2C_Init(I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct)
@@ -291,7 +287,7 @@ void I2C_Init(I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct)
 }
 
 /**
-  * @brief  Fills each I2C_InitStruct member with its default value.
+  * @brief  把I2C_InitStruct各字段填成默认值
   * @param  I2C_InitStruct: pointer to an I2C_InitTypeDef structure which will be initialized.
   * @retval None
   */
@@ -313,10 +309,9 @@ void I2C_StructInit(I2C_InitTypeDef* I2C_InitStruct)
 }
 
 /**
-  * @brief  Enables or disables the specified I2C peripheral.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2Cx peripheral. 
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关I2C外设（ENABLE=开 / DISABLE=关）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_Cmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -337,10 +332,9 @@ void I2C_Cmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified I2C DMA requests.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2C DMA transfer.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关I2C DMA requests
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_DMACmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -361,10 +355,9 @@ void I2C_DMACmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Specifies if the next DMA transfer will be the last one.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2C DMA last transfer.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  Specifies if the next DMA transfer will be the last one.（详见英文原注释）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_DMALastTransferCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -385,10 +378,9 @@ void I2C_DMALastTransferCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Generates I2Cx communication START condition.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2C START condition generation.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  Generates I2Cx communication START condition.（详见英文原注释）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None.
   */
 void I2C_GenerateSTART(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -409,10 +401,9 @@ void I2C_GenerateSTART(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Generates I2Cx communication STOP condition.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2C STOP condition generation.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  Generates I2Cx communication STOP condition.（详见英文原注释）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None.
   */
 void I2C_GenerateSTOP(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -433,10 +424,9 @@ void I2C_GenerateSTOP(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified I2C acknowledge feature.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2C Acknowledgement.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关I2C acknowledge feature
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None.
   */
 void I2C_AcknowledgeConfig(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -457,9 +447,9 @@ void I2C_AcknowledgeConfig(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Configures the specified I2C own address2.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  Address: specifies the 7bit I2C own address2.
+  * @brief  配置s
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  Address: 指定7bit I2C own address2。
   * @retval None.
   */
 void I2C_OwnAddress2Config(I2C_TypeDef* I2Cx, uint8_t Address)
@@ -483,10 +473,9 @@ void I2C_OwnAddress2Config(I2C_TypeDef* I2Cx, uint8_t Address)
 }
 
 /**
-  * @brief  Enables or disables the specified I2C dual addressing mode.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2C dual addressing mode.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关I2C dual addressing mode
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_DualAddressCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -507,10 +496,9 @@ void I2C_DualAddressCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified I2C general call feature.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2C General call.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关I2C general call feature
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_GeneralCallCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -531,15 +519,13 @@ void I2C_GeneralCallCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified I2C interrupts.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_IT: specifies the I2C interrupts sources to be enabled or disabled. 
-  *   This parameter can be any combination of the following values:
+  * @brief  开关I2C interrupts
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_IT: 指定I2C interrupts sources，将被enabled or disabled。
   *     @arg I2C_IT_BUF: Buffer interrupt mask
   *     @arg I2C_IT_EVT: Event interrupt mask
   *     @arg I2C_IT_ERR: Error interrupt mask
-  * @param  NewState: new state of the specified I2C interrupts.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_ITConfig(I2C_TypeDef* I2Cx, uint16_t I2C_IT, FunctionalState NewState)
@@ -562,8 +548,8 @@ void I2C_ITConfig(I2C_TypeDef* I2Cx, uint16_t I2C_IT, FunctionalState NewState)
 }
 
 /**
-  * @brief  Sends a data byte through the I2Cx peripheral.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @brief  Sends a data byte through the I2Cx 外设.（详见英文原注释）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
   * @param  Data: Byte to be transmitted..
   * @retval None
   */
@@ -576,8 +562,8 @@ void I2C_SendData(I2C_TypeDef* I2Cx, uint8_t Data)
 }
 
 /**
-  * @brief  Returns the most recent received data by the I2Cx peripheral.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @brief  取走I2Cx最近接收到的数据
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
   * @retval The value of the received data.
   */
 uint8_t I2C_ReceiveData(I2C_TypeDef* I2Cx)
@@ -589,11 +575,10 @@ uint8_t I2C_ReceiveData(I2C_TypeDef* I2Cx)
 }
 
 /**
-  * @brief  Transmits the address byte to select the slave device.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  Address: specifies the slave address which will be transmitted
-  * @param  I2C_Direction: specifies whether the I2C device will be a
-  *   Transmitter or a Receiver. This parameter can be one of the following values
+  * @brief  Transmits the address byte 选择 slave device.（详见英文原注释）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  Address: 指定the slave address which will be transmitted
+  * @param  I2C_Direction: 指定whether the I2C device will be a Transmitter or a Receiver. This parameter can be one of the following values
   *     @arg I2C_Direction_Transmitter: Transmitter mode
   *     @arg I2C_Direction_Receiver: Receiver mode
   * @retval None.
@@ -619,9 +604,8 @@ void I2C_Send7bitAddress(I2C_TypeDef* I2Cx, uint8_t Address, uint8_t I2C_Directi
 }
 
 /**
-  * @brief  Reads the specified I2C register and returns its value.
-  * @param  I2C_Register: specifies the register to read.
-  *   This parameter can be one of the following values:
+  * @brief  读取I
+  * @param  I2C_Register: 指定register to read。
   *     @arg I2C_Register_CR1:  CR1 register.
   *     @arg I2C_Register_CR2:   CR2 register.
   *     @arg I2C_Register_OAR1:  OAR1 register.
@@ -649,10 +633,9 @@ uint16_t I2C_ReadRegister(I2C_TypeDef* I2Cx, uint8_t I2C_Register)
 }
 
 /**
-  * @brief  Enables or disables the specified I2C software reset.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2C software reset.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关I2C software reset
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_SoftwareResetCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -673,24 +656,15 @@ void I2C_SoftwareResetCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Selects the specified I2C NACK position in master receiver mode.
-  *         This function is useful in I2C Master Receiver mode when the number
-  *         of data to be received is equal to 2. In this case, this function 
-  *         should be called (with parameter I2C_NACKPosition_Next) before data 
-  *         reception starts,as described in the 2-byte reception procedure 
-  *         recommended in Reference Manual in Section: Master receiver.                
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_NACKPosition: specifies the NACK position. 
-  *   This parameter can be one of the following values:
+  * @brief  选择s
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_NACKPosition: 指定NACK position。
   *     @arg I2C_NACKPosition_Next: indicates that the next byte will be the last
   *          received byte.  
   *     @arg I2C_NACKPosition_Current: indicates that current byte is the last 
   *          received byte.
   *            
-  * @note    This function configures the same bit (POS) as I2C_PECPositionConfig() 
-  *          but is intended to be used in I2C mode while I2C_PECPositionConfig() 
-  *          is intended to used in SMBUS mode. 
-  *            
+  * @note  This function configures the same bit (POS) as I2C_PECPositionConfig() but is intended to be used in I2C mode while I2C_PECPositionConfig() is intended to used in SMBUS mode.
   * @retval None
   */
 void I2C_NACKPositionConfig(I2C_TypeDef* I2Cx, uint16_t I2C_NACKPosition)
@@ -713,10 +687,9 @@ void I2C_NACKPositionConfig(I2C_TypeDef* I2Cx, uint16_t I2C_NACKPosition)
 }
 
 /**
-  * @brief  Drives the SMBusAlert pin high or low for the specified I2C.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_SMBusAlert: specifies SMBAlert pin level. 
-  *   This parameter can be one of the following values:
+  * @brief  Drives the SMBusAlert pin high or low for 指定的 I2C.（详见英文原注释）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_SMBusAlert: 指定SMBAlert pin level. This parameter can be one of the following values:
   *     @arg I2C_SMBusAlert_Low: SMBAlert pin driven low
   *     @arg I2C_SMBusAlert_High: SMBAlert pin driven high
   * @retval None
@@ -739,10 +712,9 @@ void I2C_SMBusAlertConfig(I2C_TypeDef* I2Cx, uint16_t I2C_SMBusAlert)
 }
 
 /**
-  * @brief  Enables or disables the specified I2C PEC transfer.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2C PEC transmission.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关I2C PEC transfer
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_TransmitPEC(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -763,17 +735,13 @@ void I2C_TransmitPEC(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Selects the specified I2C PEC position.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_PECPosition: specifies the PEC position. 
-  *   This parameter can be one of the following values:
+  * @brief  选择s
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_PECPosition: 指定PEC position。
   *     @arg I2C_PECPosition_Next: indicates that the next byte is PEC
   *     @arg I2C_PECPosition_Current: indicates that current byte is PEC
   *       
-  * @note    This function configures the same bit (POS) as I2C_NACKPositionConfig()
-  *          but is intended to be used in SMBUS mode while I2C_NACKPositionConfig() 
-  *          is intended to used in I2C mode.
-  *               
+  * @note  This function configures the same bit (POS) as I2C_NACKPositionConfig() but is intended to be used in SMBUS mode while I2C_NACKPositionConfig() is intended to used in I2C mode.
   * @retval None
   */
 void I2C_PECPositionConfig(I2C_TypeDef* I2Cx, uint16_t I2C_PECPosition)
@@ -794,10 +762,9 @@ void I2C_PECPositionConfig(I2C_TypeDef* I2Cx, uint16_t I2C_PECPosition)
 }
 
 /**
-  * @brief  Enables or disables the PEC value calculation of the transferred bytes.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2Cx PEC value calculation.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关PEC value calculation of the transferred bytes（ENABLE=开 / DISABLE=关）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_CalculatePEC(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -818,8 +785,8 @@ void I2C_CalculatePEC(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Returns the PEC value for the specified I2C.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @brief  Returns the PEC value for 指定的 I2C.（详见英文原注释）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
   * @retval The PEC value.
   */
 uint8_t I2C_GetPEC(I2C_TypeDef* I2Cx)
@@ -831,10 +798,9 @@ uint8_t I2C_GetPEC(I2C_TypeDef* I2Cx)
 }
 
 /**
-  * @brief  Enables or disables the specified I2C ARP.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2Cx ARP. 
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关I2C ARP
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_ARPCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -855,10 +821,9 @@ void I2C_ARPCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified I2C Clock stretching.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2Cx Clock stretching.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关I2C Clock stretching
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void I2C_StretchClockCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
@@ -879,10 +844,9 @@ void I2C_StretchClockCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Selects the specified I2C fast mode duty cycle.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_DutyCycle: specifies the fast mode duty cycle.
-  *   This parameter can be one of the following values:
+  * @brief  选择s
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_DutyCycle: 指定fast mode duty cycle。
   *     @arg I2C_DutyCycle_2: I2C fast mode Tlow/Thigh = 2
   *     @arg I2C_DutyCycle_16_9: I2C fast mode Tlow/Thigh = 16/9
   * @retval None
@@ -907,84 +871,8 @@ void I2C_FastModeDutyCycleConfig(I2C_TypeDef* I2Cx, uint16_t I2C_DutyCycle)
 
 
 /**
- * @brief
- ****************************************************************************************
- *
- *                         I2C State Monitoring Functions
- *                       
- ****************************************************************************************   
- * This I2C driver provides three different ways for I2C state monitoring
- *  depending on the application requirements and constraints:
- *        
- *  
- * 1) Basic state monitoring:
- *    Using I2C_CheckEvent() function:
- *    It compares the status registers (SR1 and SR2) content to a given event
- *    (can be the combination of one or more flags).
- *    It returns SUCCESS if the current status includes the given flags 
- *    and returns ERROR if one or more flags are missing in the current status.
- *    - When to use:
- *      - This function is suitable for most applications as well as for startup 
- *      activity since the events are fully described in the product reference manual 
- *      (RM0008).
- *      - It is also suitable for users who need to define their own events.
- *    - Limitations:
- *      - If an error occurs (ie. error flags are set besides to the monitored flags),
- *        the I2C_CheckEvent() function may return SUCCESS despite the communication
- *        hold or corrupted real state. 
- *        In this case, it is advised to use error interrupts to monitor the error
- *        events and handle them in the interrupt IRQ handler.
- *        
- *        @note 
- *        For error management, it is advised to use the following functions:
- *          - I2C_ITConfig() to configure and enable the error interrupts (I2C_IT_ERR).
- *          - I2Cx_ER_IRQHandler() which is called when the error interrupt occurs.
- *            Where x is the peripheral instance (I2C1, I2C2 ...)
- *          - I2C_GetFlagStatus() or I2C_GetITStatus() to be called into I2Cx_ER_IRQHandler() 
- *            in order to determine which error occured.
- *          - I2C_ClearFlag() or I2C_ClearITPendingBit() and/or I2C_SoftwareResetCmd()
- *            and/or I2C_GenerateStop() in order to clear the error flag and source,
- *            and return to correct communication status.
- *            
- *
- *  2) Advanced state monitoring:
- *     Using the function I2C_GetLastEvent() which returns the image of both status 
- *     registers in a single word (uint32_t) (Status Register 2 value is shifted left 
- *     by 16 bits and concatenated to Status Register 1).
- *     - When to use:
- *       - This function is suitable for the same applications above but it allows to
- *         overcome the mentioned limitation of I2C_GetFlagStatus() function.
- *         The returned value could be compared to events already defined in the 
- *         library (stm32f10x_i2c.h) or to custom values defined by user.
- *       - This function is suitable when multiple flags are monitored at the same time.
- *       - At the opposite of I2C_CheckEvent() function, this function allows user to
- *         choose when an event is accepted (when all events flags are set and no 
- *         other flags are set or just when the needed flags are set like 
- *         I2C_CheckEvent() function).
- *     - Limitations:
- *       - User may need to define his own events.
- *       - Same remark concerning the error management is applicable for this 
- *         function if user decides to check only regular communication flags (and 
- *         ignores error flags).
- *     
- *
- *  3) Flag-based state monitoring:
- *     Using the function I2C_GetFlagStatus() which simply returns the status of 
- *     one single flag (ie. I2C_FLAG_RXNE ...). 
- *     - When to use:
- *        - This function could be used for specific applications or in debug phase.
- *        - It is suitable when only one flag checking is needed (most I2C events 
- *          are monitored through multiple flags).
- *     - Limitations: 
- *        - When calling this function, the Status register is accessed. Some flags are
- *          cleared when the status register is accessed. So checking the status
- *          of one Flag, may clear other ones.
- *        - Function may need to be called twice or more in order to monitor one 
- *          single event.
- *
- *  For detailed description of Events, please refer to section I2C_Events in 
- *  stm32f10x_i2c.h file.
- *  
+  * @brief  *************************************************************************************** I2C State Monitoring Functions *************************************************************************************** This I2C driver provides three different ways for I2C state monitoring depending on the application requirements and constraints: 1) Basic state monitoring: Using I2C_CheckEvent() function: It compares the status registers (SR1 and SR2) content to a given event (can be the combination of one or more flags). It returns SUCCESS if the current status includes the given flags and returns ERROR if one or more flags are missing in the current status. - When to use: - This function is suitable for most applications as well as for startup activity since the events are fully described in the product reference manual (RM0008). - It is also suitable for users who need to define their own events. - Limitations: - If an error occurs (ie. error flags are set besides to the monitored flags), the I2C_CheckEvent() function may return SUCCESS despite the communication hold or corrupted real state. In this case, it is advised to use error interrupts to monitor the error events and handle them in the 中断 IRQ handler.（详见英文原注释）
+  * @note  For error management, it is advised to use the following functions: - I2C_ITConfig() to configure and enable the error interrupts (I2C_IT_ERR). - I2Cx_ER_IRQHandler() which is called when the error 中断 occurs. Where x is the 外设 instance (I2C1, I2C2 ...) - I2C_GetFlagStatus() or I2C_GetITStatus() to be called into I2Cx_ER_IRQHandler() in order to determine which error occured. - I2C_ClearFlag() or I2C_ClearITPendingBit() and/or I2C_SoftwareResetCmd() and/or I2C_GenerateStop() in order to clear the error 标志 and source, and return to correct communication status. 2) Advanced state monitoring: Using the function I2C_GetLastEvent() which returns the image of both status registers in a single word (uint32_t) (Status Register 2 value is shifted left by 16 bits and concatenated to Status Register 1). - When to use: - This function is suitable for the same applications above but it allows to overcome the mentioned limitation of I2C_GetFlagStatus() function. The returned value could be compared to events already defined in the library (stm32f10x_i2c.h) or to custom values defined by user. - This function is suitable when multiple flags are monitored at the same time. - At the opposite of I2C_CheckEvent() function, this function allows user to choose when an event is accepted (when all events flags are set and no other flags are set or just when the needed flags are set like I2C_CheckEvent() function). - Limitations: - User may need to define his own events. - Same remark concerning the error management is applicable for this function if user decides to check only regular communication flags (and ignores error flags). 3) Flag-based state monitoring: Using the function I2C_GetFlagStatus() which simply returns the status of one single 标志 (ie. I2C_FLAG_RXNE ...). - When to use: - This function could be used for specific applications or in debug phase. - It is suitable when only one 标志 checking is needed (most I2C events are monitored through multiple flags). - Limitations: - When calling this function, the Status register is accessed. Some flags are cleared when the status register is accessed. So checking the status of one Flag, may clear other ones. - Function may need to be called twice or more in order to monitor one single event. For detailed description of Events, please refer to section I2C_Events in stm32f10x_i2c.h file.
  */
 
 /**
@@ -994,11 +882,9 @@ void I2C_FastModeDutyCycleConfig(I2C_TypeDef* I2Cx, uint16_t I2C_DutyCycle)
  */
 
 /**
-  * @brief  Checks whether the last I2Cx Event is equal to the one passed
-  *   as parameter.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_EVENT: specifies the event to be checked. 
-  *   This parameter can be one of the following values:
+  * @brief  检查l
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_EVENT: 指定event，将被checked。
   *     @arg I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED           : EV1
   *     @arg I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED              : EV1
   *     @arg I2C_EVENT_SLAVE_TRANSMITTER_SECONDADDRESS_MATCHED     : EV1
@@ -1020,12 +906,8 @@ void I2C_FastModeDutyCycleConfig(I2C_TypeDef* I2Cx, uint16_t I2C_DutyCycle)
   *     @arg I2C_EVENT_MASTER_BYTE_TRANSMITTED                     : EV8_2
   *     @arg I2C_EVENT_MASTER_MODE_ADDRESS10                       : EV9
   *     
-  * @note: For detailed description of Events, please refer to section 
-  *    I2C_Events in stm32f10x_i2c.h file.
-  *    
-  * @retval An ErrorStatus enumeration value:
-  * - SUCCESS: Last event is equal to the I2C_EVENT
-  * - ERROR: Last event is different from the I2C_EVENT
+  * @note  : For detailed description of Events, please refer to section I2C_Events in stm32f10x_i2c.h file.
+  * @retval An ErrorStatus enumeration value: - SUCCESS: Last event is equal to the I2C_EVENT - ERROR: Last event is different from the I2C_EVENT
   */
 ErrorStatus I2C_CheckEvent(I2C_TypeDef* I2Cx, uint32_t I2C_EVENT)
 {
@@ -1067,12 +949,9 @@ ErrorStatus I2C_CheckEvent(I2C_TypeDef* I2Cx, uint32_t I2C_EVENT)
  */
 
 /**
-  * @brief  Returns the last I2Cx Event.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  *     
-  * @note: For detailed description of Events, please refer to section 
-  *    I2C_Events in stm32f10x_i2c.h file.
-  *    
+  * @brief  Returns the last I2Cx Event.（详见英文原注释）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @note  : For detailed description of Events, please refer to section I2C_Events in stm32f10x_i2c.h file.
   * @retval The last event
   */
 uint32_t I2C_GetLastEvent(I2C_TypeDef* I2Cx)
@@ -1102,10 +981,9 @@ uint32_t I2C_GetLastEvent(I2C_TypeDef* I2Cx)
  */
 
 /**
-  * @brief  Checks whether the specified I2C flag is set or not.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_FLAG: specifies the flag to check. 
-  *   This parameter can be one of the following values:
+  * @brief  检查I2C标志是否置位
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_FLAG: 指定flag to check。
   *     @arg I2C_FLAG_DUALF: Dual flag (Slave mode)
   *     @arg I2C_FLAG_SMBHOST: SMBus host header (Slave mode)
   *     @arg I2C_FLAG_SMBDEFAULT: SMBus default header (Slave mode)
@@ -1179,10 +1057,9 @@ FlagStatus I2C_GetFlagStatus(I2C_TypeDef* I2Cx, uint32_t I2C_FLAG)
 
 
 /**
-  * @brief  Clears the I2Cx's pending flags.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_FLAG: specifies the flag to clear. 
-  *   This parameter can be any combination of the following values:
+  * @brief  Clears the I2Cx's pending flags.（详见英文原注释）
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_FLAG: 指定flag to clear。
   *     @arg I2C_FLAG_SMBALERT: SMBus Alert flag
   *     @arg I2C_FLAG_TIMEOUT: Timeout or Tlow error flag
   *     @arg I2C_FLAG_PECERR: PEC error in reception flag
@@ -1191,22 +1068,7 @@ FlagStatus I2C_GetFlagStatus(I2C_TypeDef* I2Cx, uint32_t I2C_FLAG)
   *     @arg I2C_FLAG_ARLO: Arbitration lost flag (Master mode)
   *     @arg I2C_FLAG_BERR: Bus error flag
   *   
-  * @note
-  *   - STOPF (STOP detection) is cleared by software sequence: a read operation 
-  *     to I2C_SR1 register (I2C_GetFlagStatus()) followed by a write operation 
-  *     to I2C_CR1 register (I2C_Cmd() to re-enable the I2C peripheral).
-  *   - ADD10 (10-bit header sent) is cleared by software sequence: a read 
-  *     operation to I2C_SR1 (I2C_GetFlagStatus()) followed by writing the 
-  *     second byte of the address in DR register.
-  *   - BTF (Byte Transfer Finished) is cleared by software sequence: a read 
-  *     operation to I2C_SR1 register (I2C_GetFlagStatus()) followed by a 
-  *     read/write to I2C_DR register (I2C_SendData()).
-  *   - ADDR (Address sent) is cleared by software sequence: a read operation to 
-  *     I2C_SR1 register (I2C_GetFlagStatus()) followed by a read operation to 
-  *     I2C_SR2 register ((void)(I2Cx->SR2)).
-  *   - SB (Start Bit) is cleared software sequence: a read operation to I2C_SR1
-  *     register (I2C_GetFlagStatus()) followed by a write operation to I2C_DR
-  *     register  (I2C_SendData()).
+  * @note  - STOPF (STOP detection) is cleared by software sequence: a read operation to I2C_SR1 register (I2C_GetFlagStatus()) followed by a write operation to I2C_CR1 register (I2C_Cmd() to re-enable the I2C 外设). - ADD10 (10-bit header sent) is cleared by software sequence: a read operation to I2C_SR1 (I2C_GetFlagStatus()) followed by writing the second byte of the address in DR register. - BTF (Byte Transfer Finished) is cleared by software sequence: a read operation to I2C_SR1 register (I2C_GetFlagStatus()) followed by a read/write to I2C_DR register (I2C_SendData()). - ADDR (Address sent) is cleared by software sequence: a read operation to I2C_SR1 register (I2C_GetFlagStatus()) followed by a read operation to I2C_SR2 register ((void)(I2Cx->SR2)). - SB (Start Bit) is cleared software sequence: a read operation to I2C_SR1 register (I2C_GetFlagStatus()) followed by a write operation to I2C_DR register (I2C_SendData()).
   * @retval None
   */
 void I2C_ClearFlag(I2C_TypeDef* I2Cx, uint32_t I2C_FLAG)
@@ -1222,10 +1084,9 @@ void I2C_ClearFlag(I2C_TypeDef* I2Cx, uint32_t I2C_FLAG)
 }
 
 /**
-  * @brief  Checks whether the specified I2C interrupt has occurred or not.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_IT: specifies the interrupt source to check. 
-  *   This parameter can be one of the following values:
+  * @brief  检查specified I2C中断是否已发生
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_IT: 指定interrupt source to check。
   *     @arg I2C_IT_SMBALERT: SMBus Alert flag
   *     @arg I2C_IT_TIMEOUT: Timeout or Tlow error flag
   *     @arg I2C_IT_PECERR: PEC error in reception flag
@@ -1274,10 +1135,9 @@ ITStatus I2C_GetITStatus(I2C_TypeDef* I2Cx, uint32_t I2C_IT)
 }
 
 /**
-  * @brief  Clears the I2Cx�s interrupt pending bits.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  I2C_IT: specifies the interrupt pending bit to clear. 
-  *   This parameter can be any combination of the following values:
+  * @brief  清除I2Cx�s中断挂起标志
+  * @param  I2Cx: 取值 1 or 2 选择 I2C 外设.
+  * @param  I2C_IT: 指定interrupt pending bit to clear。
   *     @arg I2C_IT_SMBALERT: SMBus Alert interrupt
   *     @arg I2C_IT_TIMEOUT: Timeout or Tlow error interrupt
   *     @arg I2C_IT_PECERR: PEC error in reception  interrupt
@@ -1286,22 +1146,7 @@ ITStatus I2C_GetITStatus(I2C_TypeDef* I2Cx, uint32_t I2C_IT)
   *     @arg I2C_IT_ARLO: Arbitration lost interrupt (Master mode)
   *     @arg I2C_IT_BERR: Bus error interrupt
   *   
-  * @note
-  *   - STOPF (STOP detection) is cleared by software sequence: a read operation 
-  *     to I2C_SR1 register (I2C_GetITStatus()) followed by a write operation to 
-  *     I2C_CR1 register (I2C_Cmd() to re-enable the I2C peripheral).
-  *   - ADD10 (10-bit header sent) is cleared by software sequence: a read 
-  *     operation to I2C_SR1 (I2C_GetITStatus()) followed by writing the second 
-  *     byte of the address in I2C_DR register.
-  *   - BTF (Byte Transfer Finished) is cleared by software sequence: a read 
-  *     operation to I2C_SR1 register (I2C_GetITStatus()) followed by a 
-  *     read/write to I2C_DR register (I2C_SendData()).
-  *   - ADDR (Address sent) is cleared by software sequence: a read operation to 
-  *     I2C_SR1 register (I2C_GetITStatus()) followed by a read operation to 
-  *     I2C_SR2 register ((void)(I2Cx->SR2)).
-  *   - SB (Start Bit) is cleared by software sequence: a read operation to 
-  *     I2C_SR1 register (I2C_GetITStatus()) followed by a write operation to 
-  *     I2C_DR register (I2C_SendData()).
+  * @note  - STOPF (STOP detection) is cleared by software sequence: a read operation to I2C_SR1 register (I2C_GetITStatus()) followed by a write operation to I2C_CR1 register (I2C_Cmd() to re-enable the I2C 外设). - ADD10 (10-bit header sent) is cleared by software sequence: a read operation to I2C_SR1 (I2C_GetITStatus()) followed by writing the second byte of the address in I2C_DR register. - BTF (Byte Transfer Finished) is cleared by software sequence: a read operation to I2C_SR1 register (I2C_GetITStatus()) followed by a read/write to I2C_DR register (I2C_SendData()). - ADDR (Address sent) is cleared by software sequence: a read operation to I2C_SR1 register (I2C_GetITStatus()) followed by a read operation to I2C_SR2 register ((void)(I2Cx->SR2)). - SB (Start Bit) is cleared by software sequence: a read operation to I2C_SR1 register (I2C_GetITStatus()) followed by a write operation to I2C_DR register (I2C_SendData()).
   * @retval None
   */
 void I2C_ClearITPendingBit(I2C_TypeDef* I2Cx, uint32_t I2C_IT)

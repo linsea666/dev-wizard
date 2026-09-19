@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the DBGMCU firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the DBGMCU firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -27,8 +26,7 @@
   */
 
 /** @defgroup DBGMCU 
-  * @brief DBGMCU driver modules
-  * @{
+  * @brief  DBGMCU driver modules @{（详见英文原注释）
   */ 
 
 /** @defgroup DBGMCU_Private_TypesDefinitions
@@ -77,7 +75,7 @@
   */
 
 /**
-  * @brief  Returns the device revision identifier.
+  * @brief  Returns the device revision identifier.（详见英文原注释）
   * @param  None
   * @retval Device revision identifier
   */
@@ -87,7 +85,7 @@ uint32_t DBGMCU_GetREVID(void)
 }
 
 /**
-  * @brief  Returns the device identifier.
+  * @brief  Returns the device identifier.（详见英文原注释）
   * @param  None
   * @retval Device identifier
   */
@@ -97,10 +95,8 @@ uint32_t DBGMCU_GetDEVID(void)
 }
 
 /**
-  * @brief  Configures the specified peripheral and low power mode behavior
-  *   when the MCU under Debug mode.
-  * @param  DBGMCU_Periph: specifies the peripheral and low power mode.
-  *   This parameter can be any combination of the following values:
+  * @brief  配置s
+  * @param  DBGMCU_Periph: 指定peripheral and low power mode。
   *     @arg DBGMCU_SLEEP: Keep debugger connection during SLEEP mode              
   *     @arg DBGMCU_STOP: Keep debugger connection during STOP mode               
   *     @arg DBGMCU_STANDBY: Keep debugger connection during STANDBY mode            
@@ -127,8 +123,7 @@ uint32_t DBGMCU_GetDEVID(void)
   *     @arg DBGMCU_TIM12_STOP: TIM12 counter stopped when Core is halted
   *     @arg DBGMCU_TIM13_STOP: TIM13 counter stopped when Core is halted
   *     @arg DBGMCU_TIM14_STOP: TIM14 counter stopped when Core is halted
-  * @param  NewState: new state of the specified peripheral in Debug mode.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState)

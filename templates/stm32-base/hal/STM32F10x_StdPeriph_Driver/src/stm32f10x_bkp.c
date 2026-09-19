@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the BKP firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the BKP firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup BKP 
-  * @brief BKP driver modules
-  * @{
+  * @brief  BKP driver modules @{（详见英文原注释）
   */
 
 /** @defgroup BKP_Private_TypesDefinitions
@@ -113,7 +111,7 @@
   */
 
 /**
-  * @brief  Deinitializes the BKP peripheral registers to their default reset values.
+  * @brief  复位BKP外设（恢复默认值）
   * @param  None
   * @retval None
   */
@@ -124,9 +122,8 @@ void BKP_DeInit(void)
 }
 
 /**
-  * @brief  Configures the Tamper Pin active level.
-  * @param  BKP_TamperPinLevel: specifies the Tamper Pin active level.
-  *   This parameter can be one of the following values:
+  * @brief  配置T
+  * @param  BKP_TamperPinLevel: 指定Tamper Pin active level。
   *     @arg BKP_TamperPinLevel_High: Tamper pin active on high level
   *     @arg BKP_TamperPinLevel_Low: Tamper pin active on low level
   * @retval None
@@ -139,9 +136,8 @@ void BKP_TamperPinLevelConfig(uint16_t BKP_TamperPinLevel)
 }
 
 /**
-  * @brief  Enables or disables the Tamper Pin activation.
-  * @param  NewState: new state of the Tamper Pin activation.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关Tamper Pin activation（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void BKP_TamperPinCmd(FunctionalState NewState)
@@ -152,9 +148,8 @@ void BKP_TamperPinCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the Tamper Pin Interrupt.
-  * @param  NewState: new state of the Tamper Pin Interrupt.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关Tamper Pin Interrupt（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void BKP_ITConfig(FunctionalState NewState)
@@ -165,9 +160,8 @@ void BKP_ITConfig(FunctionalState NewState)
 }
 
 /**
-  * @brief  Select the RTC output source to output on the Tamper pin.
-  * @param  BKP_RTCOutputSource: specifies the RTC output source.
-  *   This parameter can be one of the following values:
+  * @brief  Select the RTC output source to output on the Tamper pin.（详见英文原注释）
+  * @param  BKP_RTCOutputSource: 指定RTC output source。
   *     @arg BKP_RTCOutputSource_None: no RTC output on the Tamper pin.
   *     @arg BKP_RTCOutputSource_CalibClock: output the RTC clock with frequency
   *                                          divided by 64 on the Tamper pin.
@@ -193,9 +187,8 @@ void BKP_RTCOutputConfig(uint16_t BKP_RTCOutputSource)
 }
 
 /**
-  * @brief  Sets RTC Clock Calibration value.
-  * @param  CalibrationValue: specifies the RTC Clock Calibration value.
-  *   This parameter must be a number between 0 and 0x7F.
+  * @brief  Sets RTC Clock Calibration value.（详见英文原注释）
+  * @param  CalibrationValue: 指定RTC Clock Calibration value。
   * @retval None
   */
 void BKP_SetRTCCalibrationValue(uint8_t CalibrationValue)
@@ -213,9 +206,8 @@ void BKP_SetRTCCalibrationValue(uint8_t CalibrationValue)
 }
 
 /**
-  * @brief  Writes user data to the specified Data Backup Register.
-  * @param  BKP_DR: specifies the Data Backup Register.
-  *   This parameter can be BKP_DRx where x:[1, 42]
+  * @brief  Writes user data to 指定的 Data Backup Register.（详见英文原注释）
+  * @param  BKP_DR: 指定Data Backup Register。
   * @param  Data: data to write
   * @retval None
   */
@@ -233,10 +225,9 @@ void BKP_WriteBackupRegister(uint16_t BKP_DR, uint16_t Data)
 }
 
 /**
-  * @brief  Reads data from the specified Data Backup Register.
-  * @param  BKP_DR: specifies the Data Backup Register.
-  *   This parameter can be BKP_DRx where x:[1, 42]
-  * @retval The content of the specified Data Backup Register
+  * @brief  Reads data from 指定的 Data Backup Register.（详见英文原注释）
+  * @param  BKP_DR: 指定Data Backup Register。
+  * @retval The content of 指定的 Data Backup Register
   */
 uint16_t BKP_ReadBackupRegister(uint16_t BKP_DR)
 {
@@ -252,9 +243,9 @@ uint16_t BKP_ReadBackupRegister(uint16_t BKP_DR)
 }
 
 /**
-  * @brief  Checks whether the Tamper Pin Event flag is set or not.
+  * @brief  检查Tamper Pin Event标志是否置位
   * @param  None
-  * @retval The new state of the Tamper Pin Event flag (SET or RESET).
+  * @retval The new state of the Tamper Pin Event 标志 (SET or RESET).
   */
 FlagStatus BKP_GetFlagStatus(void)
 {
@@ -262,7 +253,7 @@ FlagStatus BKP_GetFlagStatus(void)
 }
 
 /**
-  * @brief  Clears Tamper Pin Event pending flag.
+  * @brief  Clears Tamper Pin Event pending 标志.（详见英文原注释）
   * @param  None
   * @retval None
   */
@@ -273,7 +264,7 @@ void BKP_ClearFlag(void)
 }
 
 /**
-  * @brief  Checks whether the Tamper Pin Interrupt has occurred or not.
+  * @brief  检查Tamper Pin中断是否已发生
   * @param  None
   * @retval The new state of the Tamper Pin Interrupt (SET or RESET).
   */
@@ -283,7 +274,7 @@ ITStatus BKP_GetITStatus(void)
 }
 
 /**
-  * @brief  Clears Tamper Pin Interrupt pending bit.
+  * @brief  Clears Tamper Pin Interrupt pending bit.（详见英文原注释）
   * @param  None
   * @retval None
   */

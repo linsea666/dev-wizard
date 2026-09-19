@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the WWDG firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the WWDG firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup WWDG 
-  * @brief WWDG driver modules
-  * @{
+  * @brief  WWDG driver modules @{（详见英文原注释）
   */
 
 /** @defgroup WWDG_Private_TypesDefinitions
@@ -95,7 +93,7 @@
   */
 
 /**
-  * @brief  Deinitializes the WWDG peripheral registers to their default reset values.
+  * @brief  复位WWDG外设（恢复默认值）
   * @param  None
   * @retval None
   */
@@ -106,9 +104,8 @@ void WWDG_DeInit(void)
 }
 
 /**
-  * @brief  Sets the WWDG Prescaler.
-  * @param  WWDG_Prescaler: specifies the WWDG Prescaler.
-  *   This parameter can be one of the following values:
+  * @brief  设置W
+  * @param  WWDG_Prescaler: 指定WWDG Prescaler。
   *     @arg WWDG_Prescaler_1: WWDG counter clock = (PCLK1/4096)/1
   *     @arg WWDG_Prescaler_2: WWDG counter clock = (PCLK1/4096)/2
   *     @arg WWDG_Prescaler_4: WWDG counter clock = (PCLK1/4096)/4
@@ -129,9 +126,8 @@ void WWDG_SetPrescaler(uint32_t WWDG_Prescaler)
 }
 
 /**
-  * @brief  Sets the WWDG window value.
-  * @param  WindowValue: specifies the window value to be compared to the downcounter.
-  *   This parameter value must be lower than 0x80.
+  * @brief  设置W
+  * @param  WindowValue: 指定window value，将被compared to the downcounter。
   * @retval None
   */
 void WWDG_SetWindowValue(uint8_t WindowValue)
@@ -152,7 +148,7 @@ void WWDG_SetWindowValue(uint8_t WindowValue)
 }
 
 /**
-  * @brief  Enables the WWDG Early Wakeup interrupt(EWI).
+  * @brief  使能 the WWDG Early Wakeup 中断(EWI).（详见英文原注释）
   * @param  None
   * @retval None
   */
@@ -162,9 +158,8 @@ void WWDG_EnableIT(void)
 }
 
 /**
-  * @brief  Sets the WWDG counter value.
-  * @param  Counter: specifies the watchdog counter value.
-  *   This parameter must be a number between 0x40 and 0x7F.
+  * @brief  设置W
+  * @param  Counter: 指定watchdog counter value。
   * @retval None
   */
 void WWDG_SetCounter(uint8_t Counter)
@@ -177,9 +172,8 @@ void WWDG_SetCounter(uint8_t Counter)
 }
 
 /**
-  * @brief  Enables WWDG and load the counter value.                  
-  * @param  Counter: specifies the watchdog counter value.
-  *   This parameter must be a number between 0x40 and 0x7F.
+  * @brief  使能 WWDG and load the counter value.（详见英文原注释）
+  * @param  Counter: 指定watchdog counter value。
   * @retval None
   */
 void WWDG_Enable(uint8_t Counter)
@@ -190,9 +184,9 @@ void WWDG_Enable(uint8_t Counter)
 }
 
 /**
-  * @brief  Checks whether the Early Wakeup interrupt flag is set or not.
+  * @brief  检查Early Wakeup interrupt标志是否置位
   * @param  None
-  * @retval The new state of the Early Wakeup interrupt flag (SET or RESET)
+  * @retval The new state of the Early Wakeup 中断 标志 (SET or RESET)
   */
 FlagStatus WWDG_GetFlagStatus(void)
 {
@@ -200,7 +194,7 @@ FlagStatus WWDG_GetFlagStatus(void)
 }
 
 /**
-  * @brief  Clears Early Wakeup interrupt flag.
+  * @brief  Clears Early Wakeup 中断 标志.（详见英文原注释）
   * @param  None
   * @retval None
   */

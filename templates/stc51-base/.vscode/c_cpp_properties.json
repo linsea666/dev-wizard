@@ -1,0 +1,52 @@
+{
+    // VS Code C/C++ 智能感知配置（只影响编辑器内的 F12 跳转定义/悬停提示/实时报错，
+    // 不影响真实编译——编译由 EIDE+SDCC 按 eide.yml 走）。
+    //
+    // SDCC 的 __sfr/__sbit/__at 等 8051 专属关键字不是标准 C，这里把它们映射成
+    // 普通 C，让 IntelliSense 能干净地解析 8051.h 与 stc15 库头文件。
+    //
+    // 若你的 SDCC 不在默认路径，改 includePath 里两行 E:/vscode/tools/sdcc 为实际路径。
+    "version": 4,
+    "configurations": [
+        {
+            "name": "SDCC (mcs51 · STC15)",
+            "cStandard": "c99",
+            "includePath": [
+                "${workspaceFolder}/source",
+                "${workspaceFolder}/libraries/stc15_lib/include",
+                "${workspaceFolder}/libraries/stc15_lib",
+                "E:/vscode/tools/sdcc/share/sdcc/include",
+                "E:/vscode/tools/sdcc/share/sdcc/include/mcs51"
+            ],
+            "defines": [
+                "VS_CODE_INTELLISENSE",
+                "__SDCC",
+                "__sfr=volatile unsigned char",
+                "__sbit=volatile unsigned char",
+                "__sfr16=volatile unsigned short",
+                "__sfr32=volatile unsigned long",
+                "__bit=unsigned char",
+                "__reentrant=",
+                "__xdata=",
+                "__data=",
+                "__idata=",
+                "__pdata=",
+                "__code=",
+                "__at(addr)=",
+                "__interrupt(v)=",
+                "__using(r)=",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large="
+            ],
+            "intelliSenseMode": "gcc-x86",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/source",
+                    "${workspaceFolder}/libraries/stc15_lib"
+                ]
+            }
+        }
+    ]
+}

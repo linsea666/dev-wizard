@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the PWR firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the PWR firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup PWR 
-  * @brief PWR driver modules
-  * @{
+  * @brief  PWR driver modules @{（详见英文原注释）
   */ 
 
 /** @defgroup PWR_Private_TypesDefinitions
@@ -105,7 +103,7 @@
   */
 
 /**
-  * @brief  Deinitializes the PWR peripheral registers to their default reset values.
+  * @brief  复位PWR外设（恢复默认值）
   * @param  None
   * @retval None
   */
@@ -116,9 +114,8 @@ void PWR_DeInit(void)
 }
 
 /**
-  * @brief  Enables or disables access to the RTC and backup registers.
-  * @param  NewState: new state of the access to the RTC and backup registers.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关access to the RTC and backup registers.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void PWR_BackupAccessCmd(FunctionalState NewState)
@@ -129,9 +126,8 @@ void PWR_BackupAccessCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the Power Voltage Detector(PVD).
-  * @param  NewState: new state of the PVD.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关Power Voltage Detector(PVD)（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void PWR_PVDCmd(FunctionalState NewState)
@@ -142,9 +138,8 @@ void PWR_PVDCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Configures the voltage threshold detected by the Power Voltage Detector(PVD).
-  * @param  PWR_PVDLevel: specifies the PVD detection level
-  *   This parameter can be one of the following values:
+  * @brief  配置v
+  * @param  PWR_PVDLevel: 指定the PVD detection level This parameter can be one of the following values:
   *     @arg PWR_PVDLevel_2V2: PVD detection level set to 2.2V
   *     @arg PWR_PVDLevel_2V3: PVD detection level set to 2.3V
   *     @arg PWR_PVDLevel_2V4: PVD detection level set to 2.4V
@@ -170,9 +165,8 @@ void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel)
 }
 
 /**
-  * @brief  Enables or disables the WakeUp Pin functionality.
-  * @param  NewState: new state of the WakeUp Pin functionality.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关WakeUp Pin functionality（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void PWR_WakeUpPinCmd(FunctionalState NewState)
@@ -183,13 +177,11 @@ void PWR_WakeUpPinCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Enters STOP mode.
-  * @param  PWR_Regulator: specifies the regulator state in STOP mode.
-  *   This parameter can be one of the following values:
+  * @brief  Enters STOP mode.（详见英文原注释）
+  * @param  PWR_Regulator: 指定regulator state in STOP mode。
   *     @arg PWR_Regulator_ON: STOP mode with regulator ON
   *     @arg PWR_Regulator_LowPower: STOP mode with regulator in low power mode
-  * @param  PWR_STOPEntry: specifies if STOP mode in entered with WFI or WFE instruction.
-  *   This parameter can be one of the following values:
+  * @param  PWR_STOPEntry: 指定if STOP mode in entered with WFI or WFE instruction. This parameter can be one of the following values:
   *     @arg PWR_STOPEntry_WFI: enter STOP mode with WFI instruction
   *     @arg PWR_STOPEntry_WFE: enter STOP mode with WFE instruction
   * @retval None
@@ -229,7 +221,7 @@ void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
 }
 
 /**
-  * @brief  Enters STANDBY mode.
+  * @brief  Enters STANDBY mode.（详见英文原注释）
   * @param  None
   * @retval None
   */
@@ -250,9 +242,8 @@ void PWR_EnterSTANDBYMode(void)
 }
 
 /**
-  * @brief  Checks whether the specified PWR flag is set or not.
-  * @param  PWR_FLAG: specifies the flag to check.
-  *   This parameter can be one of the following values:
+  * @brief  检查PWR标志是否置位
+  * @param  PWR_FLAG: 指定flag to check。
   *     @arg PWR_FLAG_WU: Wake Up flag
   *     @arg PWR_FLAG_SB: StandBy flag
   *     @arg PWR_FLAG_PVDO: PVD Output
@@ -277,9 +268,8 @@ FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG)
 }
 
 /**
-  * @brief  Clears the PWR's pending flags.
-  * @param  PWR_FLAG: specifies the flag to clear.
-  *   This parameter can be one of the following values:
+  * @brief  Clears the PWR's pending flags.（详见英文原注释）
+  * @param  PWR_FLAG: 指定flag to clear。
   *     @arg PWR_FLAG_WU: Wake Up flag
   *     @arg PWR_FLAG_SB: StandBy flag
   * @retval None

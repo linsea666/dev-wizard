@@ -1,0 +1,33 @@
+{
+    // VS Code C/C++ 智能感知配置（只影响 F12 跳转定义 / 悬停提示 / 实时报错，
+    // 不影响真实编译——编译由 EIDE + ARM GCC 按 eide.yml 走）。
+    //
+    // includePath 与 eide.yml 的 incList 保持一致，外加器件头 stm32f10x.h
+    // 所在目录。若你的 ARM GCC 不在默认路径，改 compilerPath 那一行。
+    "version": 4,
+    "configurations": [
+        {
+            "name": "ARM GCC (STM32F10x)",
+            "cStandard": "c99",
+            "compilerPath": "E:/vscode/tools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin/arm-none-eabi-gcc.exe",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/lib/cmsis",
+                "${workspaceFolder}/hal/STM32F10x_StdPeriph_Driver",
+                "${workspaceFolder}/hal/STM32F10x_StdPeriph_Driver/inc",
+                "${workspaceFolder}/hal/STM32F10x_StdPeriph_Driver/src"
+            ],
+            "defines": [
+                "USE_STDPERIPH_DRIVER",
+                "STM32F10X_MD"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/src",
+                    "${workspaceFolder}/hal/STM32F10x_StdPeriph_Driver"
+                ]
+            }
+        }
+    ]
+}

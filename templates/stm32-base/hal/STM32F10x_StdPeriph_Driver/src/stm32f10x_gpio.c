@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the GPIO firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the GPIO firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup GPIO 
-  * @brief GPIO driver modules
-  * @{
+  * @brief  GPIO driver modules @{（详见英文原注释）
   */ 
 
 /** @defgroup GPIO_Private_TypesDefinitions
@@ -101,8 +99,8 @@
   */
 
 /**
-  * @brief  Deinitializes the GPIOx peripheral registers to their default reset values.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
+  * @brief  复位GPIOx外设（恢复默认值）
+  * @param  GPIOx: 端口号 GPIOA ~ GPIOG
   * @retval None
   */
 void GPIO_DeInit(GPIO_TypeDef* GPIOx)
@@ -151,8 +149,7 @@ void GPIO_DeInit(GPIO_TypeDef* GPIOx)
 }
 
 /**
-  * @brief  Deinitializes the Alternate Functions (remap, event control
-  *   and EXTI configuration) registers to their default reset values.
+  * @brief  复位A（恢复默认值）
   * @param  None
   * @retval None
   */
@@ -163,12 +160,13 @@ void GPIO_AFIODeInit(void)
 }
 
 /**
-  * @brief  Initializes the GPIOx peripheral according to the specified
-  *         parameters in the GPIO_InitStruct.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
-  * @param  GPIO_InitStruct: pointer to a GPIO_InitTypeDef structure that
-  *         contains the configuration information for the specified GPIO peripheral.
-  * @retval None
+  * @brief  按结构体配置初始化一组 GPIO 引脚 ★ GPIO 的核心函数
+  * @param  GPIOx: 端口号，GPIOA ~ GPIOG
+  * @param  GPIO_InitStruct: 指向 GPIO_InitTypeDef 配置结构体，需要先填好
+  *         三个字段：GPIO_Pin(引脚掩码) / GPIO_Speed(输出速度) / GPIO_Mode(八种模式，
+  *         推挽输出 GPIO_Mode_Out_PP、上拉输入 GPIO_Mode_IPU、复用推挽 GPIO_Mode_AF_PP 最常用)
+  * @retval 无
+  * @note   配置前别忘了先开该端口时钟：RCC_APB2PeriphClockCmd(对应GPIO宏, ENABLE)。
   */
 void GPIO_Init(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)
 {
@@ -258,9 +256,8 @@ void GPIO_Init(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)
 }
 
 /**
-  * @brief  Fills each GPIO_InitStruct member with its default value.
-  * @param  GPIO_InitStruct : pointer to a GPIO_InitTypeDef structure which will
-  *         be initialized.
+  * @brief  把结构体各字段填成默认值（Pin=全部, Speed=2MHz, Mode=浮空输入）
+  * @param  GPIO_InitStruct : 待初始化的结构体指针。
   * @retval None
   */
 void GPIO_StructInit(GPIO_InitTypeDef* GPIO_InitStruct)
@@ -272,11 +269,10 @@ void GPIO_StructInit(GPIO_InitTypeDef* GPIO_InitStruct)
 }
 
 /**
-  * @brief  Reads the specified input port pin.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
-  * @param  GPIO_Pin:  specifies the port bit to read.
-  *   This parameter can be GPIO_Pin_x where x can be (0..15).
-  * @retval The input port pin value.
+  * @brief  读一个输入引脚的电平（按键/检测外部信号用）
+  * @param  GPIOx: 端口号，GPIOA ~ GPIOG
+  * @param  GPIO_Pin:  要读的引脚，GPIO_Pin_0 ~ GPIO_Pin_15
+  * @return 1=高电平(Bit_SET)；0=低电平(Bit_RESET)——注意引脚须先配成输入模式
   */
 uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 {
@@ -298,8 +294,8 @@ uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 }
 
 /**
-  * @brief  Reads the specified GPIO input data port.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
+  * @brief  读取G
+  * @param  GPIOx: 端口号 GPIOA ~ GPIOG
   * @retval GPIO input data port value.
   */
 uint16_t GPIO_ReadInputData(GPIO_TypeDef* GPIOx)
@@ -311,10 +307,9 @@ uint16_t GPIO_ReadInputData(GPIO_TypeDef* GPIOx)
 }
 
 /**
-  * @brief  Reads the specified output data port bit.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
-  * @param  GPIO_Pin:  specifies the port bit to read.
-  *   This parameter can be GPIO_Pin_x where x can be (0..15).
+  * @brief  读取o
+  * @param  GPIOx: 端口号 GPIOA ~ GPIOG
+  * @param  GPIO_Pin: 指定port bit to read。
   * @retval The output port pin value.
   */
 uint8_t GPIO_ReadOutputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
@@ -336,8 +331,8 @@ uint8_t GPIO_ReadOutputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 }
 
 /**
-  * @brief  Reads the specified GPIO output data port.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
+  * @brief  读取G
+  * @param  GPIOx: 端口号 GPIOA ~ GPIOG
   * @retval GPIO output data port value.
   */
 uint16_t GPIO_ReadOutputData(GPIO_TypeDef* GPIOx)
@@ -349,11 +344,10 @@ uint16_t GPIO_ReadOutputData(GPIO_TypeDef* GPIOx)
 }
 
 /**
-  * @brief  Sets the selected data port bits.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
-  * @param  GPIO_Pin: specifies the port bits to be written.
-  *   This parameter can be any combination of GPIO_Pin_x where x can be (0..15).
-  * @retval None
+  * @brief  置 1（输出高电平）——可 | 组合多个引脚一次置位
+  * @param  GPIOx: 端口号，GPIOA ~ GPIOG
+  * @param  GPIO_Pin: 要置 1 的引脚，GPIO_Pin_0 ~ GPIO_Pin_15 可组合
+  * @retval 无
   */
 void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 {
@@ -365,11 +359,10 @@ void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 }
 
 /**
-  * @brief  Clears the selected data port bits.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
-  * @param  GPIO_Pin: specifies the port bits to be written.
-  *   This parameter can be any combination of GPIO_Pin_x where x can be (0..15).
-  * @retval None
+  * @brief  清 0（输出低电平）——板载 LED 低电平点亮就用它 ★
+  * @param  GPIOx: 端口号，GPIOA ~ GPIOG
+  * @param  GPIO_Pin: 要清 0 的引脚，GPIO_Pin_0 ~ GPIO_Pin_15 可组合
+  * @retval 无
   */
 void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 {
@@ -381,15 +374,11 @@ void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 }
 
 /**
-  * @brief  Sets or clears the selected data port bit.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
-  * @param  GPIO_Pin: specifies the port bit to be written.
-  *   This parameter can be one of GPIO_Pin_x where x can be (0..15).
-  * @param  BitVal: specifies the value to be written to the selected bit.
-  *   This parameter can be one of the BitAction enum values:
-  *     @arg Bit_RESET: to clear the port pin
-  *     @arg Bit_SET: to set the port pin
-  * @retval None
+  * @brief  写单个引脚的电平（1=高 / 0=低，一次只管一个脚）
+  * @param  GPIOx: 端口号，GPIOA ~ GPIOG
+  * @param  GPIO_Pin: 目标引脚，GPIO_Pin_0 ~ GPIO_Pin_15（单个）
+  * @param  BitVal: 写入值：Bit_SET=高电平 / Bit_RESET=低电平
+  * @retval 无
   */
 void GPIO_WriteBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, BitAction BitVal)
 {
@@ -409,10 +398,10 @@ void GPIO_WriteBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, BitAction BitVal)
 }
 
 /**
-  * @brief  Writes data to the specified GPIO data port.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
-  * @param  PortVal: specifies the value to be written to the port output data register.
-  * @retval None
+  * @brief  整组端口 16 个引脚一次写入（值 = ODR 寄存器内容）
+  * @param  GPIOx: 端口号，GPIOA ~ GPIOG
+  * @param  PortVal: 16 位输出值，每一位对应 Px.0 ~ Px.15
+  * @retval 无
   */
 void GPIO_Write(GPIO_TypeDef* GPIOx, uint16_t PortVal)
 {
@@ -423,10 +412,9 @@ void GPIO_Write(GPIO_TypeDef* GPIOx, uint16_t PortVal)
 }
 
 /**
-  * @brief  Locks GPIO Pins configuration registers.
-  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
-  * @param  GPIO_Pin: specifies the port bit to be written.
-  *   This parameter can be any combination of GPIO_Pin_x where x can be (0..15).
+  * @brief  Locks GPIO Pins configuration registers.（详见英文原注释）
+  * @param  GPIOx: 端口号 GPIOA ~ GPIOG
+  * @param  GPIO_Pin: 指定port bit，将被written。
   * @retval None
   */
 void GPIO_PinLockConfig(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
@@ -451,12 +439,9 @@ void GPIO_PinLockConfig(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 }
 
 /**
-  * @brief  Selects the GPIO pin used as Event output.
-  * @param  GPIO_PortSource: selects the GPIO port to be used as source
-  *   for Event output.
-  *   This parameter can be GPIO_PortSourceGPIOx where x can be (A..E).
-  * @param  GPIO_PinSource: specifies the pin for the Event output.
-  *   This parameter can be GPIO_PinSourcex where x can be (0..15).
+  * @brief  选择G
+  * @param  GPIO_PortSource: selects the GPIO port to be used as source for Event output. This parameter can be GPIO_PortSourceGPIOx 取值 (A..E).
+  * @param  GPIO_PinSource: 指定pin for the Event output。
   * @retval None
   */
 void GPIO_EventOutputConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource)
@@ -475,9 +460,8 @@ void GPIO_EventOutputConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource)
 }
 
 /**
-  * @brief  Enables or disables the Event Output.
-  * @param  NewState: new state of the Event output.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关Event Output（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void GPIO_EventOutputCmd(FunctionalState NewState)
@@ -489,9 +473,8 @@ void GPIO_EventOutputCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Changes the mapping of the specified pin.
-  * @param  GPIO_Remap: selects the pin to remap.
-  *   This parameter can be one of the following values:
+  * @brief  Changes the mapping of 指定的 pin.（详见英文原注释）
+  * @param  GPIO_Remap: selects the pin to remap. This parameter can be one of the following values:
   *     @arg GPIO_Remap_SPI1             : SPI1 Alternate Function mapping
   *     @arg GPIO_Remap_I2C1             : I2C1 Alternate Function mapping
   *     @arg GPIO_Remap_USART1           : USART1 Alternate Function mapping
@@ -542,8 +525,7 @@ void GPIO_EventOutputCmd(FunctionalState NewState)
   *     @arg GPIO_Remap_TIM12            : TIM12 Alternate Function mapping (only for High density Value line devices)
   *     @arg GPIO_Remap_MISC             : Miscellaneous Remap (DMA2 Channel5 Position and DAC Trigger remapping, 
   *                                        only for High density Value line devices)     
-  * @param  NewState: new state of the port pin remapping.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void GPIO_PinRemapConfig(uint32_t GPIO_Remap, FunctionalState NewState)
@@ -599,11 +581,9 @@ void GPIO_PinRemapConfig(uint32_t GPIO_Remap, FunctionalState NewState)
 }
 
 /**
-  * @brief  Selects the GPIO pin used as EXTI Line.
-  * @param  GPIO_PortSource: selects the GPIO port to be used as source for EXTI lines.
-  *   This parameter can be GPIO_PortSourceGPIOx where x can be (A..G).
-  * @param  GPIO_PinSource: specifies the EXTI line to be configured.
-  *   This parameter can be GPIO_PinSourcex where x can be (0..15).
+  * @brief  选择G
+  * @param  GPIO_PortSource: selects the GPIO port to be used as source for EXTI lines. This parameter can be GPIO_PortSourceGPIOx 取值 (A..G).
+  * @param  GPIO_PinSource: 指定EXTI line，将被configured。
   * @retval None
   */
 void GPIO_EXTILineConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource)
@@ -619,10 +599,9 @@ void GPIO_EXTILineConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource)
 }
 
 /**
-  * @brief  Selects the Ethernet media interface.
-  * @note   This function applies only to STM32 Connectivity line devices.  
-  * @param  GPIO_ETH_MediaInterface: specifies the Media Interface mode.
-  *   This parameter can be one of the following values:
+  * @brief  选择E
+  * @note  This function applies only to STM32 Connectivity line devices.
+  * @param  GPIO_ETH_MediaInterface: 指定Media Interface mode。
   *     @arg GPIO_ETH_MediaInterface_MII: MII mode
   *     @arg GPIO_ETH_MediaInterface_RMII: RMII mode    
   * @retval None

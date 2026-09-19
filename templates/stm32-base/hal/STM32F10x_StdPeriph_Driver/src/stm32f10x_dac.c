@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the DAC firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the DAC firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup DAC 
-  * @brief DAC driver modules
-  * @{
+  * @brief  DAC driver modules @{（详见英文原注释）
   */ 
 
 /** @defgroup DAC_Private_TypesDefinitions
@@ -91,7 +89,7 @@
   */
 
 /**
-  * @brief  Deinitializes the DAC peripheral registers to their default reset values.
+  * @brief  复位DAC外设（恢复默认值）
   * @param  None
   * @retval None
   */
@@ -104,14 +102,11 @@ void DAC_DeInit(void)
 }
 
 /**
-  * @brief  Initializes the DAC peripheral according to the specified 
-  *         parameters in the DAC_InitStruct.
-  * @param  DAC_Channel: the selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  按 DAC_InitStruct 的配置初始化 DAC 外设
+  * @param  DAC_Channel: the selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
-  * @param  DAC_InitStruct: pointer to a DAC_InitTypeDef structure that
-  *        contains the configuration information for the specified DAC channel.
+  * @param  DAC_InitStruct: 指向 DAC_InitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void DAC_Init(uint32_t DAC_Channel, DAC_InitTypeDef* DAC_InitStruct)
@@ -142,9 +137,8 @@ void DAC_Init(uint32_t DAC_Channel, DAC_InitTypeDef* DAC_InitStruct)
 }
 
 /**
-  * @brief  Fills each DAC_InitStruct member with its default value.
-  * @param  DAC_InitStruct : pointer to a DAC_InitTypeDef structure which will
-  *         be initialized.
+  * @brief  把DAC_InitStruct各字段填成默认值
+  * @param  DAC_InitStruct : pointer to a DAC_InitTypeDef structure which will be initialized.
   * @retval None
   */
 void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct)
@@ -161,13 +155,11 @@ void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct)
 }
 
 /**
-  * @brief  Enables or disables the specified DAC channel.
-  * @param  DAC_Channel: the selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  开关DAC channel
+  * @param  DAC_Channel: the selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
-  * @param  NewState: new state of the DAC channel. 
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void DAC_Cmd(uint32_t DAC_Channel, FunctionalState NewState)
@@ -188,16 +180,13 @@ void DAC_Cmd(uint32_t DAC_Channel, FunctionalState NewState)
 }
 #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL)
 /**
-  * @brief  Enables or disables the specified DAC interrupts.
-  * @param  DAC_Channel: the selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  开关DAC interrupts
+  * @param  DAC_Channel: the selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
-  * @param  DAC_IT: specifies the DAC interrupt sources to be enabled or disabled. 
-  *   This parameter can be the following values:
+  * @param  DAC_IT: 指定DAC interrupt sources，将被enabled or disabled。
   *     @arg DAC_IT_DMAUDR: DMA underrun interrupt mask                      
-  * @param  NewState: new state of the specified DAC interrupts.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */ 
 void DAC_ITConfig(uint32_t DAC_Channel, uint32_t DAC_IT, FunctionalState NewState)  
@@ -221,13 +210,11 @@ void DAC_ITConfig(uint32_t DAC_Channel, uint32_t DAC_IT, FunctionalState NewStat
 #endif
 
 /**
-  * @brief  Enables or disables the specified DAC channel DMA request.
-  * @param  DAC_Channel: the selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  开关DAC channel DMA request
+  * @param  DAC_Channel: the selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
-  * @param  NewState: new state of the selected DAC channel DMA request.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void DAC_DMACmd(uint32_t DAC_Channel, FunctionalState NewState)
@@ -248,13 +235,11 @@ void DAC_DMACmd(uint32_t DAC_Channel, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the selected DAC channel software trigger.
-  * @param  DAC_Channel: the selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  开关selected DAC channel software trigger（ENABLE=开 / DISABLE=关）
+  * @param  DAC_Channel: the selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
-  * @param  NewState: new state of the selected DAC channel software trigger.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void DAC_SoftwareTriggerCmd(uint32_t DAC_Channel, FunctionalState NewState)
@@ -275,10 +260,8 @@ void DAC_SoftwareTriggerCmd(uint32_t DAC_Channel, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables simultaneously the two DAC channels software
-  *   triggers.
-  * @param  NewState: new state of the DAC channels software triggers.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关simultaneously the two DAC channels software triggers.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void DAC_DualSoftwareTriggerCmd(FunctionalState NewState)
@@ -298,17 +281,14 @@ void DAC_DualSoftwareTriggerCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the selected DAC channel wave generation.
-  * @param  DAC_Channel: the selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  开关selected DAC channel wave generation（ENABLE=开 / DISABLE=关）
+  * @param  DAC_Channel: the selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
-  * @param  DAC_Wave: Specifies the wave type to enable or disable.
-  *   This parameter can be one of the following values:
+  * @param  DAC_Wave: Specifies the wave type to enable or disable. This parameter can be one of the following values:
   *     @arg DAC_Wave_Noise: noise wave generation
   *     @arg DAC_Wave_Triangle: triangle wave generation
-  * @param  NewState: new state of the selected DAC channel wave generation.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void DAC_WaveGenerationCmd(uint32_t DAC_Channel, uint32_t DAC_Wave, FunctionalState NewState)
@@ -330,9 +310,8 @@ void DAC_WaveGenerationCmd(uint32_t DAC_Channel, uint32_t DAC_Wave, FunctionalSt
 }
 
 /**
-  * @brief  Set the specified data holding register value for DAC channel1.
-  * @param  DAC_Align: Specifies the data alignment for DAC channel1.
-  *   This parameter can be one of the following values:
+  * @brief  Set 指定的 data holding register value for DAC channel1.（详见英文原注释）
+  * @param  DAC_Align: Specifies the data alignment for DAC channel1. This parameter can be one of the following values:
   *     @arg DAC_Align_8b_R: 8bit right data alignment selected
   *     @arg DAC_Align_12b_L: 12bit left data alignment selected
   *     @arg DAC_Align_12b_R: 12bit right data alignment selected
@@ -355,9 +334,8 @@ void DAC_SetChannel1Data(uint32_t DAC_Align, uint16_t Data)
 }
 
 /**
-  * @brief  Set the specified data holding register value for DAC channel2.
-  * @param  DAC_Align: Specifies the data alignment for DAC channel2.
-  *   This parameter can be one of the following values:
+  * @brief  Set 指定的 data holding register value for DAC channel2.（详见英文原注释）
+  * @param  DAC_Align: Specifies the data alignment for DAC channel2. This parameter can be one of the following values:
   *     @arg DAC_Align_8b_R: 8bit right data alignment selected
   *     @arg DAC_Align_12b_L: 12bit left data alignment selected
   *     @arg DAC_Align_12b_R: 12bit right data alignment selected
@@ -380,17 +358,13 @@ void DAC_SetChannel2Data(uint32_t DAC_Align, uint16_t Data)
 }
 
 /**
-  * @brief  Set the specified data holding register value for dual channel
-  *   DAC.
-  * @param  DAC_Align: Specifies the data alignment for dual channel DAC.
-  *   This parameter can be one of the following values:
+  * @brief  Set 指定的 data holding register value for dual channel DAC.（详见英文原注释）
+  * @param  DAC_Align: Specifies the data alignment for dual channel DAC. This parameter can be one of the following values:
   *     @arg DAC_Align_8b_R: 8bit right data alignment selected
   *     @arg DAC_Align_12b_L: 12bit left data alignment selected
   *     @arg DAC_Align_12b_R: 12bit right data alignment selected
-  * @param  Data2: Data for DAC Channel2 to be loaded in the selected data 
-  *   holding register.
-  * @param  Data1: Data for DAC Channel1 to be loaded in the selected data 
-  *   holding register.
+  * @param  Data2: Data for DAC Channel2 to be loaded in the selected data holding register.
+  * @param  Data1: Data for DAC Channel1 to be loaded in the selected data holding register.
   * @retval None
   */
 void DAC_SetDualChannelData(uint32_t DAC_Align, uint16_t Data2, uint16_t Data1)
@@ -420,9 +394,8 @@ void DAC_SetDualChannelData(uint32_t DAC_Align, uint16_t Data2, uint16_t Data1)
 }
 
 /**
-  * @brief  Returns the last data output value of the selected DAC channel.
-  * @param  DAC_Channel: the selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  Returns the last data output value of the selected DAC channel.（详见英文原注释）
+  * @param  DAC_Channel: the selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
   * @retval The selected DAC channel data output value.
@@ -443,13 +416,11 @@ uint16_t DAC_GetDataOutputValue(uint32_t DAC_Channel)
 
 #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL)
 /**
-  * @brief  Checks whether the specified DAC flag is set or not.
-  * @param  DAC_Channel: thee selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  检查DAC标志是否置位
+  * @param  DAC_Channel: thee selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
-  * @param  DAC_FLAG: specifies the flag to check. 
-  *   This parameter can be only of the following value:
+  * @param  DAC_FLAG: 指定flag to check。
   *     @arg DAC_FLAG_DMAUDR: DMA underrun flag                                                 
   * @retval The new state of DAC_FLAG (SET or RESET).
   */
@@ -476,13 +447,11 @@ FlagStatus DAC_GetFlagStatus(uint32_t DAC_Channel, uint32_t DAC_FLAG)
 }
 
 /**
-  * @brief  Clears the DAC channelx's pending flags.
-  * @param  DAC_Channel: the selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  Clears the DAC channelx's pending flags.（详见英文原注释）
+  * @param  DAC_Channel: the selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
-  * @param  DAC_FLAG: specifies the flag to clear. 
-  *   This parameter can be of the following value:
+  * @param  DAC_FLAG: 指定flag to clear。
   *     @arg DAC_FLAG_DMAUDR: DMA underrun flag                           
   * @retval None
   */
@@ -497,13 +466,11 @@ void DAC_ClearFlag(uint32_t DAC_Channel, uint32_t DAC_FLAG)
 }
 
 /**
-  * @brief  Checks whether the specified DAC interrupt has occurred or not.
-  * @param  DAC_Channel: the selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  检查specified DAC中断是否已发生
+  * @param  DAC_Channel: the selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
-  * @param  DAC_IT: specifies the DAC interrupt source to check. 
-  *   This parameter can be the following values:
+  * @param  DAC_IT: 指定DAC interrupt source to check。
   *     @arg DAC_IT_DMAUDR: DMA underrun interrupt mask                       
   * @retval The new state of DAC_IT (SET or RESET).
   */
@@ -535,13 +502,11 @@ ITStatus DAC_GetITStatus(uint32_t DAC_Channel, uint32_t DAC_IT)
 }
 
 /**
-  * @brief  Clears the DAC channelx's interrupt pending bits.
-  * @param  DAC_Channel: the selected DAC channel. 
-  *   This parameter can be one of the following values:
+  * @brief  清除DAC channelx的中断挂起标志
+  * @param  DAC_Channel: the selected DAC channel. This parameter can be one of the following values:
   *     @arg DAC_Channel_1: DAC Channel1 selected
   *     @arg DAC_Channel_2: DAC Channel2 selected
-  * @param  DAC_IT: specifies the DAC interrupt pending bit to clear.
-  *   This parameter can be the following values:
+  * @param  DAC_IT: 指定DAC interrupt pending bit to clear。
   *     @arg DAC_IT_DMAUDR: DMA underrun interrupt mask                         
   * @retval None
   */

@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the EXTI firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the EXTI firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -27,8 +26,7 @@
   */
 
 /** @defgroup EXTI 
-  * @brief EXTI driver modules
-  * @{
+  * @brief  EXTI driver modules @{（详见英文原注释）
   */
 
 /** @defgroup EXTI_Private_TypesDefinitions
@@ -78,7 +76,7 @@
   */
 
 /**
-  * @brief  Deinitializes the EXTI peripheral registers to their default reset values.
+  * @brief  复位EXTI外设（恢复默认值）
   * @param  None
   * @retval None
   */
@@ -92,10 +90,8 @@ void EXTI_DeInit(void)
 }
 
 /**
-  * @brief  Initializes the EXTI peripheral according to the specified
-  *         parameters in the EXTI_InitStruct.
-  * @param  EXTI_InitStruct: pointer to a EXTI_InitTypeDef structure
-  *         that contains the configuration information for the EXTI peripheral.
+  * @brief  按 EXTI_InitStruct 的配置初始化 EXTI 外设
+  * @param  EXTI_InitStruct: 指向 EXTI_InitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
   * @retval None
   */
 void EXTI_Init(EXTI_InitTypeDef* EXTI_InitStruct)
@@ -149,9 +145,8 @@ void EXTI_Init(EXTI_InitTypeDef* EXTI_InitStruct)
 }
 
 /**
-  * @brief  Fills each EXTI_InitStruct member with its reset value.
-  * @param  EXTI_InitStruct: pointer to a EXTI_InitTypeDef structure which will
-  *         be initialized.
+  * @brief  Fills each EXTI_InitStruct member with its reset value.（详见英文原注释）
+  * @param  EXTI_InitStruct: 指向待初始化的 EXTI_InitTypeDef 结构体
   * @retval None
   */
 void EXTI_StructInit(EXTI_InitTypeDef* EXTI_InitStruct)
@@ -163,9 +158,8 @@ void EXTI_StructInit(EXTI_InitTypeDef* EXTI_InitStruct)
 }
 
 /**
-  * @brief  Generates a Software interrupt.
-  * @param  EXTI_Line: specifies the EXTI lines to be enabled or disabled.
-  *   This parameter can be any combination of EXTI_Linex where x can be (0..19).
+  * @brief  Generates a Software 中断.（详见英文原注释）
+  * @param  EXTI_Line: 指定EXTI lines，将被enabled or disabled。
   * @retval None
   */
 void EXTI_GenerateSWInterrupt(uint32_t EXTI_Line)
@@ -177,9 +171,8 @@ void EXTI_GenerateSWInterrupt(uint32_t EXTI_Line)
 }
 
 /**
-  * @brief  Checks whether the specified EXTI line flag is set or not.
-  * @param  EXTI_Line: specifies the EXTI line flag to check.
-  *   This parameter can be:
+  * @brief  检查EXTI line标志是否置位
+  * @param  EXTI_Line: 指定EXTI line flag to check。
   *     @arg EXTI_Linex: External interrupt line x where x(0..19)
   * @retval The new state of EXTI_Line (SET or RESET).
   */
@@ -201,9 +194,8 @@ FlagStatus EXTI_GetFlagStatus(uint32_t EXTI_Line)
 }
 
 /**
-  * @brief  Clears the EXTI's line pending flags.
-  * @param  EXTI_Line: specifies the EXTI lines flags to clear.
-  *   This parameter can be any combination of EXTI_Linex where x can be (0..19).
+  * @brief  Clears the EXTI's line pending flags.（详见英文原注释）
+  * @param  EXTI_Line: 指定EXTI lines flags to clear。
   * @retval None
   */
 void EXTI_ClearFlag(uint32_t EXTI_Line)
@@ -215,9 +207,8 @@ void EXTI_ClearFlag(uint32_t EXTI_Line)
 }
 
 /**
-  * @brief  Checks whether the specified EXTI line is asserted or not.
-  * @param  EXTI_Line: specifies the EXTI line to check.
-  *   This parameter can be:
+  * @brief  检查s
+  * @param  EXTI_Line: 指定EXTI line to check。
   *     @arg EXTI_Linex: External interrupt line x where x(0..19)
   * @retval The new state of EXTI_Line (SET or RESET).
   */
@@ -241,9 +232,8 @@ ITStatus EXTI_GetITStatus(uint32_t EXTI_Line)
 }
 
 /**
-  * @brief  Clears the EXTI's line pending bits.
-  * @param  EXTI_Line: specifies the EXTI lines to clear.
-  *   This parameter can be any combination of EXTI_Linex where x can be (0..19).
+  * @brief  Clears the EXTI's line pending bits.（详见英文原注释）
+  * @param  EXTI_Line: 指定EXTI lines to clear。
   * @retval None
   */
 void EXTI_ClearITPendingBit(uint32_t EXTI_Line)

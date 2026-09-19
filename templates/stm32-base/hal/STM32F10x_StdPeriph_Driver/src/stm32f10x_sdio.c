@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the SDIO firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the SDIO firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup SDIO 
-  * @brief SDIO driver modules
-  * @{
+  * @brief  SDIO driver modules @{（详见英文原注释）
   */ 
 
 /** @defgroup SDIO_Private_TypesDefinitions
@@ -154,7 +152,7 @@
   */
 
 /**
-  * @brief  Deinitializes the SDIO peripheral registers to their default reset values.
+  * @brief  复位SDIO外设（恢复默认值）
   * @param  None
   * @retval None
   */
@@ -172,10 +170,8 @@ void SDIO_DeInit(void)
 }
 
 /**
-  * @brief  Initializes the SDIO peripheral according to the specified 
-  *         parameters in the SDIO_InitStruct.
-  * @param  SDIO_InitStruct : pointer to a SDIO_InitTypeDef structure 
-  *         that contains the configuration information for the SDIO peripheral.
+  * @brief  按 SDIO_InitStruct 的配置初始化 SDIO 外设
+  * @param  SDIO_InitStruct : pointer to a SDIO_InitTypeDef structure that contains the configuration information for the SDIO 外设.
   * @retval None
   */
 void SDIO_Init(SDIO_InitTypeDef* SDIO_InitStruct)
@@ -211,9 +207,8 @@ void SDIO_Init(SDIO_InitTypeDef* SDIO_InitStruct)
 }
 
 /**
-  * @brief  Fills each SDIO_InitStruct member with its default value.
-  * @param  SDIO_InitStruct: pointer to an SDIO_InitTypeDef structure which 
-  *   will be initialized.
+  * @brief  把SDIO_InitStruct各字段填成默认值
+  * @param  SDIO_InitStruct: pointer to an SDIO_InitTypeDef structure which will be initialized.
   * @retval None
   */
 void SDIO_StructInit(SDIO_InitTypeDef* SDIO_InitStruct)
@@ -228,8 +223,8 @@ void SDIO_StructInit(SDIO_InitTypeDef* SDIO_InitStruct)
 }
 
 /**
-  * @brief  Enables or disables the SDIO Clock.
-  * @param  NewState: new state of the SDIO Clock. This parameter can be: ENABLE or DISABLE.
+  * @brief  开关SDIO Clock（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void SDIO_ClockCmd(FunctionalState NewState)
@@ -241,9 +236,8 @@ void SDIO_ClockCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Sets the power status of the controller.
-  * @param  SDIO_PowerState: new state of the Power state. 
-  *   This parameter can be one of the following values:
+  * @brief  设置p
+  * @param  SDIO_PowerState: new state of the Power state. This parameter can be one of the following values:
   *     @arg SDIO_PowerState_OFF
   *     @arg SDIO_PowerState_ON
   * @retval None
@@ -258,13 +252,9 @@ void SDIO_SetPowerState(uint32_t SDIO_PowerState)
 }
 
 /**
-  * @brief  Gets the power status of the controller.
+  * @brief  获取p
   * @param  None
-  * @retval Power status of the controller. The returned value can
-  *   be one of the following:
-  * - 0x00: Power OFF
-  * - 0x02: Power UP
-  * - 0x03: Power ON 
+  * @retval Power status of the controller. The returned value can be one of the following: - 0x00: Power OFF - 0x02: Power UP - 0x03: Power ON
   */
 uint32_t SDIO_GetPowerState(void)
 {
@@ -272,9 +262,8 @@ uint32_t SDIO_GetPowerState(void)
 }
 
 /**
-  * @brief  Enables or disables the SDIO interrupts.
-  * @param  SDIO_IT: specifies the SDIO interrupt sources to be enabled or disabled.
-  *   This parameter can be one or a combination of the following values:
+  * @brief  开关SDIO interrupts（ENABLE=开 / DISABLE=关）
+  * @param  SDIO_IT: 指定SDIO interrupt sources，将被enabled or disabled。
   *     @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
   *     @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
   *     @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
@@ -300,9 +289,8 @@ uint32_t SDIO_GetPowerState(void)
   *     @arg SDIO_IT_RXDAVL:   Data available in receive FIFO interrupt
   *     @arg SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt
   *     @arg SDIO_IT_CEATAEND: CE-ATA command completion signal received for CMD61 interrupt
-  * @param  NewState: new state of the specified SDIO interrupts.
-  *   This parameter can be: ENABLE or DISABLE.
-  * @retval None 
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
+  * @retval None
   */
 void SDIO_ITConfig(uint32_t SDIO_IT, FunctionalState NewState)
 {
@@ -323,9 +311,8 @@ void SDIO_ITConfig(uint32_t SDIO_IT, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the SDIO DMA request.
-  * @param  NewState: new state of the selected SDIO DMA request.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关SDIO DMA request（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void SDIO_DMACmd(FunctionalState NewState)
@@ -337,10 +324,8 @@ void SDIO_DMACmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Initializes the SDIO Command according to the specified 
-  *         parameters in the SDIO_CmdInitStruct and send the command.
-  * @param  SDIO_CmdInitStruct : pointer to a SDIO_CmdInitTypeDef 
-  *         structure that contains the configuration information for the SDIO command.
+  * @brief  按 SDIO_CmdInitStruct and send the command 的配置初始化SDIO Command
+  * @param  SDIO_CmdInitStruct : pointer to a SDIO_CmdInitTypeDef structure that contains the configuration information for the SDIO command.
   * @retval None
   */
 void SDIO_SendCommand(SDIO_CmdInitTypeDef *SDIO_CmdInitStruct)
@@ -374,9 +359,8 @@ void SDIO_SendCommand(SDIO_CmdInitTypeDef *SDIO_CmdInitStruct)
 }
 
 /**
-  * @brief  Fills each SDIO_CmdInitStruct member with its default value.
-  * @param  SDIO_CmdInitStruct: pointer to an SDIO_CmdInitTypeDef 
-  *         structure which will be initialized.
+  * @brief  把SDIO_CmdInitStruct各字段填成默认值
+  * @param  SDIO_CmdInitStruct: pointer to an SDIO_CmdInitTypeDef structure which will be initialized.
   * @retval None
   */
 void SDIO_CmdStructInit(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct)
@@ -390,7 +374,7 @@ void SDIO_CmdStructInit(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct)
 }
 
 /**
-  * @brief  Returns command index of last command for which response received.
+  * @brief  Returns command index of last command for which response received.（详见英文原注释）
   * @param  None
   * @retval Returns the command index of the last command response received.
   */
@@ -400,9 +384,8 @@ uint8_t SDIO_GetCommandResponse(void)
 }
 
 /**
-  * @brief  Returns response received from the card for the last command.
-  * @param  SDIO_RESP: Specifies the SDIO response register. 
-  *   This parameter can be one of the following values:
+  * @brief  Returns response received from the card for the last command.（详见英文原注释）
+  * @param  SDIO_RESP: Specifies the SDIO response register. This parameter can be one of the following values:
   *     @arg SDIO_RESP1: Response Register 1
   *     @arg SDIO_RESP2: Response Register 2
   *     @arg SDIO_RESP3: Response Register 3
@@ -422,10 +405,8 @@ uint32_t SDIO_GetResponse(uint32_t SDIO_RESP)
 }
 
 /**
-  * @brief  Initializes the SDIO data path according to the specified 
-  *   parameters in the SDIO_DataInitStruct.
-  * @param  SDIO_DataInitStruct : pointer to a SDIO_DataInitTypeDef structure that
-  *   contains the configuration information for the SDIO command.
+  * @brief  按 SDIO_DataInitStruct 的配置初始化SDIO data path
+  * @param  SDIO_DataInitStruct : pointer to a SDIO_DataInitTypeDef structure that contains the configuration information for the SDIO command.
   * @retval None
   */
 void SDIO_DataConfig(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
@@ -464,9 +445,8 @@ void SDIO_DataConfig(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
 }
 
 /**
-  * @brief  Fills each SDIO_DataInitStruct member with its default value.
-  * @param  SDIO_DataInitStruct: pointer to an SDIO_DataInitTypeDef structure which
-  *         will be initialized.
+  * @brief  把SDIO_DataInitStruct各字段填成默认值
+  * @param  SDIO_DataInitStruct: pointer to an SDIO_DataInitTypeDef structure which will be initialized.
   * @retval None
   */
 void SDIO_DataStructInit(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
@@ -481,7 +461,7 @@ void SDIO_DataStructInit(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
 }
 
 /**
-  * @brief  Returns number of remaining data bytes to be transferred.
+  * @brief  Returns number of remaining data bytes to be transferred.（详见英文原注释）
   * @param  None
   * @retval Number of remaining data bytes to be transferred
   */
@@ -491,7 +471,7 @@ uint32_t SDIO_GetDataCounter(void)
 }
 
 /**
-  * @brief  Read one data word from Rx FIFO.
+  * @brief  Read one data word from Rx FIFO.（详见英文原注释）
   * @param  None
   * @retval Data received
   */
@@ -501,7 +481,7 @@ uint32_t SDIO_ReadData(void)
 }
 
 /**
-  * @brief  Write one data word to Tx FIFO.
+  * @brief  Write one data word to Tx FIFO.（详见英文原注释）
   * @param  Data: 32-bit data word to write.
   * @retval None
   */
@@ -511,7 +491,7 @@ void SDIO_WriteData(uint32_t Data)
 }
 
 /**
-  * @brief  Returns the number of words left to be written to or read from FIFO.	
+  * @brief  Returns the number of words left to be written to or read from FIFO.（详见英文原注释）
   * @param  None
   * @retval Remaining number of words.
   */
@@ -521,9 +501,8 @@ uint32_t SDIO_GetFIFOCount(void)
 }
 
 /**
-  * @brief  Starts the SD I/O Read Wait operation.	
-  * @param  NewState: new state of the Start SDIO Read Wait operation. 
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  Starts the SD I/O Read Wait operation.（详见英文原注释）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void SDIO_StartSDIOReadWait(FunctionalState NewState)
@@ -535,9 +514,8 @@ void SDIO_StartSDIOReadWait(FunctionalState NewState)
 }
 
 /**
-  * @brief  Stops the SD I/O Read Wait operation.	
-  * @param  NewState: new state of the Stop SDIO Read Wait operation. 
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  Stops the SD I/O Read Wait operation.（详见英文原注释）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void SDIO_StopSDIOReadWait(FunctionalState NewState)
@@ -549,9 +527,8 @@ void SDIO_StopSDIOReadWait(FunctionalState NewState)
 }
 
 /**
-  * @brief  Sets one of the two options of inserting read wait interval.
-  * @param  SDIO_ReadWaitMode: SD I/O Read Wait operation mode.
-  *   This parameter can be:
+  * @brief  Sets one of the two options of inserting read wait interval.（详见英文原注释）
+  * @param  SDIO_ReadWaitMode: SD I/O Read Wait operation mode. This parameter can be:
   *     @arg SDIO_ReadWaitMode_CLK: Read Wait control by stopping SDIOCLK
   *     @arg SDIO_ReadWaitMode_DATA2: Read Wait control using SDIO_DATA2
   * @retval None
@@ -565,9 +542,8 @@ void SDIO_SetSDIOReadWaitMode(uint32_t SDIO_ReadWaitMode)
 }
 
 /**
-  * @brief  Enables or disables the SD I/O Mode Operation.
-  * @param  NewState: new state of SDIO specific operation. 
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关SD I/O Mode Operation（ENABLE=开 / DISABLE=关）
+  * @param  NewState: new state of SDIO specific operation. This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
 void SDIO_SetSDIOOperation(FunctionalState NewState)
@@ -579,9 +555,8 @@ void SDIO_SetSDIOOperation(FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the SD I/O Mode suspend command sending.
-  * @param  NewState: new state of the SD I/O Mode suspend command.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关SD I/O Mode suspend command sending（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void SDIO_SendSDIOSuspendCmd(FunctionalState NewState)
@@ -593,9 +568,8 @@ void SDIO_SendSDIOSuspendCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the command completion signal.
-  * @param  NewState: new state of command completion signal. 
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关command completion signal（ENABLE=开 / DISABLE=关）
+  * @param  NewState: new state of command completion signal. This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
 void SDIO_CommandCompletionCmd(FunctionalState NewState)
@@ -607,8 +581,8 @@ void SDIO_CommandCompletionCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the CE-ATA interrupt.
-  * @param  NewState: new state of CE-ATA interrupt. This parameter can be: ENABLE or DISABLE.
+  * @brief  开关CE-ATA interrupt（ENABLE=开 / DISABLE=关）
+  * @param  NewState: new state of CE-ATA 中断. This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
 void SDIO_CEATAITCmd(FunctionalState NewState)
@@ -620,7 +594,7 @@ void SDIO_CEATAITCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Sends CE-ATA command (CMD61).
+  * @brief  Sends CE-ATA command (CMD61).（详见英文原注释）
   * @param  NewState: new state of CE-ATA command. This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
@@ -633,9 +607,8 @@ void SDIO_SendCEATACmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Checks whether the specified SDIO flag is set or not.
-  * @param  SDIO_FLAG: specifies the flag to check. 
-  *   This parameter can be one of the following values:
+  * @brief  检查SDIO标志是否置位
+  * @param  SDIO_FLAG: 指定flag to check。
   *     @arg SDIO_FLAG_CCRCFAIL: Command response received (CRC check failed)
   *     @arg SDIO_FLAG_DCRCFAIL: Data block sent/received (CRC check failed)
   *     @arg SDIO_FLAG_CTIMEOUT: Command response timeout
@@ -682,9 +655,8 @@ FlagStatus SDIO_GetFlagStatus(uint32_t SDIO_FLAG)
 }
 
 /**
-  * @brief  Clears the SDIO's pending flags.
-  * @param  SDIO_FLAG: specifies the flag to clear.  
-  *   This parameter can be one or a combination of the following values:
+  * @brief  Clears the SDIO's pending flags.（详见英文原注释）
+  * @param  SDIO_FLAG: 指定flag to clear。
   *     @arg SDIO_FLAG_CCRCFAIL: Command response received (CRC check failed)
   *     @arg SDIO_FLAG_DCRCFAIL: Data block sent/received (CRC check failed)
   *     @arg SDIO_FLAG_CTIMEOUT: Command response timeout
@@ -710,9 +682,8 @@ void SDIO_ClearFlag(uint32_t SDIO_FLAG)
 }
 
 /**
-  * @brief  Checks whether the specified SDIO interrupt has occurred or not.
-  * @param  SDIO_IT: specifies the SDIO interrupt source to check. 
-  *   This parameter can be one of the following values:
+  * @brief  检查specified SDIO中断是否已发生
+  * @param  SDIO_IT: 指定SDIO interrupt source to check。
   *     @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
   *     @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
   *     @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
@@ -758,9 +729,8 @@ ITStatus SDIO_GetITStatus(uint32_t SDIO_IT)
 }
 
 /**
-  * @brief  Clears the SDIO's interrupt pending bits.
-  * @param  SDIO_IT: specifies the interrupt pending bit to clear. 
-  *   This parameter can be one or a combination of the following values:
+  * @brief  清除SDIO的中断挂起标志
+  * @param  SDIO_IT: 指定interrupt pending bit to clear。
   *     @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
   *     @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
   *     @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt

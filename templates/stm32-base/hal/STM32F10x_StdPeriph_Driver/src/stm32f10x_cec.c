@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the CEC firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the CEC firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup CEC 
-  * @brief CEC driver modules
-  * @{
+  * @brief  CEC driver modules @{（详见英文原注释）
   */
 
 /** @defgroup CEC_Private_TypesDefinitions
@@ -110,8 +108,7 @@
   */ 
 
 /**
-  * @brief  Deinitializes the CEC peripheral registers to their default reset 
-  *         values.
+  * @brief  复位CEC外设（恢复默认值）
   * @param  None
   * @retval None
   */
@@ -125,11 +122,8 @@ void CEC_DeInit(void)
 
 
 /**
-  * @brief  Initializes the CEC peripheral according to the specified 
-  *         parameters in the CEC_InitStruct.
-  * @param  CEC_InitStruct: pointer to an CEC_InitTypeDef structure that
-  *         contains the configuration information for the specified
-  *         CEC peripheral.
+  * @brief  按 CEC_InitStruct 的配置初始化 CEC 外设
+  * @param  CEC_InitStruct: pointer to an CEC_InitTypeDef structure that contains the configuration information for 指定的 CEC 外设.
   * @retval None
   */
 void CEC_Init(CEC_InitTypeDef* CEC_InitStruct)
@@ -156,9 +150,8 @@ void CEC_Init(CEC_InitTypeDef* CEC_InitStruct)
 }
 
 /**
-  * @brief  Enables or disables the specified CEC peripheral.
-  * @param  NewState: new state of the CEC peripheral. 
-  *     This parameter can be: ENABLE or DISABLE.
+  * @brief  开关CEC外设（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void CEC_Cmd(FunctionalState NewState)
@@ -178,9 +171,8 @@ void CEC_Cmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the CEC interrupt.
-  * @param  NewState: new state of the CEC interrupt.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关CEC interrupt（ENABLE=开 / DISABLE=关）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void CEC_ITConfig(FunctionalState NewState)
@@ -192,7 +184,7 @@ void CEC_ITConfig(FunctionalState NewState)
 }
 
 /**
-  * @brief  Defines the Own Address of the CEC device.
+  * @brief  Defines the Own Address of the CEC device.（详见英文原注释）
   * @param  CEC_OwnAddress: The CEC own address
   * @retval None
   */
@@ -206,7 +198,7 @@ void CEC_OwnAddressConfig(uint8_t CEC_OwnAddress)
 }
 
 /**
-  * @brief  Sets the CEC prescaler value.
+  * @brief  设置C
   * @param  CEC_Prescaler: CEC prescaler new value
   * @retval None
   */
@@ -220,7 +212,7 @@ void CEC_SetPrescaler(uint16_t CEC_Prescaler)
 }
 
 /**
-  * @brief  Transmits single data through the CEC peripheral.
+  * @brief  通过CEC发送单个数据
   * @param  Data: the data to transmit.
   * @retval None
   */
@@ -232,7 +224,7 @@ void CEC_SendDataByte(uint8_t Data)
 
 
 /**
-  * @brief  Returns the most recent received data by the CEC peripheral.
+  * @brief  取走CEC最近接收到的数据
   * @param  None
   * @retval The received data.
   */
@@ -243,7 +235,7 @@ uint8_t CEC_ReceiveDataByte(void)
 }
 
 /**
-  * @brief  Starts a new message.
+  * @brief  Starts a new message.（详见英文原注释）
   * @param  None
   * @retval None
   */
@@ -254,9 +246,8 @@ void CEC_StartOfMessage(void)
 }
 
 /**
-  * @brief  Transmits message with or without an EOM bit.
-  * @param  NewState: new state of the CEC Tx End Of Message. 
-  *     This parameter can be: ENABLE or DISABLE.
+  * @brief  Transmits message with or without an EOM bit.（详见英文原注释）
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void CEC_EndOfMessageCmd(FunctionalState NewState)
@@ -269,9 +260,8 @@ void CEC_EndOfMessageCmd(FunctionalState NewState)
 }
 
 /**
-  * @brief  Gets the CEC flag status
-  * @param  CEC_FLAG: specifies the CEC flag to check. 
-  *   This parameter can be one of the following values:
+  * @brief  获取C
+  * @param  CEC_FLAG: 指定CEC flag to check。
   *     @arg CEC_FLAG_BTE: Bit Timing Error
   *     @arg CEC_FLAG_BPE: Bit Period Error
   *     @arg CEC_FLAG_RBTFE: Rx Block Transfer Finished Error
@@ -335,9 +325,8 @@ FlagStatus CEC_GetFlagStatus(uint32_t CEC_FLAG)
 }
 
 /**
-  * @brief  Clears the CEC's pending flags.
-  * @param  CEC_FLAG: specifies the flag to clear. 
-  *   This parameter can be any combination of the following values:
+  * @brief  Clears the CEC's pending flags.（详见英文原注释）
+  * @param  CEC_FLAG: 指定flag to clear。
   *     @arg CEC_FLAG_TERR: Tx Error
   *     @arg CEC_FLAG_TBTRF: Tx Byte Transfer Request or Block Transfer Finished
   *     @arg CEC_FLAG_RSOM: Rx Start Of Message
@@ -360,9 +349,8 @@ void CEC_ClearFlag(uint32_t CEC_FLAG)
 }
 
 /**
-  * @brief  Checks whether the specified CEC interrupt has occurred or not.
-  * @param  CEC_IT: specifies the CEC interrupt source to check. 
-  *   This parameter can be one of the following values:
+  * @brief  检查specified CEC中断是否已发生
+  * @param  CEC_IT: 指定CEC interrupt source to check。
   *     @arg CEC_IT_TERR: Tx Error
   *     @arg CEC_IT_TBTF: Tx Block Transfer Finished
   *     @arg CEC_IT_RERR: Rx Error
@@ -396,9 +384,8 @@ ITStatus CEC_GetITStatus(uint8_t CEC_IT)
 }
 
 /**
-  * @brief  Clears the CEC's interrupt pending bits.
-  * @param  CEC_IT: specifies the CEC interrupt pending bit to clear.
-  *   This parameter can be any combination of the following values:
+  * @brief  清除CEC的中断挂起标志
+  * @param  CEC_IT: 指定CEC interrupt pending bit to clear。
   *     @arg CEC_IT_TERR: Tx Error
   *     @arg CEC_IT_TBTF: Tx Block Transfer Finished
   *     @arg CEC_IT_RERR: Rx Error

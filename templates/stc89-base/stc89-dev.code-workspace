@@ -14,8 +14,15 @@
         "clangd.arguments": [
             "--header-insertion=never"
         ],
-        "C_Cpp.default.configurationProvider": "cl.eide",
-        "C_Cpp.errorSquiggles": "disabled",
+        // C/C++ 实时报错配置（照抄 at89s51-base 的实测方案）：
+        // 1) configurationProvider 留空 = 不让 EIDE 接管 IntelliSense。
+        //    EIDE 的 provider 只提供 eide.yml 里的配置，不含 8051 关键字
+        //    （__sfr/__sbit/__at）映射，寄存器定义会满屏假红线；
+        //    留空后 cpptools 走 .vscode/c_cpp_properties.json（已配好映射）。
+        // 2) errorSquiggles 必须 = "enabled"：EIDE 首次加载新工程时会把
+        //    null/"Disabled" 的值改成 disabled，预置 enabled 可挡住它。
+        "C_Cpp.default.configurationProvider": "",
+        "C_Cpp.errorSquiggles": "enabled",
         "files.associations": {
             ".eideignore": "ignore",
             "*.a51": "a51",

@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the USART firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the USART firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -28,8 +27,7 @@
   */
 
 /** @defgroup USART 
-  * @brief USART driver modules
-  * @{
+  * @brief  USART driver modules @{（详见英文原注释）
   */
 
 /** @defgroup USART_Private_TypesDefinitions
@@ -121,10 +119,8 @@
   */
 
 /**
-  * @brief  Deinitializes the USARTx peripheral registers to their default reset values.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values: 
-  *      USART1, USART2, USART3, UART4 or UART5.
+  * @brief  复位USARTx外设（恢复默认值）
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
   * @retval None
   */
 void USART_DeInit(USART_TypeDef* USARTx)
@@ -163,15 +159,16 @@ void USART_DeInit(USART_TypeDef* USARTx)
 }
 
 /**
-  * @brief  Initializes the USARTx peripheral according to the specified
-  *         parameters in the USART_InitStruct .
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_InitStruct: pointer to a USART_InitTypeDef structure
-  *         that contains the configuration information for the specified USART 
-  *         peripheral.
-  * @retval None
+  * @brief  ���ṹ�����ó�ʼ�����ڣ�������/�ֳ�/ֹͣλ/У��/�շ�ģʽ����
+  * @param  USARTx: ���ںţ�USART1��APB2�����ã�/ USART2 / USART3 / UART4 / UART5
+  * @param  USART_InitStruct: ָ�� USART_InitTypeDef �ṹ�壬�������
+  *         USART_BaudRate=115200, USART_WordLength=USART_WordLength_8b,
+  *         USART_StopBits=USART_StopBits_1, USART_Parity=USART_Parity_No,
+  *         USART_Mode=USART_Mode_Rx|USART_Mode_Tx, Ӳ������=None
+  * @retval ��
+  * @note   ǰ��������1) ��ʱ�ӣ�USART1 �� APB2��USART2/3 �� APB1��
+  *         2) TX ������ GPIO_Mode_AF_PP��RX �両�����롣
+  *         ���껹Ҫ USART_Cmd(USARTx, ENABLE) �ſ�ʼ������
   */
 void USART_Init(USART_TypeDef* USARTx, USART_InitTypeDef* USART_InitStruct)
 {
@@ -273,9 +270,8 @@ void USART_Init(USART_TypeDef* USARTx, USART_InitTypeDef* USART_InitStruct)
 }
 
 /**
-  * @brief  Fills each USART_InitStruct member with its default value.
-  * @param  USART_InitStruct: pointer to a USART_InitTypeDef structure
-  *         which will be initialized.
+  * @brief  把USART_InitStruct各字段填成默认值
+  * @param  USART_InitStruct: 指向待初始化的 USART_InitTypeDef 结构体
   * @retval None
   */
 void USART_StructInit(USART_InitTypeDef* USART_InitStruct)
@@ -290,13 +286,10 @@ void USART_StructInit(USART_InitTypeDef* USART_InitStruct)
 }
 
 /**
-  * @brief  Initializes the USARTx peripheral Clock according to the 
-  *          specified parameters in the USART_ClockInitStruct .
-  * @param  USARTx: where x can be 1, 2, 3 to select the USART peripheral.
-  * @param  USART_ClockInitStruct: pointer to a USART_ClockInitTypeDef
-  *         structure that contains the configuration information for the specified 
-  *         USART peripheral.  
-  * @note The Smart Card and Synchronous modes are not available for UART4 and UART5.
+  * @brief  按 USART_ClockInitStruct  的配置初始化USARTx peripheral Clock
+  * @param  USARTx: 取值 1, 2, 3 选择 USART 外设.
+  * @param  USART_ClockInitStruct: 指向 USART_ClockInitTypeDef 配置结构体（各字段含义见该结构体定义处的注释）
+  * @note  The Smart Card and Synchronous modes are not available for UART4 and UART5.
   * @retval None
   */
 void USART_ClockInit(USART_TypeDef* USARTx, USART_ClockInitTypeDef* USART_ClockInitStruct)
@@ -325,9 +318,8 @@ void USART_ClockInit(USART_TypeDef* USARTx, USART_ClockInitTypeDef* USART_ClockI
 }
 
 /**
-  * @brief  Fills each USART_ClockInitStruct member with its default value.
-  * @param  USART_ClockInitStruct: pointer to a USART_ClockInitTypeDef
-  *         structure which will be initialized.
+  * @brief  把USART_ClockInitStruct各字段填成默认值
+  * @param  USART_ClockInitStruct: 指向待初始化的 USART_ClockInitTypeDef 结构体
   * @retval None
   */
 void USART_ClockStructInit(USART_ClockInitTypeDef* USART_ClockInitStruct)
@@ -340,13 +332,10 @@ void USART_ClockStructInit(USART_ClockInitTypeDef* USART_ClockInitStruct)
 }
 
 /**
-  * @brief  Enables or disables the specified USART peripheral.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *         This parameter can be one of the following values:
-  *           USART1, USART2, USART3, UART4 or UART5.
-  * @param  NewState: new state of the USARTx peripheral.
-  *         This parameter can be: ENABLE or DISABLE.
-  * @retval None
+  * @brief  ��/�رմ������裨USART_Init ֮������һ����
+  * @param  USARTx: USART1 / USART2 / USART3 / UART4 / UART5
+  * @param  NewState: ENABLE=�������� / DISABLE=�ر�
+  * @retval ��
   */
 void USART_Cmd(USART_TypeDef* USARTx, FunctionalState NewState)
 {
@@ -367,12 +356,9 @@ void USART_Cmd(USART_TypeDef* USARTx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the specified USART interrupts.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_IT: specifies the USART interrupt sources to be enabled or disabled.
-  *   This parameter can be one of the following values:
+  * @brief  开关USART interrupts
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_IT: 指定USART interrupt sources，将被enabled or disabled。
   *     @arg USART_IT_CTS:  CTS change interrupt (not available for UART4 and UART5)
   *     @arg USART_IT_LBD:  LIN Break detection interrupt
   *     @arg USART_IT_TXE:  Transmit Data Register empty interrupt
@@ -381,8 +367,7 @@ void USART_Cmd(USART_TypeDef* USARTx, FunctionalState NewState)
   *     @arg USART_IT_IDLE: Idle line detection interrupt
   *     @arg USART_IT_PE:   Parity Error interrupt
   *     @arg USART_IT_ERR:  Error interrupt(Frame error, noise error, overrun error)
-  * @param  NewState: new state of the specified USARTx interrupts.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void USART_ITConfig(USART_TypeDef* USARTx, uint16_t USART_IT, FunctionalState NewState)
@@ -431,18 +416,13 @@ void USART_ITConfig(USART_TypeDef* USARTx, uint16_t USART_IT, FunctionalState Ne
 }
 
 /**
-  * @brief  Enables or disables the USART�s DMA interface.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_DMAReq: specifies the DMA request.
-  *   This parameter can be any combination of the following values:
+  * @brief  开关USART�s DMA interface（ENABLE=开 / DISABLE=关）
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_DMAReq: 指定DMA request。
   *     @arg USART_DMAReq_Tx: USART DMA transmit request
   *     @arg USART_DMAReq_Rx: USART DMA receive request
-  * @param  NewState: new state of the DMA Request sources.
-  *   This parameter can be: ENABLE or DISABLE.
-  * @note The DMA mode is not available for UART5 except in the STM32
-  *       High density value line devices(STM32F10X_HD_VL).  
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
+  * @note  The DMA mode is not available for UART5 except in the STM32 High density value line devices(STM32F10X_HD_VL).
   * @retval None
   */
 void USART_DMACmd(USART_TypeDef* USARTx, uint16_t USART_DMAReq, FunctionalState NewState)
@@ -466,10 +446,8 @@ void USART_DMACmd(USART_TypeDef* USARTx, uint16_t USART_DMAReq, FunctionalState 
 }
 
 /**
-  * @brief  Sets the address of the USART node.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
+  * @brief  设置a
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
   * @param  USART_Address: Indicates the address of the USART node.
   * @retval None
   */
@@ -486,12 +464,9 @@ void USART_SetAddress(USART_TypeDef* USARTx, uint8_t USART_Address)
 }
 
 /**
-  * @brief  Selects the USART WakeUp method.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_WakeUp: specifies the USART wakeup method.
-  *   This parameter can be one of the following values:
+  * @brief  选择U
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_WakeUp: 指定USART wakeup method。
   *     @arg USART_WakeUp_IdleLine: WakeUp by an idle line detection
   *     @arg USART_WakeUp_AddressMark: WakeUp by an address mark
   * @retval None
@@ -507,12 +482,9 @@ void USART_WakeUpConfig(USART_TypeDef* USARTx, uint16_t USART_WakeUp)
 }
 
 /**
-  * @brief  Determines if the USART is in mute mode or not.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  NewState: new state of the USART mute mode.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  Determines if the USART is in mute mode or not.（详见英文原注释）
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void USART_ReceiverWakeUpCmd(USART_TypeDef* USARTx, FunctionalState NewState)
@@ -534,12 +506,9 @@ void USART_ReceiverWakeUpCmd(USART_TypeDef* USARTx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Sets the USART LIN Break detection length.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_LINBreakDetectLength: specifies the LIN break detection length.
-  *   This parameter can be one of the following values:
+  * @brief  设置U
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_LINBreakDetectLength: 指定LIN break detection length。
   *     @arg USART_LINBreakDetectLength_10b: 10-bit break detection
   *     @arg USART_LINBreakDetectLength_11b: 11-bit break detection
   * @retval None
@@ -555,12 +524,9 @@ void USART_LINBreakDetectLengthConfig(USART_TypeDef* USARTx, uint16_t USART_LINB
 }
 
 /**
-  * @brief  Enables or disables the USART�s LIN mode.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  NewState: new state of the USART LIN mode.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关USART�s LIN mode（ENABLE=开 / DISABLE=关）
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void USART_LINCmd(USART_TypeDef* USARTx, FunctionalState NewState)
@@ -582,12 +548,11 @@ void USART_LINCmd(USART_TypeDef* USARTx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Transmits single data through the USARTx peripheral.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  Data: the data to transmit.
-  * @retval None
+  * @brief  ����һ���ֽڣ�д�뷢�����ݼĴ�����（详见英文原注释）
+  * @param  USARTx: USART1 / USART2 / USART3 / UART4 / UART5
+  * @param  Data: Ҫ���͵��ֽڣ�0~0xFF��
+  * @retval ��
+  * @note  �������͵�����д���� while(USART_GetFlagStatus(USART1, USART_FLAG_TXE)==RESET); // �ȷ��ͼĴ����� USART_SendData(USART1, dat);
   */
 void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)
 {
@@ -600,10 +565,8 @@ void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)
 }
 
 /**
-  * @brief  Returns the most recent received data by the USARTx peripheral.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
+  * @brief  取走USARTx最近接收到的数据
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
   * @retval The received data.
   */
 uint16_t USART_ReceiveData(USART_TypeDef* USARTx)
@@ -616,10 +579,8 @@ uint16_t USART_ReceiveData(USART_TypeDef* USARTx)
 }
 
 /**
-  * @brief  Transmits break characters.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
+  * @brief  Transmits break characters.（详见英文原注释）
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
   * @retval None
   */
 void USART_SendBreak(USART_TypeDef* USARTx)
@@ -632,10 +593,10 @@ void USART_SendBreak(USART_TypeDef* USARTx)
 }
 
 /**
-  * @brief  Sets the specified USART guard time.
-  * @param  USARTx: where x can be 1, 2 or 3 to select the USART peripheral.
-  * @param  USART_GuardTime: specifies the guard time.
-  * @note The guard time bits are not available for UART4 and UART5.   
+  * @brief  设置s
+  * @param  USARTx: 取值 1, 2 or 3 选择 USART 外设.
+  * @param  USART_GuardTime: 指定guard time。
+  * @note  The guard time bits are not available for UART4 and UART5.
   * @retval None
   */
 void USART_SetGuardTime(USART_TypeDef* USARTx, uint8_t USART_GuardTime)
@@ -650,12 +611,10 @@ void USART_SetGuardTime(USART_TypeDef* USARTx, uint8_t USART_GuardTime)
 }
 
 /**
-  * @brief  Sets the system clock prescaler.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_Prescaler: specifies the prescaler clock.  
-  * @note   The function is used for IrDA mode with UART4 and UART5.
+  * @brief  设置s
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_Prescaler: 指定prescaler clock。
+  * @note  The function is used for IrDA mode with UART4 and UART5.
   * @retval None
   */
 void USART_SetPrescaler(USART_TypeDef* USARTx, uint8_t USART_Prescaler)
@@ -670,11 +629,10 @@ void USART_SetPrescaler(USART_TypeDef* USARTx, uint8_t USART_Prescaler)
 }
 
 /**
-  * @brief  Enables or disables the USART�s Smart Card mode.
-  * @param  USARTx: where x can be 1, 2 or 3 to select the USART peripheral.
-  * @param  NewState: new state of the Smart Card mode.
-  *   This parameter can be: ENABLE or DISABLE.     
-  * @note The Smart Card mode is not available for UART4 and UART5. 
+  * @brief  开关USART�s Smart Card mode（ENABLE=开 / DISABLE=关）
+  * @param  USARTx: 取值 1, 2 or 3 选择 USART 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
+  * @note  The Smart Card mode is not available for UART4 and UART5.
   * @retval None
   */
 void USART_SmartCardCmd(USART_TypeDef* USARTx, FunctionalState NewState)
@@ -695,11 +653,10 @@ void USART_SmartCardCmd(USART_TypeDef* USARTx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables NACK transmission.
-  * @param  USARTx: where x can be 1, 2 or 3 to select the USART peripheral. 
-  * @param  NewState: new state of the NACK transmission.
-  *   This parameter can be: ENABLE or DISABLE.  
-  * @note The Smart Card mode is not available for UART4 and UART5.
+  * @brief  开关NACK transmission.
+  * @param  USARTx: 取值 1, 2 or 3 选择 USART 外设.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
+  * @note  The Smart Card mode is not available for UART4 and UART5.
   * @retval None
   */
 void USART_SmartCardNACKCmd(USART_TypeDef* USARTx, FunctionalState NewState)
@@ -720,12 +677,9 @@ void USART_SmartCardNACKCmd(USART_TypeDef* USARTx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the USART�s Half Duplex communication.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  NewState: new state of the USART Communication.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关USART�s Half Duplex communication（ENABLE=开 / DISABLE=关）
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void USART_HalfDuplexCmd(USART_TypeDef* USARTx, FunctionalState NewState)
@@ -748,15 +702,10 @@ void USART_HalfDuplexCmd(USART_TypeDef* USARTx, FunctionalState NewState)
 
 
 /**
-  * @brief  Enables or disables the USART's 8x oversampling mode.
-  * @param  USARTx: Select the USART or the UART peripheral.
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  NewState: new state of the USART one bit sampling method.
-  *   This parameter can be: ENABLE or DISABLE.
-  * @note
-  *     This function has to be called before calling USART_Init()
-  *     function in order to have correct baudrate Divider value.   
+  * @brief  开关USART's 8x oversampling mode（ENABLE=开 / DISABLE=关）
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
+  * @note  This function has to be called before calling USART_Init() function in order to have correct baudrate Divider value.
   * @retval None
   */
 void USART_OverSampling8Cmd(USART_TypeDef* USARTx, FunctionalState NewState)
@@ -778,12 +727,9 @@ void USART_OverSampling8Cmd(USART_TypeDef* USARTx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Enables or disables the USART's one bit sampling method.
-  * @param  USARTx: Select the USART or the UART peripheral.
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  NewState: new state of the USART one bit sampling method.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关USART's one bit sampling method（ENABLE=开 / DISABLE=关）
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void USART_OneBitMethodCmd(USART_TypeDef* USARTx, FunctionalState NewState)
@@ -805,12 +751,9 @@ void USART_OneBitMethodCmd(USART_TypeDef* USARTx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Configures the USART's IrDA interface.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_IrDAMode: specifies the IrDA mode.
-  *   This parameter can be one of the following values:
+  * @brief  配置U
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_IrDAMode: 指定IrDA mode。
   *     @arg USART_IrDAMode_LowPower
   *     @arg USART_IrDAMode_Normal
   * @retval None
@@ -826,12 +769,9 @@ void USART_IrDAConfig(USART_TypeDef* USARTx, uint16_t USART_IrDAMode)
 }
 
 /**
-  * @brief  Enables or disables the USART's IrDA interface.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  NewState: new state of the IrDA mode.
-  *   This parameter can be: ENABLE or DISABLE.
+  * @brief  开关USART's IrDA interface（ENABLE=开 / DISABLE=关）
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
   * @retval None
   */
 void USART_IrDACmd(USART_TypeDef* USARTx, FunctionalState NewState)
@@ -853,23 +793,17 @@ void USART_IrDACmd(USART_TypeDef* USARTx, FunctionalState NewState)
 }
 
 /**
-  * @brief  Checks whether the specified USART flag is set or not.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_FLAG: specifies the flag to check.
-  *   This parameter can be one of the following values:
+  * @brief  检查USART标志是否置位
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_FLAG: 指定flag to check。
   *     @arg USART_FLAG_CTS:  CTS Change flag (not available for UART4 and UART5)
   *     @arg USART_FLAG_LBD:  LIN Break detection flag
-  *     @arg USART_FLAG_TXE:  Transmit data register empty flag
-  *     @arg USART_FLAG_TC:   Transmission Complete flag
-  *     @arg USART_FLAG_RXNE: Receive data register not empty flag
-  *     @arg USART_FLAG_IDLE: Idle Line detection flag
-  *     @arg USART_FLAG_ORE:  OverRun Error flag
-  *     @arg USART_FLAG_NE:   Noise Error flag
-  *     @arg USART_FLAG_FE:   Framing Error flag
-  *     @arg USART_FLAG_PE:   Parity Error flag
-  * @retval The new state of USART_FLAG (SET or RESET).
+  *     @arg USART_FLAG_TXE:  ���ͼĴ����գ���������һ���ֽڣ�
+  *     @arg USART_FLAG_TC:   һ֡��ȫ�������
+  *     @arg USART_FLAG_RXNE: �յ������ݣ��� USART_ReceiveData ȡ�ߣ�
+  *     @arg USART_FLAG_IDLE: ���߿��У�һ֡�����жϳ��ã�
+  *     @arg USART_FLAG_ORE / NE / FE / PE: ���/����/֡/У�����
+  * @retval SET=��־��λ / RESET=δ��λ
   */
 FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 {
@@ -895,29 +829,15 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 }
 
 /**
-  * @brief  Clears the USARTx's pending flags.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_FLAG: specifies the flag to clear.
-  *   This parameter can be any combination of the following values:
+  * @brief  Clears the USARTx's pending flags.（详见英文原注释）
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_FLAG: 指定flag to clear。
   *     @arg USART_FLAG_CTS:  CTS Change flag (not available for UART4 and UART5).
   *     @arg USART_FLAG_LBD:  LIN Break detection flag.
   *     @arg USART_FLAG_TC:   Transmission Complete flag.
   *     @arg USART_FLAG_RXNE: Receive data register not empty flag.
   *   
-  * @note
-  *   - PE (Parity error), FE (Framing error), NE (Noise error), ORE (OverRun 
-  *     error) and IDLE (Idle line detected) flags are cleared by software 
-  *     sequence: a read operation to USART_SR register (USART_GetFlagStatus()) 
-  *     followed by a read operation to USART_DR register (USART_ReceiveData()).
-  *   - RXNE flag can be also cleared by a read to the USART_DR register 
-  *     (USART_ReceiveData()).
-  *   - TC flag can be also cleared by software sequence: a read operation to 
-  *     USART_SR register (USART_GetFlagStatus()) followed by a write operation
-  *     to USART_DR register (USART_SendData()).
-  *   - TXE flag is cleared only by a write to the USART_DR register 
-  *     (USART_SendData()).
+  * @note  - PE (Parity error), FE (Framing error), NE (Noise error), ORE (OverRun error) and IDLE (Idle line detected) flags are cleared by software sequence: a read operation to USART_SR register (USART_GetFlagStatus()) followed by a read operation to USART_DR register (USART_ReceiveData()). - RXNE 标志 can be also cleared by a read to the USART_DR register (USART_ReceiveData()). - TC 标志 can be also cleared by software sequence: a read operation to USART_SR register (USART_GetFlagStatus()) followed by a write operation to USART_DR register (USART_SendData()). - TXE 标志 is cleared only by a write to the USART_DR register (USART_SendData()).
   * @retval None
   */
 void USART_ClearFlag(USART_TypeDef* USARTx, uint16_t USART_FLAG)
@@ -935,12 +855,9 @@ void USART_ClearFlag(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 }
 
 /**
-  * @brief  Checks whether the specified USART interrupt has occurred or not.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_IT: specifies the USART interrupt source to check.
-  *   This parameter can be one of the following values:
+  * @brief  检查specified USART中断是否已发生
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_IT: 指定USART interrupt source to check。
   *     @arg USART_IT_CTS:  CTS change interrupt (not available for UART4 and UART5)
   *     @arg USART_IT_LBD:  LIN Break detection interrupt
   *     @arg USART_IT_TXE:  Tansmit Data Register empty interrupt
@@ -1001,30 +918,15 @@ ITStatus USART_GetITStatus(USART_TypeDef* USARTx, uint16_t USART_IT)
 }
 
 /**
-  * @brief  Clears the USARTx's interrupt pending bits.
-  * @param  USARTx: Select the USART or the UART peripheral. 
-  *   This parameter can be one of the following values:
-  *   USART1, USART2, USART3, UART4 or UART5.
-  * @param  USART_IT: specifies the interrupt pending bit to clear.
-  *   This parameter can be one of the following values:
+  * @brief  清除USARTx的中断挂起标志
+  * @param  USARTx: Select the USART or the UART 外设. This parameter can be one of the following values: USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_IT: 指定interrupt pending bit to clear。
   *     @arg USART_IT_CTS:  CTS change interrupt (not available for UART4 and UART5)
   *     @arg USART_IT_LBD:  LIN Break detection interrupt
   *     @arg USART_IT_TC:   Transmission complete interrupt. 
   *     @arg USART_IT_RXNE: Receive Data register not empty interrupt.
   *   
-  * @note
-  *   - PE (Parity error), FE (Framing error), NE (Noise error), ORE (OverRun 
-  *     error) and IDLE (Idle line detected) pending bits are cleared by 
-  *     software sequence: a read operation to USART_SR register 
-  *     (USART_GetITStatus()) followed by a read operation to USART_DR register 
-  *     (USART_ReceiveData()).
-  *   - RXNE pending bit can be also cleared by a read to the USART_DR register 
-  *     (USART_ReceiveData()).
-  *   - TC pending bit can be also cleared by software sequence: a read 
-  *     operation to USART_SR register (USART_GetITStatus()) followed by a write 
-  *     operation to USART_DR register (USART_SendData()).
-  *   - TXE pending bit is cleared only by a write to the USART_DR register 
-  *     (USART_SendData()).
+  * @note  - PE (Parity error), FE (Framing error), NE (Noise error), ORE (OverRun error) and IDLE (Idle line detected) pending bits are cleared by software sequence: a read operation to USART_SR register (USART_GetITStatus()) followed by a read operation to USART_DR register (USART_ReceiveData()). - RXNE pending bit can be also cleared by a read to the USART_DR register (USART_ReceiveData()). - TC pending bit can be also cleared by software sequence: a read operation to USART_SR register (USART_GetITStatus()) followed by a write operation to USART_DR register (USART_SendData()). - TXE pending bit is cleared only by a write to the USART_DR register (USART_SendData()).
   * @retval None
   */
 void USART_ClearITPendingBit(USART_TypeDef* USARTx, uint16_t USART_IT)

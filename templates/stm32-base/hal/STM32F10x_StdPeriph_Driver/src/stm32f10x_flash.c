@@ -4,8 +4,7 @@
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    11-March-2011
-  * @brief   This file provides all the FLASH firmware functions.
-  ******************************************************************************
+  * @brief  This file provides all the FLASH firmware functions. *****************************************************************************（详见英文原注释）
   * @attention
   *
   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
@@ -27,8 +26,7 @@
   */
 
 /** @defgroup FLASH 
-  * @brief FLASH driver modules
-  * @{
+  * @brief  FLASH driver modules @{（详见英文原注释）
   */ 
 
 /** @defgroup FLASH_Private_TypesDefinitions
@@ -242,10 +240,9 @@
 
 
 /**
-  * @brief  Sets the code latency value.
-  * @note   This function can be used for all STM32F10x devices.
-  * @param  FLASH_Latency: specifies the FLASH Latency value.
-  *   This parameter can be one of the following values:
+  * @brief  设置c
+  * @note  This function can be used for all STM32F10x devices.
+  * @param  FLASH_Latency: 指定FLASH Latency value。
   *     @arg FLASH_Latency_0: FLASH Zero Latency cycle
   *     @arg FLASH_Latency_1: FLASH One Latency cycle
   *     @arg FLASH_Latency_2: FLASH Two Latency cycles
@@ -270,10 +267,9 @@ void FLASH_SetLatency(uint32_t FLASH_Latency)
 }
 
 /**
-  * @brief  Enables or disables the Half cycle flash access.
-  * @note   This function can be used for all STM32F10x devices.
-  * @param  FLASH_HalfCycleAccess: specifies the FLASH Half cycle Access mode.
-  *   This parameter can be one of the following values:
+  * @brief  开关Half cycle flash access（ENABLE=开 / DISABLE=关）
+  * @note  This function can be used for all STM32F10x devices.
+  * @param  FLASH_HalfCycleAccess: 指定FLASH Half cycle Access mode。
   *     @arg FLASH_HalfCycleAccess_Enable: FLASH Half Cycle Enable
   *     @arg FLASH_HalfCycleAccess_Disable: FLASH Half Cycle Disable
   * @retval None
@@ -289,10 +285,9 @@ void FLASH_HalfCycleAccessCmd(uint32_t FLASH_HalfCycleAccess)
 }
 
 /**
-  * @brief  Enables or disables the Prefetch Buffer.
-  * @note   This function can be used for all STM32F10x devices.
-  * @param  FLASH_PrefetchBuffer: specifies the Prefetch buffer status.
-  *   This parameter can be one of the following values:
+  * @brief  开关Prefetch Buffer（ENABLE=开 / DISABLE=关）
+  * @note  This function can be used for all STM32F10x devices.
+  * @param  FLASH_PrefetchBuffer: 指定Prefetch buffer status。
   *     @arg FLASH_PrefetchBuffer_Enable: FLASH Prefetch Buffer Enable
   *     @arg FLASH_PrefetchBuffer_Disable: FLASH Prefetch Buffer Disable
   * @retval None
@@ -308,11 +303,8 @@ void FLASH_PrefetchBufferCmd(uint32_t FLASH_PrefetchBuffer)
 }
 
 /**
-  * @brief  Unlocks the FLASH Program Erase Controller.
-  * @note   This function can be used for all STM32F10x devices.
-  *         - For STM32F10X_XL devices this function unlocks Bank1 and Bank2.
-  *         - For all other devices it unlocks Bank1 and it is equivalent 
-  *           to FLASH_UnlockBank1 function.. 
+  * @brief  Unlocks the FLASH Program Erase Controller.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices. - For STM32F10X_XL devices this function unlocks Bank1 and Bank2. - For all other devices it unlocks Bank1 and it is equivalent to FLASH_UnlockBank1 function..
   * @param  None
   * @retval None
   */
@@ -329,11 +321,8 @@ void FLASH_Unlock(void)
 #endif /* STM32F10X_XL */
 }
 /**
-  * @brief  Unlocks the FLASH Bank1 Program Erase Controller.
-  * @note   This function can be used for all STM32F10x devices.
-  *         - For STM32F10X_XL devices this function unlocks Bank1.
-  *         - For all other devices it unlocks Bank1 and it is 
-  *           equivalent to FLASH_Unlock function.
+  * @brief  Unlocks the FLASH Bank1 Program Erase Controller.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices. - For STM32F10X_XL devices this function unlocks Bank1. - For all other devices it unlocks Bank1 and it is equivalent to FLASH_Unlock function.
   * @param  None
   * @retval None
   */
@@ -346,8 +335,8 @@ void FLASH_UnlockBank1(void)
 
 #ifdef STM32F10X_XL
 /**
-  * @brief  Unlocks the FLASH Bank2 Program Erase Controller.
-  * @note   This function can be used only for STM32F10X_XL density devices.
+  * @brief  Unlocks the FLASH Bank2 Program Erase Controller.（详见英文原注释）
+  * @note  This function can be used only for STM32F10X_XL density devices.
   * @param  None
   * @retval None
   */
@@ -361,11 +350,8 @@ void FLASH_UnlockBank2(void)
 #endif /* STM32F10X_XL */
 
 /**
-  * @brief  Locks the FLASH Program Erase Controller.
-  * @note   This function can be used for all STM32F10x devices.
-  *         - For STM32F10X_XL devices this function Locks Bank1 and Bank2.
-  *         - For all other devices it Locks Bank1 and it is equivalent 
-  *           to FLASH_LockBank1 function.
+  * @brief  Locks the FLASH Program Erase Controller.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices. - For STM32F10X_XL devices this function Locks Bank1 and Bank2. - For all other devices it Locks Bank1 and it is equivalent to FLASH_LockBank1 function.
   * @param  None
   * @retval None
   */
@@ -381,11 +367,8 @@ void FLASH_Lock(void)
 }
 
 /**
-  * @brief  Locks the FLASH Bank1 Program Erase Controller.
-  * @note   this function can be used for all STM32F10x devices.
-  *         - For STM32F10X_XL devices this function Locks Bank1.
-  *         - For all other devices it Locks Bank1 and it is equivalent 
-  *           to FLASH_Lock function.
+  * @brief  Locks the FLASH Bank1 Program Erase Controller.（详见英文原注释）
+  * @note  this function can be used for all STM32F10x devices. - For STM32F10X_XL devices this function Locks Bank1. - For all other devices it Locks Bank1 and it is equivalent to FLASH_Lock function.
   * @param  None
   * @retval None
   */
@@ -397,8 +380,8 @@ void FLASH_LockBank1(void)
 
 #ifdef STM32F10X_XL
 /**
-  * @brief  Locks the FLASH Bank2 Program Erase Controller.
-  * @note   This function can be used only for STM32F10X_XL density devices.
+  * @brief  Locks the FLASH Bank2 Program Erase Controller.（详见英文原注释）
+  * @note  This function can be used only for STM32F10X_XL density devices.
   * @param  None
   * @retval None
   */
@@ -410,11 +393,10 @@ void FLASH_LockBank2(void)
 #endif /* STM32F10X_XL */
 
 /**
-  * @brief  Erases a specified FLASH page.
-  * @note   This function can be used for all STM32F10x devices.
+  * @brief  Erases a specified FLASH page.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices.
   * @param  Page_Address: The page address to be erased.
-  * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_ErasePage(uint32_t Page_Address)
 {
@@ -483,11 +465,10 @@ FLASH_Status FLASH_ErasePage(uint32_t Page_Address)
 }
 
 /**
-  * @brief  Erases all FLASH pages.
-  * @note   This function can be used for all STM32F10x devices.
+  * @brief  Erases all FLASH pages.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices.
   * @param  None
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_EraseAllPages(void)
 {
@@ -543,14 +524,10 @@ FLASH_Status FLASH_EraseAllPages(void)
 }
 
 /**
-  * @brief  Erases all Bank1 FLASH pages.
-  * @note   This function can be used for all STM32F10x devices.
-  *         - For STM32F10X_XL devices this function erases all Bank1 pages.
-  *         - For all other devices it erases all Bank1 pages and it is equivalent 
-  *           to FLASH_EraseAllPages function.
+  * @brief  Erases all Bank1 FLASH pages.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices. - For STM32F10X_XL devices this function erases all Bank1 pages. - For all other devices it erases all Bank1 pages and it is equivalent to FLASH_EraseAllPages function.
   * @param  None
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_EraseAllBank1Pages(void)
 {
@@ -576,11 +553,10 @@ FLASH_Status FLASH_EraseAllBank1Pages(void)
 
 #ifdef STM32F10X_XL
 /**
-  * @brief  Erases all Bank2 FLASH pages.
-  * @note   This function can be used only for STM32F10x_XL density devices.
+  * @brief  Erases all Bank2 FLASH pages.（详见英文原注释）
+  * @note  This function can be used only for STM32F10x_XL density devices.
   * @param  None
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_EraseAllBank2Pages(void)
 {
@@ -606,12 +582,11 @@ FLASH_Status FLASH_EraseAllBank2Pages(void)
 #endif /* STM32F10X_XL */
 
 /**
-  * @brief  Erases the FLASH option bytes.
-  * @note   This functions erases all option bytes except the Read protection (RDP). 
-  * @note   This function can be used for all STM32F10x devices.
+  * @brief  Erases the FLASH option bytes.（详见英文原注释）
+  * @note  This functions erases all option bytes except the Read protection (RDP).
+  * @note  This function can be used for all STM32F10x devices.
   * @param  None
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_EraseOptionBytes(void)
 {
@@ -671,12 +646,11 @@ FLASH_Status FLASH_EraseOptionBytes(void)
 }
 
 /**
-  * @brief  Programs a word at a specified address.
-  * @note   This function can be used for all STM32F10x devices.
-  * @param  Address: specifies the address to be programmed.
-  * @param  Data: specifies the data to be programmed.
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT. 
+  * @brief  Programs a word at a specified address.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices.
+  * @param  Address: 指定address，将被programmed。
+  * @param  Data: 指定data，将被programmed。
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data)
 {
@@ -848,12 +822,11 @@ FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data)
 }
 
 /**
-  * @brief  Programs a half word at a specified address.
-  * @note   This function can be used for all STM32F10x devices.
-  * @param  Address: specifies the address to be programmed.
-  * @param  Data: specifies the data to be programmed.
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT. 
+  * @brief  Programs a half word at a specified address.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices.
+  * @param  Address: 指定address，将被programmed。
+  * @param  Data: 指定data，将被programmed。
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data)
 {
@@ -918,13 +891,11 @@ FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data)
 }
 
 /**
-  * @brief  Programs a half word at a specified Option Byte Data address.
-  * @note   This function can be used for all STM32F10x devices.
-  * @param  Address: specifies the address to be programmed.
-  *   This parameter can be 0x1FFFF804 or 0x1FFFF806. 
-  * @param  Data: specifies the data to be programmed.
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT. 
+  * @brief  Programs a half word at a specified Option Byte Data address.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices.
+  * @param  Address: 指定address，将被programmed。
+  * @param  Data: 指定data，将被programmed。
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_ProgramOptionByteData(uint32_t Address, uint8_t Data)
 {
@@ -955,10 +926,9 @@ FLASH_Status FLASH_ProgramOptionByteData(uint32_t Address, uint8_t Data)
 }
 
 /**
-  * @brief  Write protects the desired pages
-  * @note   This function can be used for all STM32F10x devices.
-  * @param  FLASH_Pages: specifies the address of the pages to be write protected.
-  *   This parameter can be:
+  * @brief  Write protects the desired pages（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices.
+  * @param  FLASH_Pages: 指定address of the pages，将被write protected。
   *     @arg For @b STM32_Low-density_devices: value between FLASH_WRProt_Pages0to3 and FLASH_WRProt_Pages28to31  
   *     @arg For @b STM32_Medium-density_devices: value between FLASH_WRProt_Pages0to3
   *       and FLASH_WRProt_Pages124to127
@@ -969,8 +939,7 @@ FLASH_Status FLASH_ProgramOptionByteData(uint32_t Address, uint8_t Data)
   *     @arg For @b STM32_XL-density_devices: value between FLASH_WRProt_Pages0to1 and
   *       FLASH_WRProt_Pages60to61 or FLASH_WRProt_Pages62to511
   *     @arg FLASH_WRProt_AllPages
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_EnableWriteProtection(uint32_t FLASH_Pages)
 {
@@ -1037,14 +1006,11 @@ FLASH_Status FLASH_EnableWriteProtection(uint32_t FLASH_Pages)
 }
 
 /**
-  * @brief  Enables or disables the read out protection.
-  * @note   If the user has already programmed the other option bytes before calling 
-  *   this function, he must re-program them since this function erases all option bytes.
-  * @note   This function can be used for all STM32F10x devices.
-  * @param  Newstate: new state of the ReadOut Protection.
-  *   This parameter can be: ENABLE or DISABLE.
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @brief  开关read out protection（ENABLE=开 / DISABLE=关）
+  * @note  If the user has already programmed the other option bytes before calling this function, he must re-program them since this function erases all option bytes.
+  * @note  This function can be used for all STM32F10x devices.
+  * @param  Newstate: new state of the ReadOut Protection. This parameter can be: ENABLE or DISABLE.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_ReadOutProtection(FunctionalState NewState)
 {
@@ -1098,22 +1064,18 @@ FLASH_Status FLASH_ReadOutProtection(FunctionalState NewState)
 }
 
 /**
-  * @brief  Programs the FLASH User Option Byte: IWDG_SW / RST_STOP / RST_STDBY.
-  * @note   This function can be used for all STM32F10x devices.
-  * @param  OB_IWDG: Selects the IWDG mode
-  *   This parameter can be one of the following values:
+  * @brief  Programs the FLASH User Option Byte: IWDG_SW / RST_STOP / RST_STDBY.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices.
+  * @param  OB_IWDG: Selects the IWDG mode This parameter can be one of the following values:
   *     @arg OB_IWDG_SW: Software IWDG selected
   *     @arg OB_IWDG_HW: Hardware IWDG selected
-  * @param  OB_STOP: Reset event when entering STOP mode.
-  *   This parameter can be one of the following values:
+  * @param  OB_STOP: Reset event when entering STOP mode. This parameter can be one of the following values:
   *     @arg OB_STOP_NoRST: No reset generated when entering in STOP
   *     @arg OB_STOP_RST: Reset generated when entering in STOP
-  * @param  OB_STDBY: Reset event when entering Standby mode.
-  *   This parameter can be one of the following values:
+  * @param  OB_STDBY: Reset event when entering Standby mode. This parameter can be one of the following values:
   *     @arg OB_STDBY_NoRST: No reset generated when entering in STANDBY
   *     @arg OB_STDBY_RST: Reset generated when entering in STANDBY
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, 
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_UserOptionByteConfig(uint16_t OB_IWDG, uint16_t OB_STOP, uint16_t OB_STDBY)
 {
@@ -1152,10 +1114,9 @@ FLASH_Status FLASH_UserOptionByteConfig(uint16_t OB_IWDG, uint16_t OB_STOP, uint
 
 #ifdef STM32F10X_XL
 /**
-  * @brief  Configures to boot from Bank1 or Bank2.  
-  * @note   This function can be used only for STM32F10x_XL density devices.
-  * @param  FLASH_BOOT: select the FLASH Bank to boot from.
-  *   This parameter can be one of the following values:
+  * @brief  Configures to boot from Bank1 or Bank2.（详见英文原注释）
+  * @note  This function can be used only for STM32F10x_XL density devices.
+  * @param  FLASH_BOOT: select the FLASH Bank to boot from. This parameter can be one of the following values:
   *     @arg FLASH_BOOT_Bank1: At startup, if boot pins are set in boot from user Flash
   *        position and this parameter is selected the device will boot from Bank1(Default).
   *     @arg FLASH_BOOT_Bank2: At startup, if boot pins are set in boot from user Flash
@@ -1166,8 +1127,7 @@ FLASH_Status FLASH_UserOptionByteConfig(uint16_t OB_IWDG, uint16_t OB_STOP, uint
   *        of the respective bank (corresponding to the initial stack pointer value
   *        in the interrupt vector table).
   *        For more information, please refer to AN2606 from www.st.com.    
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, 
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_BootConfig(uint16_t FLASH_BOOT)
 { 
@@ -1207,11 +1167,10 @@ FLASH_Status FLASH_BootConfig(uint16_t FLASH_BOOT)
 #endif /* STM32F10X_XL */
 
 /**
-  * @brief  Returns the FLASH User Option Bytes values.
-  * @note   This function can be used for all STM32F10x devices.
+  * @brief  Returns the FLASH User Option Bytes values.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices.
   * @param  None
-  * @retval The FLASH User Option Bytes values:IWDG_SW(Bit0), RST_STOP(Bit1)
-  *         and RST_STDBY(Bit2).
+  * @retval The FLASH User Option Bytes values:IWDG_SW(Bit0), RST_STOP(Bit1) and RST_STDBY(Bit2).
   */
 uint32_t FLASH_GetUserOptionByte(void)
 {
@@ -1220,10 +1179,10 @@ uint32_t FLASH_GetUserOptionByte(void)
 }
 
 /**
-  * @brief  Returns the FLASH Write Protection Option Bytes Register value.
-  * @note   This function can be used for all STM32F10x devices.
+  * @brief  Returns the FLASH Write Protection Option Bytes Register value.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices.
   * @param  None
-  * @retval The FLASH Write Protection  Option Bytes Register value
+  * @retval The FLASH Write Protection Option Bytes Register value
   */
 uint32_t FLASH_GetWriteProtectionOptionByte(void)
 {
@@ -1232,8 +1191,8 @@ uint32_t FLASH_GetWriteProtectionOptionByte(void)
 }
 
 /**
-  * @brief  Checks whether the FLASH Read Out Protection Status is set or not.
-  * @note   This function can be used for all STM32F10x devices.
+  * @brief  检查F
+  * @note  This function can be used for all STM32F10x devices.
   * @param  None
   * @retval FLASH ReadOut Protection Status(SET or RESET)
   */
@@ -1252,8 +1211,8 @@ FlagStatus FLASH_GetReadOutProtectionStatus(void)
 }
 
 /**
-  * @brief  Checks whether the FLASH Prefetch Buffer status is set or not.
-  * @note   This function can be used for all STM32F10x devices.
+  * @brief  检查F
+  * @note  This function can be used for all STM32F10x devices.
   * @param  None
   * @retval FLASH Prefetch Buffer Status (SET or RESET).
   */
@@ -1274,18 +1233,13 @@ FlagStatus FLASH_GetPrefetchBufferStatus(void)
 }
 
 /**
-  * @brief  Enables or disables the specified FLASH interrupts.
-  * @note   This function can be used for all STM32F10x devices.
-  *         - For STM32F10X_XL devices, enables or disables the specified FLASH interrupts
-              for Bank1 and Bank2.
-  *         - For other devices it enables or disables the specified FLASH interrupts for Bank1.
-  * @param  FLASH_IT: specifies the FLASH interrupt sources to be enabled or disabled.
-  *   This parameter can be any combination of the following values:
+  * @brief  开关FLASH interrupts
+  * @note  This function can be used for all STM32F10x devices. - For STM32F10X_XL devices, 使能 or disables 指定的 FLASH interrupts for Bank1 and Bank2. - For other devices it 使能 or disables 指定的 FLASH interrupts for Bank1.
+  * @param  FLASH_IT: 指定FLASH interrupt sources，将被enabled or disabled。
   *     @arg FLASH_IT_ERROR: FLASH Error Interrupt
   *     @arg FLASH_IT_EOP: FLASH end of operation Interrupt
-  * @param  NewState: new state of the specified Flash interrupts.
-  *   This parameter can be: ENABLE or DISABLE.      
-  * @retval None 
+  * @param  NewState: 该外设新状态：ENABLE=开 / DISABLE=关
+  * @retval None
   */
 void FLASH_ITConfig(uint32_t FLASH_IT, FunctionalState NewState)
 {
@@ -1339,14 +1293,9 @@ void FLASH_ITConfig(uint32_t FLASH_IT, FunctionalState NewState)
 }
 
 /**
-  * @brief  Checks whether the specified FLASH flag is set or not.
-  * @note   This function can be used for all STM32F10x devices.
-  *         - For STM32F10X_XL devices, this function checks whether the specified 
-  *           Bank1 or Bank2 flag is set or not.
-  *         - For other devices, it checks whether the specified Bank1 flag is 
-  *           set or not.
-  * @param  FLASH_FLAG: specifies the FLASH flag to check.
-  *   This parameter can be one of the following values:
+  * @brief  检查FLASH标志是否置位
+  * @note  This function can be used for all STM32F10x devices. - For STM32F10X_XL devices, this function checks whether 指定的 Bank1 or Bank2 标志 is set or not. - For other devices, it checks whether 指定的 Bank1 标志 is set or not.
+  * @param  FLASH_FLAG: 指定FLASH flag to check。
   *     @arg FLASH_FLAG_BSY: FLASH Busy flag           
   *     @arg FLASH_FLAG_PGERR: FLASH Program error flag       
   *     @arg FLASH_FLAG_WRPRTERR: FLASH Write protected error flag      
@@ -1429,12 +1378,9 @@ FlagStatus FLASH_GetFlagStatus(uint32_t FLASH_FLAG)
 }
 
 /**
-  * @brief  Clears the FLASH's pending flags.
-  * @note   This function can be used for all STM32F10x devices.
-  *         - For STM32F10X_XL devices, this function clears Bank1 or Bank2�s pending flags
-  *         - For other devices, it clears Bank1�s pending flags.
-  * @param  FLASH_FLAG: specifies the FLASH flags to clear.
-  *   This parameter can be any combination of the following values:         
+  * @brief  Clears the FLASH's pending flags.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices. - For STM32F10X_XL devices, this function clears Bank1 or Bank2�s pending flags - For other devices, it clears Bank1�s pending flags.
+  * @param  FLASH_FLAG: 指定FLASH flags to clear。
   *     @arg FLASH_FLAG_PGERR: FLASH Program error flag       
   *     @arg FLASH_FLAG_WRPRTERR: FLASH Write protected error flag      
   *     @arg FLASH_FLAG_EOP: FLASH End of Operation flag           
@@ -1467,12 +1413,10 @@ void FLASH_ClearFlag(uint32_t FLASH_FLAG)
 }
 
 /**
-  * @brief  Returns the FLASH Status.
-  * @note   This function can be used for all STM32F10x devices, it is equivalent
-  *         to FLASH_GetBank1Status function.
+  * @brief  Returns the FLASH Status.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices, it is equivalent to FLASH_GetBank1Status function.
   * @param  None
-  * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP or FLASH_COMPLETE
+  * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PG, FLASH_ERROR_WRP or FLASH_COMPLETE
   */
 FLASH_Status FLASH_GetStatus(void)
 {
@@ -1505,12 +1449,10 @@ FLASH_Status FLASH_GetStatus(void)
 }
 
 /**
-  * @brief  Returns the FLASH Bank1 Status.
-  * @note   This function can be used for all STM32F10x devices, it is equivalent
-  *         to FLASH_GetStatus function.
+  * @brief  Returns the FLASH Bank1 Status.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices, it is equivalent to FLASH_GetStatus function.
   * @param  None
-  * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP or FLASH_COMPLETE
+  * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PG, FLASH_ERROR_WRP or FLASH_COMPLETE
   */
 FLASH_Status FLASH_GetBank1Status(void)
 {
@@ -1544,11 +1486,10 @@ FLASH_Status FLASH_GetBank1Status(void)
 
 #ifdef STM32F10X_XL
 /**
-  * @brief  Returns the FLASH Bank2 Status.
-  * @note   This function can be used for STM32F10x_XL density devices.
+  * @brief  Returns the FLASH Bank2 Status.（详见英文原注释）
+  * @note  This function can be used for STM32F10x_XL density devices.
   * @param  None
-  * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PG,
-  *        FLASH_ERROR_WRP or FLASH_COMPLETE
+  * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PG, FLASH_ERROR_WRP or FLASH_COMPLETE
   */
 FLASH_Status FLASH_GetBank2Status(void)
 {
@@ -1581,16 +1522,10 @@ FLASH_Status FLASH_GetBank2Status(void)
 }
 #endif /* STM32F10X_XL */
 /**
-  * @brief  Waits for a Flash operation to complete or a TIMEOUT to occur.
-  * @note   This function can be used for all STM32F10x devices, 
-  *         it is equivalent to FLASH_WaitForLastBank1Operation.
-  *         - For STM32F10X_XL devices this function waits for a Bank1 Flash operation
-  *           to complete or a TIMEOUT to occur.
-  *         - For all other devices it waits for a Flash operation to complete 
-  *           or a TIMEOUT to occur.
+  * @brief  Waits for a Flash operation to complete or a TIMEOUT to occur.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices, it is equivalent to FLASH_WaitForLastBank1Operation. - For STM32F10X_XL devices this function waits for a Bank1 Flash operation to complete or a TIMEOUT to occur. - For all other devices it waits for a Flash operation to complete or a TIMEOUT to occur.
   * @param  Timeout: FLASH programming Timeout
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_WaitForLastOperation(uint32_t Timeout)
 { 
@@ -1613,12 +1548,10 @@ FLASH_Status FLASH_WaitForLastOperation(uint32_t Timeout)
 }
 
 /**
-  * @brief  Waits for a Flash operation on Bank1 to complete or a TIMEOUT to occur.
-  * @note   This function can be used for all STM32F10x devices, 
-  *         it is equivalent to FLASH_WaitForLastOperation.
+  * @brief  Waits for a Flash operation on Bank1 to complete or a TIMEOUT to occur.（详见英文原注释）
+  * @note  This function can be used for all STM32F10x devices, it is equivalent to FLASH_WaitForLastOperation.
   * @param  Timeout: FLASH programming Timeout
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_WaitForLastBank1Operation(uint32_t Timeout)
 { 
@@ -1642,11 +1575,10 @@ FLASH_Status FLASH_WaitForLastBank1Operation(uint32_t Timeout)
 
 #ifdef STM32F10X_XL
 /**
-  * @brief  Waits for a Flash operation on Bank2 to complete or a TIMEOUT to occur.
-  * @note   This function can be used only for STM32F10x_XL density devices.
+  * @brief  Waits for a Flash operation on Bank2 to complete or a TIMEOUT to occur.（详见英文原注释）
+  * @note  This function can be used only for STM32F10x_XL density devices.
   * @param  Timeout: FLASH programming Timeout
-  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
-  *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+  * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
   */
 FLASH_Status FLASH_WaitForLastBank2Operation(uint32_t Timeout)
 { 
