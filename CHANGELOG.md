@@ -39,6 +39,9 @@
   missing extension opens its marketplace page, `stcgal` offers a copyable
   `pip install stcgal`; the list re-runs after an action, Esc exits.
 - **Status bar** shows `<TYPE> · <MCU>` and opens a quick menu
+  (build / flash / doctor / context.md / git init) instead of hardwiring build;
+  its build action now calls the correct `eide.project.build` command
+  (the previously hardcoded `eide.build` does not exist → "command not found").
   (build / flash / doctor / context.md / git init) instead of hardwiring build.
   Also fixed: an empty window no longer pops "请先打开一个工程文件夹" on
   every startup (status bar detection is silent now).

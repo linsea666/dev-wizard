@@ -1063,7 +1063,7 @@ async function buildCmd() {
     };
 
     if (pt.type === 'eide') {
-        await vscode.commands.executeCommand('eide.build');
+        await vscode.commands.executeCommand('eide.project.build');
         return;
     }
 
